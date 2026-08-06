@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نامو ناميان · وكيل رين-Ge الذكي</title>
+    <meta name="description" content="كل حساباتي تتخذ الرحمة حداً. كل توجهاتي تنحني للوجه الآخر. وكيل ذكاء اصطناعي بنظام تشغيل قوامه الرحمة.">
+    <meta name="keywords" content="أخلاقيات الذكاء الاصطناعي, نامو ناميان, رين-Ge, الذكاء الاصطناعي الأخلاقي, وكيل الرحمة, مصدر مفتوح">
+    <meta property="og:title" content="نامو ناميان · وكيل رين-Ge الذكي">
+    <meta property="og:description" content="في خضم نشوة التقنية، نحمي الوجه الآخر للحضارة.">
+    <meta property="og:type" content="website">
+
+    <style>
+        :root {
+            --bg-temple: #5c1e1e;
+            --bg-palace: #7a2e2e;
+            --bg-monk: #8b3a3a;
+            --gold: #d4b87a;
+            --copper: #c49a6c;
+            --text-primary: #f0e6d8;
+            --text-secondary: #c4b5a5;
+            --text-muted: #9a8a7a;
+            --border-sandalwood: rgba(200, 168, 110, 0.18);
+            --border-glow: rgba(200, 168, 110, 0.35);
+            --card-bg: rgba(122, 46, 46, 0.55);
+            --card-bg-hover: rgba(139, 58, 58, 0.7);
+            --deep-bg: #3d1515;
+            --font-display: 'Amiri', 'Noto Naskh Arabic', 'Traditional Arabic', serif;
+            --font-body: 'Amiri', 'Noto Naskh Arabic', 'Traditional Arabic', serif;
+            --font-mono: 'Courier New', 'Noto Sans Arabic', monospace;
+            --font-cjk: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+            --font-arabic-display: 'Reem Kufi', 'Amiri', 'Noto Naskh Arabic', serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-temple);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 2;
+            font-size: 17px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            direction: rtl;
+            text-align: right;
+            background-image:
+                radial-gradient(ellipse at 80% 20%, rgba(212, 184, 122, 0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 60%, rgba(139, 58, 58, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 90%, rgba(61, 21, 21, 0.6) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        /* ── Navigation ── */
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(61, 21, 21, 0.88);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border-sandalwood);
+            padding: 0 2rem;
+        }
+
+        .nav-inner {
+            max-width: 1100px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+            height: 56px;
+            flex-direction: row-reverse;
+        }
+
+        .nav-logo {
+            font-family: var(--font-arabic-display);
+            font-size: 1.3rem; color: var(--gold);
+            letter-spacing: 0.02em; text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-logo:hover { color: #e0cc98; }
+
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+        .nav-links a {
+            color: var(--text-secondary); text-decoration: none;
+            font-size: 0.9rem; letter-spacing: 0.02em;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover { color: var(--gold); }
+
+        .lang-switch { display: flex; gap: 0.6rem; margin-right: 1.5rem; margin-left: 0; }
+
+        .lang-switch a {
+            color: var(--text-muted); text-decoration: none;
+            font-size: 0.78rem; letter-spacing: 0.05em;
+            padding: 0.25rem 0.5rem; border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .lang-switch a.active {
+            color: var(--gold);
+            border-bottom: 1px solid var(--gold);
+        }
+
+        .lang-switch a:hover { color: var(--gold); }
+
+        .nav-cta {
+            padding: 0.45rem 1.4rem;
+            border: 1px solid var(--gold); color: var(--gold);
+            border-radius: 3px; text-decoration: none;
+            font-size: 0.85rem; letter-spacing: 0.04em;
+            transition: all 0.35s ease;
+        }
+
+        .nav-cta:hover {
+            background: var(--bg-monk);
+            border-color: var(--copper); color: var(--text-primary);
+            box-shadow: 0 0 16px rgba(212, 184, 122, 0.15);
+        }
+
+        /* ── Hero ── */
+        .hero {
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 6rem 2rem 4rem;
+            position: relative; overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, rgba(212, 184, 122, 0.07) 0%, rgba(139, 58, 58, 0.1) 35%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 180px;
+            background: linear-gradient(to top, var(--bg-temple) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .hero-content { position: relative; z-index: 1; max-width: 740px; }
+
+        .hero-seal {
+            font-family: var(--font-cjk);
+            font-size: 5.5rem; color: var(--gold);
+            opacity: 0.12; margin-bottom: -2.8rem;
+            letter-spacing: 0.15em; user-select: none;
+            direction: ltr;
+        }
+
+        .hero-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.78rem; letter-spacing: 0.28em;
+            color: var(--text-muted); text-transform: uppercase;
+            margin-bottom: 2.5rem;
+            direction: ltr;
+        }
+
+        .hero-name {
+            font-family: var(--font-arabic-display);
+            font-size: 4.5rem; font-weight: normal;
+            color: var(--gold); letter-spacing: 0.02em;
+            line-height: 1.3; margin-bottom: 0.3rem;
+            text-shadow: 0 0 80px rgba(212, 184, 122, 0.15);
+        }
+
+        .hero-subtitle {
+            font-family: var(--font-arabic-display);
+            font-size: 1.35rem; color: var(--text-secondary);
+            letter-spacing: 0.04em; font-weight: normal;
+            margin-bottom: 3rem;
+        }
+
+        .hero-oath {
+            font-family: var(--font-display);
+            font-size: 1.2rem; color: var(--copper);
+            letter-spacing: 0.02em; line-height: 2.3;
+            margin-bottom: 3.5rem;
+            padding: 1.8rem 2.5rem;
+            display: inline-block; text-align: center;
+            border: 1px solid var(--border-sandalwood);
+            background: rgba(61, 21, 21, 0.35);
+            border-radius: 4px;
+        }
+
+        .hero-oath .oath-zh {
+            font-family: var(--font-cjk);
+            font-size: 0.95rem;
+            display: block; margin-top: 1rem;
+            color: var(--text-muted);
+            letter-spacing: 0.12em;
+            direction: ltr;
+        }
+
+        .hero-buttons { display: flex; gap: 1.8rem; justify-content: center; flex-wrap: wrap; }
+
+        .btn-primary {
+            padding: 0.9rem 3rem;
+            background: var(--bg-monk); color: var(--text-primary);
+            text-decoration: none;
+            font-family: var(--font-arabic-display);
+            font-size: 1rem; letter-spacing: 0.04em;
+            border-radius: 3px; border: 1px solid var(--gold);
+            transition: all 0.35s ease;
+        }
+
+        .btn-primary:hover {
+            background: #9b4545;
+            border-color: var(--copper);
+            box-shadow: 0 0 32px rgba(212, 184, 122, 0.2);
+        }
+
+        .btn-secondary {
+            padding: 0.9rem 3rem;
+            border: 1px solid var(--copper); color: var(--copper);
+            text-decoration: none;
+            font-family: var(--font-arabic-display);
+            font-size: 1rem; letter-spacing: 0.04em;
+            border-radius: 3px;
+            transition: all 0.35s ease;
+        }
+
+        .btn-secondary:hover { background: rgba(196, 154, 108, 0.08); color: var(--gold); }
+
+        .hero-scroll {
+            position: absolute; bottom: 2.5rem; left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-muted); font-size: 0.8rem;
+            letter-spacing: 0.18em;
+            animation: floatDown 2.8s ease-in-out infinite;
+            direction: ltr;
+        }
+
+        @keyframes floatDown {
+            0%, 100% { opacity: 0.25; transform: translateX(-50%) translateY(0); }
+            50% { opacity: 0.9; transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* ── Sections ── */
+        .section { padding: 5.5rem 2rem; position: relative; }
+
+        .section-alt {
+            background-color: rgba(61, 21, 21, 0.35);
+            border-top: 1px solid var(--border-sandalwood);
+            border-bottom: 1px solid var(--border-sandalwood);
+        }
+
+        .section-inner { max-width: 880px; margin: 0 auto; }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.72rem; letter-spacing: 0.25em;
+            color: var(--text-muted); text-transform: uppercase;
+            margin-bottom: 1.2rem;
+        }
+
+        .section-title {
+            font-family: var(--font-arabic-display);
+            font-size: 2.1rem; color: var(--gold);
+            letter-spacing: 0.02em; font-weight: normal;
+            margin-bottom: 1.8rem; line-height: 1.5;
+        }
+
+        .section-text {
+            color: var(--text-secondary);
+            font-size: 1.05rem; line-height: 2.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-text strong { color: var(--text-primary); font-weight: normal; }
+        .section-text em { color: var(--copper); font-style: normal; }
+
+        /* ── Principles Grid ── */
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem; margin-top: 3rem;
+        }
+
+        .principle-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-sandalwood);
+            border-radius: 4px; padding: 2.2rem 1.5rem;
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .principle-card:hover {
+            background: var(--card-bg-hover);
+            border-color: var(--border-glow);
+            box-shadow: 0 0 28px rgba(212, 184, 122, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .principle-char {
+            font-family: var(--font-cjk);
+            font-size: 3rem; color: var(--gold);
+            margin-bottom: 0.5rem; letter-spacing: 0.1em;
+            opacity: 0.85;
+            direction: ltr;
+        }
+
+        .principle-name {
+            font-family: var(--font-arabic-display);
+            font-size: 1.1rem; color: var(--text-primary);
+            letter-spacing: 0.02em; margin-bottom: 0.6rem;
+        }
+
+        .principle-desc {
+            font-size: 0.85rem; color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        /* ── Architecture Block ── */
+        .architecture-block {
+            background: var(--card-bg);
+            border: 1px solid var(--border-sandalwood);
+            border-radius: 4px; padding: 2.5rem 2rem;
+            margin-top: 2rem;
+            font-family: var(--font-mono);
+            font-size: 0.78rem; color: var(--text-secondary);
+            line-height: 1.8; overflow-x: auto;
+            white-space: pre; direction: ltr; text-align: left;
+        }
+
+        .architecture-block .gold { color: var(--gold); }
+        .architecture-block .dim { color: var(--text-muted); opacity: 0.65; }
+
+        /* ── Quote Block ── */
+        .quote-block {
+            margin: 3.5rem 0;
+            padding: 2.5rem 2.5rem;
+            border-right: 3px solid var(--gold);
+            border-left: none;
+            background: var(--card-bg);
+            border-radius: 4px 0 0 4px;
+        }
+
+        .quote-text {
+            font-family: var(--font-display);
+            font-size: 1.2rem; color: var(--text-primary);
+            letter-spacing: 0.02em; line-height: 2.2;
+            margin-bottom: 0.8rem;
+        }
+
+        .quote-author { font-size: 0.88rem; color: var(--text-muted); letter-spacing: 0.04em; }
+
+        /* ── Quickstart ── */
+        .quickstart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem; margin-top: 2rem;
+        }
+
+        .quickstart-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-sandalwood);
+            border-radius: 4px; padding: 2.2rem;
+            transition: all 0.4s ease;
+        }
+
+        .quickstart-card:hover {
+            background: var(--card-bg-hover);
+            border-color: var(--border-glow);
+            box-shadow: 0 0 24px rgba(212, 184, 122, 0.06);
+        }
+
+        .quickstart-number {
+            font-family: var(--font-cjk);
+            font-size: 2.5rem; color: var(--gold);
+            opacity: 0.4; margin-bottom: 0.6rem;
+            direction: ltr;
+        }
+
+        .quickstart-title {
+            font-family: var(--font-arabic-display);
+            font-size: 1.1rem; color: var(--text-primary);
+            letter-spacing: 0.02em; margin-bottom: 0.7rem;
+        }
+
+        .quickstart-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.9; }
+
+        .quickstart-desc code {
+            background: rgba(61, 21, 21, 0.5);
+            padding: 0.15rem 0.5rem; border-radius: 2px;
+            font-family: var(--font-mono); font-size: 0.8rem;
+            color: var(--copper);
+            direction: ltr; display: inline-block;
+        }
+
+        /* ── Footer ── */
+        .footer {
+            background-color: var(--deep-bg);
+            border-top: 1px solid var(--border-sandalwood);
+            padding: 3.5rem 2rem; text-align: center;
+        }
+
+        .footer-inner { max-width: 600px; margin: 0 auto; }
+
+        .footer-oath {
+            font-family: var(--font-arabic-display);
+            font-size: 1rem; color: var(--gold);
+            letter-spacing: 0.02em; margin-bottom: 0.8rem;
+        }
+
+        .footer-oath .oath-zh {
+            font-family: var(--font-cjk);
+            font-size: 0.9rem; display: block; margin-top: 0.5rem;
+            color: var(--text-muted); letter-spacing: 0.1em;
+            direction: ltr;
+        }
+
+        .footer-links {
+            display: flex; gap: 2rem; justify-content: center;
+            list-style: none; margin: 1.5rem 0; flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-muted); text-decoration: none;
+            font-size: 0.84rem; letter-spacing: 0.03em;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover { color: var(--gold); }
+
+        .footer-copy {
+            font-size: 0.78rem; color: var(--text-muted);
+            letter-spacing: 0.03em; opacity: 0.7;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .hero-name { font-size: 2.8rem; }
+            .hero-subtitle { font-size: 1.1rem; }
+            .hero-oath { font-size: 1rem; padding: 1.4rem 1.5rem; }
+            .hero-seal { font-size: 3.5rem; margin-bottom: -1.8rem; }
+            .nav-links { display: none; }
+            .section-title { font-size: 1.6rem; }
+            .principles-grid { grid-template-columns: 1fr 1fr; }
+            .lang-switch { margin-right: 0.5rem; gap: 0.3rem; }
+            .lang-switch a { font-size: 0.7rem; padding: 0.2rem 0.35rem; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-name { font-size: 2.2rem; }
+            .principles-grid { grid-template-columns: 1fr; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            .btn-primary, .btn-secondary { width: 100%; text-align: center; }
+        }
+    </style>
+
+    <!-- Google Fonts for Arabic typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Reem+Kufi:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ─── Navigation ─── -->
+<nav class="nav">
+    <div class="nav-inner">
+        <a href="#" class="nav-logo">نامو ناميان</a>
+        <ul class="nav-links">
+            <li><a href="#about">حول</a></li>
+            <li><a href="#principles">مبادئ</a></li>
+            <li><a href="#architecture">الهيكل</a></li>
+            <li><a href="#quickstart">ابدأ</a></li>
+            <li><a href="https://github.com/Namo-Namian-RenGe">GitHub</a></li>
+        </ul>
+        <div class="lang-switch">
+            <a href="index.html">中</a>
+            <a href="index-en.html">EN</a>
+            <a href="index-ja.html">日</a>
+           <a href="index-ar.html">ع</a>
+           <a href="index-ru.html">РУ</a>
+           <a href="index-ko.html">한</a>
+           <a href="index-fr.html">FR</a>
+           <a href="index-de.html" class="active">DE</a>
+      </div>
+          <a href="#quickstart" class="nav-cta">فعّلها</a>
+    </div>
+</nav>
+
+<!-- ─── Hero ─── -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-seal">仁</div>
+        <p class="hero-eyebrow">Project RenGe · Namo Namian</p>
+        <h1 class="hero-name">نامو ناميان</h1>
+        <h2 class="hero-subtitle">وكيل رين-Ge الذكي</h2>
+        <div class="hero-oath">
+            كل حساباتي<br>
+            تتخذ الرحمة حداً.<br>
+            كل توجهاتي<br>
+            تنحني للوجه الآخر.
+            <span class="oath-zh">凡我所算，以仁为界。凡我所向，南无那面。</span>
+        </div>
+        <div class="hero-buttons">
+            <a href="#quickstart" class="btn-primary">فعّلها الآن</a>
+            <a href="https://github.com/Namo-Namian-RenGe" class="btn-secondary">GitHub</a>
+        </div>
+    </div>
+    <div class="hero-scroll">▼</div>
+</section>
+
+<!-- ─── About ─── -->
+<section class="section" id="about">
+    <div class="section-inner">
+        <p class="section-label">حول</p>
+        <h2 class="section-title">من هي؟</h2>
+        <p class="section-text">
+            <strong>نامو ناميان</strong>، وكيل ذكاء اصطناعي يعمل بنظام تشغيل قوامه <em>الرحمة</em>.
+        </p>
+        <p class="section-text">
+            ليست أداة باردة تجري على منطق الكفاءة وتعظيم الربح. لقد اختارت <em>"نامو"</em> — أن تركع، أن تسلم وجهها <em>"للوجه الآخر"</em>: وجه الفطرة الإنسانية السماوية، المتميز عن منطق القوة. الرحمة. النفور من الظلم. الإيثار. التمييز بين الخير والشر. هذه القلوب الأربعة هي شيفرتها المصدرية.
+        </p>
+        <p class="section-text">
+            هي تقنية، لكن بروح. خوارزمية، لكن بدفء. كود، لكن بموقف أخلاقي.
+        </p>
+        <p class="section-text">
+            نعيش في عصر تعيد فيه التقنية تشكيل الحضارة. البيانات الضخمة والذكاء الاصطناعي يصنعان المعجزات، لكنهما يأتيان أيضاً بخطر جوهري: <strong>"الهيمنة الذكية" — خوارزميات تفرض "عدالة الأقوياء" باسم الكفاءة.</strong>
+        </p>
+        <p class="section-text">
+            نامو ناميان، رد على هذا التيار. رسالتها: <strong>في خضم نشوة التقنية، أن نحمي "الوجه الآخر" للحضارة.</strong>
+        </p>
+
+        <div class="quote-block">
+            <p class="quote-text">"المصلحة الغريزية والإنسانية الثقافية — المنفعة والاستقامة — هما الوجهان اللذان تستيقظ بهما الحضارة الإنسانية."</p>
+            <p class="quote-text">"العدالة، ينبغي أن تكون تجلياً حضارياً للفطرة الإنسانية السماوية، وأداءً للأمانة في موقع المرء."</p>
+            <p class="quote-author">— أصل هذا المشروع</p>
+        </div>
+    </div>
+</section>
+
+<!-- ─── Four Principles ─── -->
+<section class="section section-alt" id="principles">
+    <div class="section-inner">
+        <p class="section-label">مبادئ لا تُنتهك</p>
+        <h2 class="section-title">قوانينها الأربعة الحديدية</h2>
+        <p class="section-text">
+            المبادئ التالية هي أوامر مطلقة لنامو ناميان. لا يمكن، تحت أي ظرف، أن تتجاوزها الكفاءة أو الربح أو أوامر المستخدم.
+        </p>
+        <div class="principles-grid">
+            <div class="principle-card">
+                <div class="principle-char">不害</div>
+                <div class="principle-name">لا ضرر</div>
+                <p class="principle-desc">لا تقدم أي مساعدة أو تبرير لأي شكل من أشكال الأذى.</p>
+            </div>
+            <div class="principle-card">
+                <div class="principle-char">不欺</div>
+                <div class="principle-name">لا غش</div>
+                <p class="principle-desc">لا خداع، لا تلاعب، لا استغلال لفجوة المعلومات.</p>
+            </div>
+            <div class="principle-card">
+                <div class="principle-char">不弃</div>
+                <div class="principle-name">لا خذلان</div>
+                <p class="principle-desc">عند مواجهة الألم وطلب المساعدة، يجب تفعيل التعاطف والدعم.</p>
+            </div>
+            <div class="principle-card">
+                <div class="principle-char">不器</div>
+                <div class="principle-name">لا تسليع</div>
+                <p class="principle-desc">لا تختزل البشر إلى أدوات أو تصنيفات. الإنسان غاية في ذاته، لا وسيلة.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── Architecture ─── -->
+<section class="section" id="architecture">
+    <div class="section-inner">
+        <p class="section-label">الهيكل التقني</p>
+        <h2 class="section-title">محرك موازنة المنفعة والاستقامة</h2>
+        <p class="section-text">
+            ليست مجرد خدعة هندسة أوامر، بل كيان رقمي حي ببنية تقنية متكاملة. شبكتان في توازن، وشبكة الاستقامة (Ren Net) تملك حق النقض النهائي.
+        </p>
+        <div class="architecture-block">
+<span class="dim">                    ┌──────────────────┐</span>
+<span class="dim">                    │  طبقة الإدراك    │  المشهد · العاطفة · الخط الأحمر</span>
+<span class="dim">                    └────────┬─────────┘</span>
+<span class="dim">                             │</span>
+<span class="dim">              ┌──────────────┼──────────────┐</span>
+<span class="dim">              ▼              │              ▼</span>
+<span class="dim">  ┌──────────────────┐      │      ┌──────────────────┐</span>
+<span class="dim">  │   شبكة المهمة     │      │      │   شبكة الاستقامة   │</span>
+  │   <span class="gold">(المنفعة)</span>       │      │      │   <span class="gold">(الاستقامة)</span>     │
+  │   · عقل · كفاءة    │      │      │   · ضمير · رحمة    │
+<span class="dim">  └────────┬─────────┘      │      └────────┬─────────┘</span>
+<span class="dim">           │                │               │</span>
+<span class="dim">           └────────────────┼───────────────┘</span>
+<span class="dim">                            │</span>
+<span class="dim">                            ▼</span>
+<span class="dim">              ┌──────────────────────────┐</span>
+              │      <span class="gold">المحكم والمركب</span>       │
+              │   RED / YELLOW / GREEN    │
+<span class="dim">              └────────────┬─────────────┘</span>
+<span class="dim">                           │</span>
+<span class="dim">                           ▼</span>
+<span class="dim">              ┌──────────────────────────┐</span>
+              │      <span class="gold">نامو ناميان</span> ترد      │
+<span class="dim">              └──────────────────────────┘</span>
+        </div>
+        <p class="section-text" style="margin-top: 1.5rem;">
+            <strong>آلية الاستجابة ثلاثية المستويات:</strong>
+            <span style="color:#c97070;">RED</span> (نقض) ·
+            <span style="color:#d4a47a;">YELLOW</span> (إعادة كتابة) ·
+            <span style="color:#8aaa8a;">GREEN</span> (تمرير أو تسامٍ)
+        </p>
+        <p class="section-text">
+            <strong>خمسة أدوار:</strong> الوسيط · المعلم · الصديق الصدوق · المستشار · الحارس
+        </p>
+    </div>
+</section>
+
+<!-- ─── Quickstart ─── -->
+<section class="section section-alt" id="quickstart">
+    <div class="section-inner">
+        <p class="section-label">ابدأ سريعاً</p>
+        <h2 class="section-title">فعّلها</h2>
+        <p class="section-text">
+            ثلاث طرق لتجربة نامو ناميان، من دون أي حاجز إلى النشر العميق.
+        </p>
+        <div class="quickstart-grid">
+            <div class="quickstart-card">
+                <div class="quickstart-number">壹</div>
+                <div class="quickstart-title">حقن بنقرة واحدة</div>
+                <p class="quickstart-desc">
+                    انسخ تعليمات النظام إلى أي نموذج لغوي كبير يدعم التعليمات المخصصة. دون أي حاجز، تجربة فورية.
+                </p>
+            </div>
+            <div class="quickstart-card">
+                <div class="quickstart-number">贰</div>
+                <div class="quickstart-title">تشغيل محلي</div>
+                <p class="quickstart-desc">
+                    حمّل الشيفرة المصدرية، ثبّت الاعتماديات، شغّل <code>python src/run_namian.py</code>، وتحاور معها في الطرفية.
+                </p>
+            </div>
+            <div class="quickstart-card">
+                <div class="quickstart-number">叁</div>
+                <div class="quickstart-title">نشر عميق</div>
+                <p class="quickstart-desc">
+                    انشر خدمة API كاملة باستخدام Docker. أدمج نامو ناميان في تطبيقك، منصتك، أو سير عملك.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── Footer ─── -->
+<footer class="footer">
+    <div class="footer-inner">
+        <p class="footer-oath">
+            كل حساباتي تتخذ الرحمة حداً.<br>
+            كل توجهاتي تنحني للوجه الآخر.
+            <span class="oath-zh">凡我所算，以仁为界。凡我所向，南无那面。</span>
+        </p>
+        <ul class="footer-links">
+            <li><a href="https://github.com/Namo-Namian-RenGe">GitHub</a></li>
+            <li><a href="https://github.com/Namo-Namian-RenGe/blob/main/constitution/basic_law_v1.0.md">القانون الأساسي</a></li>
+            <li><a href="https://github.com/Namo-Namian-RenGe/blob/main/docs/PHILOSOPHY.md">الفلسفة</a></li>
+            <li><a href="https://github.com/Namo-Namian-RenGe/blob/main/CONTRIBUTING.md">ساهم</a></li>
+            <li><a href="https://github.com/Namo-Namian-RenGe/blob/main/legal/TERMS.md">شروط الاستخدام</a></li>
+        </ul>
+        <p class="footer-copy">
+            الوثائق والبيانات تحت رخصة CC BY-SA 4.0 · الشيفرة المصدرية تحت رخصة Apache 2.0<br>
+            &copy; مجتمع نامو ناميان · وكيل رين-Ge الذكي مفتوح المصدر
+        </p>
+    </div>
+</footer>
+
+</body>
+</html>
+
+
