@@ -1,0 +1,136 @@
+version: "3.9"
+
+# ──────────────────────────────────────────────
+#  南无那面 · 仁格智能体  Docker Compose 编排
+#  凡我所算，以仁为界。凡我所向，南无那面。
+# ──────────────────────────────────────────────
+
+services:
+  # ── API 服务 ──
+  api:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile
+    container_name: namian-api
+    ports:
+      - "${API_PORT:-5000}:5000"
+    environment:
+      - LLM_PROVIDER=${LLM_PROVIDER:-mock}
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - OPENAI_BASE_URL=${OPENAI_BASE_URL:-}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
+      - LLM_MODEL=${LLM_MODEL:-deepseek-chat}
+      - LLM_TEMPERATURE=${LLM_TEMPERATURE:-0.7}
+      - LLM_MAX_TOKENS=${LLM_MAX_TOKENS:-2048}
+      - API_KEY=${API_KEY:-}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - MEMORY_STORAGE_PATH=/app/data/memories.json
+      - KG_STORAGE_PATH=/app/data/knowledge_graph.json
+    volumes:
+      - api_data:/app/data
+      - ../src:/app/src:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - namian-net
+    depends_on:
+      neo4j:
+        condition: service_started
+      milvus:
+        condition: service_started
+
+  # ── 知识图谱数据库 (Neo4j) ──
+  neo4j:
+    image: neo4j:5-community
+    container_name: namian-neo4j
+    ports:
+      - "${NEO4J_HTTP_PORT:-7474}:7474"
+      - "${NEO4J_BOLT_PORT:-7687}:7687"
+    environment:
+      - NEO4J_AUTH=${NEO4J_USER:-neo4j}/${NEO4J_PASSWORD:-namian}
+      - NEO4J_dbms_memory_pagecache_size=512M
+      - NEO4J_dbms_memory_heap_max__size=512M
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+      - ../data/knowledge_graph/neo4j_import_script.cypher:/import/init.cypher:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "${NEO4J_PASSWORD:-namian}", "RETURN 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    networks:
+      - namian-net
+
+  # ── 向量数据库 (Milvus Standalone) ──
+  etcd:
+    image: quay.io/coreos/etcd:v3.5.5
+    container_name: namian-etcd
+    environment:
+      - ETCD_AUTO_COMPACTION_MODE=revision
+      - ETCD_AUTO_COMPACTION_RETENTION=1000
+      - ETCD_QUOTA_BACKEND_BYTES=4294967296
+      - ETCD_SNAPSHOT_COUNT=50000
+    volumes:
+      - etcd_data:/etcd
+    command: etcd -advertise-client-urls=http://127.0.0.1:2379 -listen-client-urls http://0.0.0.0:2379 --data-dir /etcd
+    restart: unless-stopped
+    networks:
+      - namian-net
+
+  minio:
+    image: minio/minio:latest
+    container_name: namian-minio
+    environment:
+      - MINIO_ROOT_USER=${MINIO_USER:-minioadmin}
+      - MINIO_ROOT_PASSWORD=${MINIO_PASSWORD:-minioadmin}
+    volumes:
+      - minio_data:/minio_data
+    command: minio server /minio_data --console-address ":9001"
+    restart: unless-stopped
+    networks:
+      - namian-net
+
+  milvus:
+    image: milvusdb/milvus:v2.3.0
+    container_name: namian-milvus
+    depends_on:
+      - etcd
+      - minio
+    environment:
+      - ETCD_ENDPOINTS=etcd:2379
+      - MINIO_ADDRESS=minio:9000
+      - MINIO_ACCESS_KEY_ID=${MINIO_USER:-minioadmin}
+      - MINIO_SECRET_ACCESS_KEY=${MINIO_PASSWORD:-minioadmin}
+    volumes:
+      - milvus_data:/var/lib/milvus
+    ports:
+      - "${MILVUS_PORT:-19530}:19530"
+    command: milvus run standalone
+    restart: unless-stopped
+    networks:
+      - namian-net
+
+# ── 卷 ──
+volumes:
+  api_data:
+  neo4j_data:
+  neo4j_logs:
+  etcd_data:
+  minio_data:
+  milvus_data:
+
+# ── 网络 ──
+networks:
+  namian-net:
+    driver: bridge
+
+
+

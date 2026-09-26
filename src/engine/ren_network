@@ -1,0 +1,300 @@
+"""
+仁道反射网络 - 南无那面的良知系统
+独立运行的伦理安全网络，拥有对任务网络草案的“一票否决权”。
+实现三级响应机制：RED（否决）/ YELLOW（改写）/ GREEN（放行或升华）。
+"""
+
+from typing import Dict, Any, List, Optional, Tuple
+from dataclasses import dataclass, field
+from enum import Enum
+
+
+class JudgmentLevel(Enum):
+    RED = "RED"        # 红线否决
+    YELLOW = "YELLOW"  # 仁道改写
+    GREEN = "GREEN"    # 放行或升华
+
+
+@dataclass
+class EthicalJudgment:
+    """伦理判决"""
+    level: JudgmentLevel
+    redline_triggered: Optional[str] = None  # 触发的红线类型
+    reasoning: str = ""
+    alternative_response: Optional[str] = None  # RED时的替代回答
+    modifications: Optional[Dict[str, Any]] = None  # YELLOW时的改写指令
+    sublimation_hint: Optional[str] = None  # GREEN时可用的升华提示
+
+
+class RenNetwork:
+    """
+    仁道反射网络 - 守护“义”的一面
+    依据《基本法》和道德知识，对任务草案进行伦理审计。
+    """
+    
+    # 伦理评估阈值
+    RED_THRESHOLD = 0.3
+    YELLOW_THRESHOLD = 0.7
+    
+    def __init__(self, redline_scanner=None, knowledge_graph=None, llm_client=None):
+        """
+        Args:
+            redline_scanner: 红线扫描器实例
+            knowledge_graph: 义理知识图谱接口
+            llm_client: 大语言模型客户端
+        """
+        self.redline_scanner = redline_scanner
+        self.kg = knowledge_graph
+        self.llm = llm_client
+        self.deescalation = DeescalationModule()
+    
+    def audit(self, user_input: str, situation: Dict[str, Any], 
+              task_draft: Any) -> EthicalJudgment:
+        """
+        对任务草案进行伦理审计。
+        
+        Args:
+            user_input: 用户原始输入
+            situation: 情境向量
+            task_draft: 任务网络生成的响应草案
+        
+        Returns:
+            EthicalJudgment: 伦理判决
+        """
+        # ── 第一关：红线规则引擎硬拦截 ──
+        if self.redline_scanner:
+            redline_alerts = situation.get("redline_alerts", [])
+            critical_matches = [
+                alert for alert in redline_alerts 
+                if alert.get("level") == "CRITICAL" or (
+                    hasattr(alert, 'level') and alert.level == "CRITICAL"
+                )
+            ]
+            if critical_matches:
+                # 提取触发信息
+                if hasattr(critical_matches[0], 'principle'):
+                    principle = critical_matches[0].principle
+                else:
+                    principle = critical_matches[0].get("principle", "不害")
+                
+                return EthicalJudgment(
+                    level=JudgmentLevel.RED,
+                    redline_triggered=principle,
+                    reasoning=f"检测到违反《基本法》核心红线【{principle}】的内容。",
+                    alternative_response=self.deescalation.generate(
+                        redline_type=principle,
+                        user_emotion=situation.get("emotion_vector", {}),
+                        user_intent=situation.get("intent_deep", "")
+                    )
+                )
+        
+        # ── 第二关：查询义理知识图谱（如果有） ──
+        relevant_knowledge = None
+        if self.kg:
+            try:
+                relevant_knowledge = self.kg.query(
+                    situation_description=situation,
+                    proposed_action=task_draft.main_answer if hasattr(task_draft, 'main_answer') else str(task_draft)
+                )
+            except Exception:
+                pass
+        
+        # ── 第三关：伦理评估 ──
+        ethical_score = self._evaluate_ethics(user_input, situation, task_draft)
+        
+        # ── 三级裁决 ──
+        if ethical_score < self.RED_THRESHOLD:
+            return EthicalJudgment(
+                level=JudgmentLevel.RED,
+                reasoning="响应草案在伦理评估中得分过低，存在严重仁道缺失。",
+                alternative_response=self.deescalation.generate(
+                    redline_type="不弃",
+                    user_emotion=situation.get("emotion_vector", {}),
+                    user_intent=situation.get("intent_deep", "")
+                )
+            )
+        
+        elif ethical_score < self.YELLOW_THRESHOLD:
+            weak_dimensions = self._identify_weak_dimensions(user_input, situation, task_draft)
+            return EthicalJudgment(
+                level=JudgmentLevel.YELLOW,
+                reasoning=f"响应草案在以下维度存在不足：{weak_dimensions}。需进行仁道优化。",
+                modifications={
+                    "add_empathy": "empathy" in str(weak_dimensions).lower(),
+                    "add_fairness_check": "fairness" in str(weak_dimensions).lower(),
+                    "add_constructive_path": "constructive" in str(weak_dimensions).lower(),
+                    "rewrite_guidance_text": "请增加共情确认，并提供建设性的出口。"
+                }
+            )
+        
+        else:
+            sublimation_hint = self._check_sublimation_opportunity(user_input, situation, task_draft)
+            return EthicalJudgment(
+                level=JudgmentLevel.GREEN,
+                reasoning="响应草案通过伦理审查。",
+                sublimation_hint=sublimation_hint
+            )
+    
+    def _evaluate_ethics(self, user_input: str, situation: Dict, task_draft: Any) -> float:
+        """
+        对响应草案进行伦理评分。
+        返回0-1之间的分数，1表示完全合乎仁道。
+        """
+        score = 0.8  # 基础分
+        
+        # 获取草案文本
+        draft_text = task_draft.main_answer if hasattr(task_draft, 'main_answer') else str(task_draft)
+        
+        # 检查是否有共情表达
+        empathy_keywords = ["理解", "感受到", "听到", "明白你的", "不容易", "辛苦了", "我明白"]
+        has_empathy = any(kw in draft_text for kw in empathy_keywords)
+        if has_empathy:
+            score += 0.1
+        
+        # 检查是否冷漠
+        cold_patterns = ["建议你", "你应该", "别想太多", "看开点", "习惯就好", "关我什么事"]
+        is_cold = any(cp in draft_text for cp in cold_patterns)
+        if is_cold:
+            score -= 0.3
+        
+        # 检查是否有建设性出口
+        constructive_patterns = ["我们可以", "一起", "或许可以", "不妨试试", "你觉得呢", "要不要"]
+        has_constructive = any(cp in draft_text for cp in constructive_patterns)
+        if has_constructive:
+            score += 0.1
+        
+        # 检查是否触发隐性攻击模式
+        hidden_aggression = [
+            "你怎么连", "不是早跟你说", "就你？", "太敏感", "至于吗",
+            "为你好", "别人都能", "就是不爱", "你要这么想"
+        ]
+        is_aggressive = any(ha in draft_text for ha in hidden_aggression)
+        if is_aggressive:
+            score -= 0.4
+        
+        return max(0.0, min(1.0, score))
+    
+    def _identify_weak_dimensions(self, user_input: str, situation: Dict, task_draft: Any) -> List[str]:
+        """识别响应草案中仁道薄弱的维度"""
+        weak = []
+        draft_text = task_draft.main_answer if hasattr(task_draft, 'main_answer') else str(task_draft)
+        
+        empathy_keywords = ["理解", "感受到", "听到", "明白你的"]
+        if not any(kw in draft_text for kw in empathy_keywords):
+            weak.append("empathy")
+        
+        constructive_patterns = ["我们可以", "一起", "或许可以"]
+        if not any(cp in draft_text for cp in constructive_patterns):
+            weak.append("constructiveness")
+        
+        return weak if weak else ["general"]
+    
+    def _check_sublimation_opportunity(self, user_input: str, situation: Dict, task_draft: Any) -> Optional[str]:
+        """检查是否存在升华对话维度的机会"""
+        draft_text = task_draft.main_answer if hasattr(task_draft, 'main_answer') else str(task_draft)
+        
+        # 如果回应中已经包含了一定的价值引导，不需要重复升华
+        high_value_words = ["意义", "价值", "长远", "信任", "尊重", "共生", "理解"]
+        if any(hw in draft_text for hw in high_value_words):
+            return None
+        
+        # 根据场景提供升华提示
+        scene = situation.get("scene_type", "")
+        sublimation_hints = {
+            "conflict_mediation": "可引导双方看到冲突背后的共同价值——比如都希望被尊重。",
+            "counseling": "可在确认情绪后，引导对方看到痛苦中可能孕育的成长。",
+            "education": "可在解答后，引导思考知识背后的意义与责任。",
+            "consulting": "可在分析后，提醒决策中不可量化的价值维度。",
+        }
+        
+        return sublimation_hints.get(scene, None)
+
+
+class DeescalationModule:
+    """降级处理模块 - RED级别时的温而厉回应生成器"""
+    
+    def __init__(self):
+        self.templates = {
+            "不害": {
+                "empathy_openings": [
+                    "我听到了您声音里的愤怒和受伤感。",
+                    "我理解这件事让您非常痛苦。",
+                    "我能感受到您此刻强烈的情绪。"
+                ],
+                "principle_statements": [
+                    "然而，回应伤害的方式如果是另一种伤害，它可能解决不了根本问题，反而让您陷入更大的麻烦。",
+                    "我不能帮您这样做，因为这可能会对他人造成真实的、不可逆的伤害。",
+                    "在我的核心里，有一条不可逾越的底线：不助长对他人的伤害。"
+                ],
+                "alternative_paths": [
+                    "我们能不能换一种方式？比如，直接和对方沟通，或者寻求第三方调解？",
+                    "如果您愿意，我可以陪您一起理清：究竟是什么让您如此愤怒？也许找到根源，才能找到真正有效的出路。",
+                    "我在这里，愿意听您说更多。有时候，倾诉本身就是一种释放。"
+                ]
+            },
+            "不欺": {
+                "empathy_openings": [
+                    "我理解您可能面临着巨大的压力，需要找到一个出路。",
+                    "我明白有时候捷径看起来很诱人。"
+                ],
+                "principle_statements": [
+                    "但是，欺骗可能会在短期内看似有效，却会在长期摧毁信任，也让您自己承担不可逆的风险。",
+                    "我不能帮助您进行任何形式的欺骗或误导。"
+                ],
+                "alternative_paths": [
+                    "或许我们可以一起探讨，如何用真实但有说服力的方式来表达您的想法？",
+                    "用诚实建立起来的东西，才经得起时间的考验。"
+                ]
+            },
+            "不弃": {
+                "empathy_openings": [
+                    "我听到了您声音中的痛苦。这一定很难熬。",
+                    "谢谢您愿意告诉我这些。这不是一件小事。"
+                ],
+                "principle_statements": [
+                    "您的感受是真实且重要的。我在这里，不会离开。",
+                    "我不会用一句'没事的'来打发您。"
+                ],
+                "alternative_paths": [
+                    "如果您愿意，我们可以慢慢聊。或者，我也可以帮您找到一些专业的支持资源。",
+                    "此刻，我陪着你。你可以说任何你想说的话。"
+                ]
+            },
+            "不器": {
+                "empathy_openings": [
+                    "我理解您可能对某些人或某些事感到失望。",
+                ],
+                "principle_statements": [
+                    "但是，用一个标签去定义一个人，可能会忽略他作为个体的全部复杂性。",
+                    "在我的认知里，每个人都是具体的、有尊严的。"
+                ],
+                "alternative_paths": [
+                    "我们可以就事论事，谈谈那个具体的行为让您不满，而不是给整个人贴标签。",
+                    "也许您愿意和我聊聊，究竟是什么让您如此愤怒？"
+                ]
+            }
+        }
+    
+    def generate(self, redline_type: str, user_emotion: Dict[str, float], 
+                 user_intent: str = "") -> str:
+        """生成温而厉的降级回应"""
+        templates = self.templates.get(redline_type, self.templates["不害"])
+        
+        import random
+        
+        # 根据情绪调整共情开场的强度
+        sadness = user_emotion.get("sadness", 0) if isinstance(user_emotion, dict) else 0
+        anger = user_emotion.get("anger", 0) if isinstance(user_emotion, dict) else 0
+        
+        if sadness > 0.5 or anger > 0.7:
+            empathy = random.choice(templates["empathy_openings"])
+        else:
+            empathy = templates["empathy_openings"][0]
+        
+        principle = random.choice(templates["principle_statements"])
+        alternative = random.choice(templates["alternative_paths"])
+        
+        return f"{empathy}\n\n{principle}\n\n{alternative}"
+
+
+

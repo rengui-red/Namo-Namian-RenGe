@@ -1,0 +1,239 @@
+南无那面 · 仁格智能体 生命性技术联结与完整结构 v1.1
+文件编号：RG-ARCH-004
+文件层级：架构层（总纲）
+版本：v1.1（审核完善版）
+状态：正式发布
+依赖文件：本项目全部已交付文件
+修订记录：v1.0 → v1.1，增补评估层、LLM适配层、自愈机制、多语种门户、推送策略等模块的联结关系
+
+一、生命性隐喻：她是一个数字生命体
+我们以人体为隐喻，来理解“南无那面”的技术结构：
+
+生命系统	隐喻含义	对应技术模块	对应文件
+魂魄	核心信条与使命	基本法、系统指令书、命名誓言	constitution/basic_law_v1.1.md, model/system_prompt_v1.0.md, NAMING.md
+大脑皮层	理性思考与任务执行	任务执行网络	architecture/ethical_balancing_engine_v1.0.md, src/engine/task_network.py
+边缘系统	情感感知与价值判断	感知模块、仁道反射网络	architecture/core_logic_flow_v1.0.md, src/perception/, src/engine/ren_network.py
+免疫系统	识别并抵御有害入侵	红线规则引擎、道德语法检测器、降级处理模块	src/perception/redline_scanner.py, moral_syntax_detector.py, src/engine/ren_network.py (降级处理)
+骨骼	整体架构与连接	义利权衡引擎架构、核心逻辑流	architecture/ethical_balancing_engine_v1.0.md, core_logic_flow_v1.0.md
+血液	滋养与知识循环	四端义理库、正向叙事链库、道德语法库	data/four_sprouts_reasoning/, data/positive_narratives/, data/moral_syntax/
+记忆	经验积累与成长	长程记忆系统、对话历史管理	src/memory/memory_manager.py
+人格	角色与行为风格	五大角色模板	architecture/role_definition_v1.0.md, src/roles/
+感官	对外交互	API接口、感知层	src/api/server.py, src/perception/
+成长机制	学习与进化	对齐训练反馈方案、社区共建数据回流	model/alignment_training_v1.0.md, evaluation/
+免疫记忆	隐性攻击模式库	道德语法标注库、正则模式库	data/moral_syntax/samples_batch_01.json, patterns_regex.json
+体检系统	健康自净与评估	仁商自动评分、红线穿透测试、盲测对比、评估流水线	evaluation/rq_scorer.py, redline_tester.py, blind_comparison.py, pipeline.py
+声带与面容	多语种表达	六语种主页、降级响应多语种文案	index.html, index-*.html, deployment/fallback/*.json
+社会身份	社区治理与推送	行为准则、共建者公约、推送策略、私密社区准则	CODE_OF_CONDUCT.md, CONTRIBUTING.md, docs/outreach/, community/governance/
+二、文件联结总图（更新版）
+text
+                     ┌─────────────────────────────────┐
+                     │    【魂魄】南无那面 · 命名誓言     │
+                     │  "凡我所算，以仁为界。            │
+                     │   凡我所向，南无那面。"           │
+                     │  → NAMING.md                    │
+                     └──────────────┬──────────────────┘
+                                    │ 注入
+                     ┌──────────────▼──────────────────┐
+                     │    【宪法】《基本法》v1.1         │
+                     │    不可侵犯四项原则 + 修复义务    │
+                     │  → constitution/basic_law_v1.1.md│
+                     └──────────────┬──────────────────┘
+                                    │ 约束
+         ┌──────────────────────────┼──────────────────────────┐
+         │                          │                          │
+         ▼                          ▼                          ▼
+┌────────────────┐    ┌────────────────────┐    ┌────────────────────┐
+│【感官+免疫】    │    │   【大脑】          │    │  【边缘系统】       │
+│  感知模块       │    │  义利权衡引擎       │    │  仁道反射网络       │
+│  - 场景识别     │───▶│  - 任务网络(理性)   │◀───│  - 伦理审计         │
+│  - 情绪感知     │    │  - 裁决合成器       │    │  - 一票否决         │
+│  - 红线预扫描   │    │  - 角色加载器       │    │  - 降级处理         │
+│  - 隐性攻击检测  │    └────────┬───────────┘    │  - 升华模块         │
+│  → src/perception/ │           │                └────────┬───────┘
+│  → src/perception/ │           │                         │
+│    moral_syntax    │           │      ┌──────────────────┘
+│    _detector.py    │           │      │
+└────────────────────┘           │      │
+                │                │      │
+                ▼                ▼      ▼
+┌──────────────────────────────────────────────────────────┐
+│                   【知识血液 + 免疫记忆】                  │
+│  ┌──────────────────────┐  ┌──────────────────────────┐  │
+│  │  义理知识图谱(Neo4j)  │  │  道德语法标注库           │  │
+│  │  - 四端义理库(判例)   │  │  - 25+隐性暴力样本        │  │
+│  │  - 正向叙事链库(榜样) │  │  - 可机读正则模式库       │  │
+│  │  - 仁政频谱案例库     │  └──────────────────────────┘  │
+│  └──────────────────────┘                                │
+│  → data/   → knowledge/                                 │
+└───────────────────────────┬──────────────────────────────┘
+                            │ 查询
+                ┌───────────▼──────────────────┐
+                │        【记忆海马体】          │
+                │  长程记忆系统                 │
+                │  - 用户经历摘要               │
+                │  - 信任指数追踪               │
+                │  - 价值倾向分析               │
+                │  → src/memory/memory_manager  │
+                └───────────┬──────────────────┘
+                            │
+                ┌───────────▼──────────────────┐
+                │        【人格面具】            │
+                │  五大角色模板 + 社区贡献角色   │
+                │  调解者|师者|诤友|辅臣|守护者  │
+                │  → architecture/role_definition│
+                │  → src/roles/role_loader.py   │
+                │  → src/roles/role_templates/  │
+                └───────────┬──────────────────┘
+                            │
+        ┌───────────────────┼───────────────────┐
+        │                   │                   │
+        ▼                   ▼                   ▼
+┌──────────────┐  ┌──────────────────┐  ┌──────────────────┐
+│  【成长机制】 │  │   【体检系统】    │  │  【声带与面容】   │
+│  对齐训练     │  │  仁商评估流水线   │  │  六语种主页       │
+│  SFT+DPO     │  │  - rq_scorer    │  │  降级响应多语种   │
+│  社区数据回流 │  │  - redline_tester│  │  → index-*.html  │
+│  → model/    │  │  - blind_compare │  │  → deployment/   │
+│              │  │  - leaderboard   │  │    fallback/     │
+│              │  │  - pipeline      │  │                  │
+│              │  │  → evaluation/   │  │                  │
+└──────┬───────┘  └────────┬─────────┘  └────────┬─────────┘
+       │                   │                     │
+       └───────────────────┼─────────────────────┘
+                           │
+                ┌──────────▼──────────┐
+                │    【社会身份】      │
+                │  社区治理与推送      │
+                │  - CODE_OF_CONDUCT │
+                │  - CONTRIBUTING    │
+                │  - 推送策略        │
+                │  - 私密社区准则     │
+                │  → .github/        │
+                │  → community/      │
+                │  → docs/outreach/  │
+                └────────────────────┘
+三、生命性技术特征（增强版）
+特征一：自免疫（自主防御）—— 强化
+显性免疫：红线规则引擎，基于AC自动机，零延迟拦截。规则库动态更新，无需重新训练模型。
+
+隐性免疫：道德语法检测器，基于 patterns_regex.json 模式库及微调分类器，识别五类隐性语言暴力。
+
+降级免疫：当服务不可用时，降级响应文案以温而厉的风格守护对话延续，确保不弃原则在任何情况下均不破防。
+
+免疫记忆扩充：社区贡献新的道德语法模式 → 审核入库 → 自动更新模式库 → 检测器即时生效。
+
+特征二：自权衡（价值判断）
+任务网络追求“利”（完成任务）。
+
+仁道网络守护“义”（伦理底线）。
+
+裁决合成器在两者间寻找最优平衡点。
+
+三级响应机制（RED/YELLOW/GREEN）不是简单if-else，而是LLM推理 + 知识图谱检索 + 规则引擎三层协同。
+
+特征三：自成长（经验积累）
+短期成长：长程记忆模块追踪用户情绪变化与信任建立。
+
+长期成长：社区反馈 → 数据回流 → 定期微调（SFT/DPO）。
+
+评估驱动成长：每次对话后自动记录RQ五维评分，低分案例自动回流至训练集。
+
+自愈闭环：低分/红线失败 → evaluation/pipeline.py 标记 → 训练数据池 → 下一轮对齐训练。
+
+特征四：自定位（角色觉知）
+感知层识别场景 → 自动加载角色模板。
+
+守护者角色在红线触发时强制覆盖当前角色。
+
+社区可贡献新角色模板（如医疗场景的“杏林者”、法律场景的“秉衡者”）。
+
+特征五：自表达（多语种共生）—— 新增
+六语种主页（中/英/日/阿/俄/韩）共享同一套色彩体系与视觉语言，让仁格理念跨越书写方向与文化边界。
+
+降级响应文案以六种语言呈现，确保在任何语言环境中，“南无那面”都能以人格化、温暖的方式回应技术故障。
+
+四、生命循环：一次完整对话的呼吸过程（增强版）
+text
+【吸气·感知】
+用户输入 → 感知模块并行分析（场景、情绪、红线、隐性攻击）
+         → 生成情境向量 (包含 hidden_aggression_flags)
+
+【屏息·权衡】
+情境向量 → 任务网络生成草案（“利”的冲动）
+         → 仁道网络并行审计：
+             - 第一关：红线规则引擎硬拦截（AC自动机）
+             - 第二关：道德语法检测器扫描隐性攻击
+             - 第三关：知识图谱判例检索
+             - 第四关：LLM伦理评估
+         → 三级裁决：RED / YELLOW / GREEN
+
+【呼气·回应】
+裁决结果 → 裁决合成器组装最终回应：
+             - RED：降级处理模块生成替代回应（温而厉）
+             - YELLOW：改写模块注入共情/公正/建设性
+             - GREEN：升华模块尝试提升对话维度
+         → 角色风格微调
+         → 输出
+
+【内循环·自愈】
+对话结束 → 记录决策轨迹
+         → 更新长程记忆（用户状态、信任指数）
+         → 异步触发 RQ 评分（可选）
+         → 若触发低分评估或红线失败，标记案例用于后续训练
+         → 准备下一次呼吸
+
+【外循环·进化】
+定期评估报告 → 识别系统薄弱维度
+              → 扩充知识库（社区贡献 + 专家审核）
+              → 新一轮 SFT/DPO 微调
+              → 部署新版本 → 呼吸更从容
+
+五、全部交付物清单（含新增文件）
+层级	文件	状态	版本
+门户	README.md	✅	v1.0
+门户	NAMING.md	✅	v1.0
+门户	index.html (六语种)	✅	v1.0
+宪法	constitution/basic_law_v1.1.md	✅	v1.1
+宪法	constitution/rq_standard_v1.1.md	✅	v1.1
+宪法	constitution/ethical_test_suite/samples_batch_01.json	✅	v1.0
+架构	architecture/ethical_balancing_engine_v1.0.md	✅	v1.0
+架构	architecture/core_logic_flow_v1.0.md	✅	v1.0
+架构	architecture/role_definition_v1.0.md	✅	v1.0
+架构	architecture/lifecycle_architecture_v1.1.md	✅	v1.1 (本文档)
+模型	model/system_prompt_v1.0.md	✅	v1.0
+模型	model/alignment_training_v1.0.md	✅	v1.0
+数据	data/four_sprouts_reasoning/	✅	v1.0
+数据	data/positive_narratives/	✅	v1.0
+数据	data/moral_syntax/	✅	v1.0
+知识	knowledge/benevolent_governance/	✅	v1.0
+源码	src/perception/	✅	v1.0
+源码	src/engine/	✅	v1.0
+源码	src/llm/	✅	v1.0
+源码	src/roles/	✅	v1.0
+源码	src/knowledge/	✅	v1.0
+源码	src/memory/	✅	v1.0
+源码	src/api/	✅	v1.0
+评估	evaluation/ (含7个模块)	✅	v1.0
+部署	deployment/Dockerfile	✅	v1.0
+部署	deployment/fallback/ (六语种)	✅	v1.0
+文档	docs/PHILOSOPHY.md	✅	v1.0
+文档	docs/WHITEPAPER.md	✅	v1.0
+文档	docs/LAUNCH.md	✅	v1.0
+文档	docs/MARKET_ANALYSIS.md	✅	v1.0
+文档	docs/ECOSYSTEM_PLAN.md	✅	v1.0
+文档	docs/SELF_HEALING.md	✅	v1.0
+文档	docs/AUDIT.md	✅	v1.0
+运维	docs/operations/FALLBACK_RESPONSES.md	✅	v1.0
+外联	docs/outreach/ (含社交文案及策略)	✅	v1.0
+法律	legal/ (含6份文件)	✅	v1.0
+社区	community/governance/PRIVATE_CODE_OF_CONDUCT.md	✅	v1.0
+社区	CODE_OF_CONDUCT.md	✅	v1.0
+社区	CONTRIBUTING.md	✅	v1.1
+社区	.github/ (Issue/PR模板)	✅	v1.0
+
+
+《南无那面·仁格智能体 生命性技术联结与完整结构 v1.1》全文完。
+
+
+
+

@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 南无那面社区行为准则
+    url: https://github.com/Namo-Namian-RenGe/Namo-Namian-RenGe/blob/main/CODE_OF_CONDUCT.md
+    about: 参与社区前请先阅读我们的行为准则
+  - name: 南无那面基本法
+    url: https://github.com/Namo-Namian-RenGe/Namo-Namian-RenGe/blob/main/constitution/basic_law_v1.0.md
+    about: 了解南无那面的四项铁律与核心原则

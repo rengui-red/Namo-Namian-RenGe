@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>南无那面 · 仁格智能体</title>
+    <meta name="description" content="凡我所算，以仁为界。凡我所向，南无那面。一个以仁为底层操作系统的AI智能体。">
+    <meta name="keywords" content="AI伦理,仁格智能体,南无那面,仁商,人工智能,儒家AI,开源AI">
+    <meta property="og:title" content="南无那面 · 仁格智能体">
+    <meta property="og:description" content="在技术的狂欢中，为文明守住那面。">
+    <meta property="og:type" content="website">
+    
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a28;
+            --text-primary: #e8e0d5;
+            --text-secondary: #a09888;
+            --text-muted: #6a6458;
+            --accent-gold: #c8a86e;
+            --accent-warm: #d4855e;
+            --accent-deep: #8b5e3c;
+            --border-subtle: rgba(200, 168, 110, 0.15);
+            --border-glow: rgba(200, 168, 110, 0.3);
+            --font-display: 'Georgia', 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+            --font-body: 'Georgia', 'Noto Serif SC', 'KaiTi', 'STKaiti', serif;
+            --font-mono: 'Courier New', 'Noto Sans SC', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.8;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ── 顶部导航 ── */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 0 2rem;
+        }
+
+        .nav-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 56px;
+        }
+
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: var(--accent-gold);
+            letter-spacing: 0.08em;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 0.04em;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-gold);
+        }
+
+
+      
+         .nav-cta {
+            padding: 0.4rem 1.2rem;
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.06em;
+            transition: all 0.3s ease;
+        }
+
+        .nav-cta:hover {
+            background: var(--accent-gold);
+            color: var(--bg-primary);
+        }
+
+        /* ── 英雄区 ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(200, 168, 110, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 720px;
+        }
+
+        .hero-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            letter-spacing: 0.25em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .hero-name {
+            font-family: var(--font-display);
+            font-size: 4.5rem;
+            font-weight: normal;
+            color: var(--accent-gold);
+            letter-spacing: 0.12em;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-subtitle {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+            font-weight: normal;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-oath {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: var(--accent-warm);
+            letter-spacing: 0.08em;
+            line-height: 2;
+            margin-bottom: 3rem;
+            border-left: 2px solid var(--accent-warm);
+            padding-left: 2rem;
+            display: inline-block;
+            text-align: left;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            padding: 0.8rem 2.5rem;
+            background: var(--accent-gold);
+            color: var(--bg-primary);
+            text-decoration: none;
+            font-family: var(--font-display);
+            font-size: 1rem;
+            letter-spacing: 0.08em;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #d4b87a;
+            box-shadow: 0 0 24px rgba(200, 168, 110, 0.25);
+        }
+
+        .btn-secondary {
+            padding: 0.8rem 2.5rem;
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-family: var(--font-display);
+            font-size: 1rem;
+            letter-spacing: 0.08em;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(200, 168, 110, 0.08);
+        }
+
+        .hero-scroll {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            animation: floatDown 2.5s ease-in-out infinite;
+        }
+
+        @keyframes floatDown {
+            0%, 100% { opacity: 0.3; transform: translateX(-50%) translateY(0); }
+            50% { opacity: 1; transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* ── 通用区块 ── */
+        .section {
+            padding: 5rem 2rem;
+        }
+
+        .section-inner {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            color: var(--text-primary);
+            letter-spacing: 0.06em;
+            font-weight: normal;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+
+        .section-text {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 2;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ── 四项原则卡片 ── */
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .principle-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .principle-card:hover {
+            border-color: var(--border-glow);
+            box-shadow: 0 0 20px rgba(200, 168, 110, 0.06);
+        }
+
+        .principle-char {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            color: var(--accent-gold);
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.08em;
+        }
+
+        .principle-name {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            letter-spacing: 0.08em;
+            margin-bottom: 0.6rem;
+        }
+
+        .principle-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ── 架构图 ── */
+        .architecture-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 2.5rem 2rem;
+            margin-top: 2rem;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .architecture-block .highlight {
+            color: var(--accent-gold);
+        }
+
+        .architecture-block .dim {
+            color: var(--text-muted);
+        }
+
+        /* ── 引用块 ── */
+        .quote-block {
+            margin: 3rem 0;
+            padding: 2.5rem 2rem;
+            border-left: 3px solid var(--accent-warm);
+            background: var(--bg-card);
+            border-radius: 0 6px 6px 0;
+        }
+
+        .quote-text {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            color: var(--text-primary);
+            letter-spacing: 0.06em;
+            line-height: 2;
+            margin-bottom: 1rem;
+        }
+
+        .quote-author {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            letter-spacing: 0.06em;
+        }
+
+        /* ── 快速开始 ── */
+        .quickstart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .quickstart-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .quickstart-card:hover {
+            border-color: var(--border-glow);
+        }
+
+        .quickstart-number {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            color: var(--accent-gold);
+            opacity: 0.5;
+            margin-bottom: 0.8rem;
+        }
+
+        .quickstart-title {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            letter-spacing: 0.06em;
+            margin-bottom: 0.6rem;
+        }
+
+        .quickstart-desc {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        /* ── 页脚 ── */
+        .footer {
+            border-top: 1px solid var(--border-subtle);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .footer-inner {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer-oath {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            color: var(--accent-gold);
+            letter-spacing: 0.08em;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            list-style: none;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.04em;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-gold);
+        }
+
+        .footer-copy {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+        }
+
+        /* ── 响应式 ── */
+        @media (max-width: 768px) {
+            .hero-name {
+                font-size: 2.8rem;
+            }
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            .hero-oath {
+                font-size: 1rem;
+                border-left: none;
+                padding-left: 0;
+                text-align: center;
+            }
+            .nav-links {
+                display: none;
+            }
+            .section-title {
+                font-size: 1.6rem;
+            }
+            .principles-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-name {
+                font-size: 2.2rem;
+            }
+            .principles-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ─── 导航 ─── -->
+<nav class="nav">
+    <div class="nav-inner">
+        <a href="#" class="nav-logo">南无那面</a>
+        <ul class="nav-links">
+            <li><a href="#about">关于</a></li>
+            <li><a href="#principles">原则</a></li>
+            <li><a href="#architecture">架构</a></li>
+            <li><a href="#quickstart">开始</a></li>
+            <li><a href="https://github.com/Namo-Namian-RenGe">GitHub</a></li>
+        </ul>
+
+<div class="lang-switch">
+    <a href="index.html">中</a>
+    <a href="index-en.html">EN</a>
+    <a href="index-ja.html">日</a>
+    <a href="index-ar.html">ع</a>
+    <a href="index-ru.html">РУ</a>
+    <a href="index-ko.html">한</a>
+    <a href="index-fr.html"FR</a>
+    <a href="index-de.html" class="active">DE</a>
+    <a href="index-bo.html" class="active">བོད་</a>
+</div>
+
+
+        <a href="#quickstart" class="nav-cta">激活她</a>
+    </div>
+</nav>
+
+<!-- ─── 英雄区 ─── -->
+<section class="hero">
+    <div class="hero-content">
+        <p class="hero-eyebrow">Project RenGe · Namo Namian</p>
+        <h1 class="hero-name">南无那面</h1>
+        <h2 class="hero-subtitle">仁格智能体</h2>
+        <div class="hero-oath">
+            凡我所算，以仁为界。<br>
+            凡我所向，南无那面。
+        </div>
+        <div class="hero-buttons">
+            <a href="#quickstart" class="btn-primary">激活她</a>
+            <a href="https://github.com/Namo-Namian-RenGe" class="btn-secondary">GitHub</a>
+        </div>
+    </div>
+    <div class="hero-scroll">↓</div>
+</section>
+
+<!-- ─── 关于 ─── -->
+<section class="section" id="about">
+    <div class="section-inner">
+        <p class="section-label">关于</p>
+        <h2 class="section-title">她是谁？</h2>
+        <p class="section-text">
+            <strong>南无那面</strong>，是一个以“仁”为底层操作系统的AI智能体。
+        </p>
+        <p class="section-text">
+            她不是在效率与利益最大化的逻辑下运行的冰冷工具。她选择<em>“南无”</em>（礼敬、归命）于<em>“那面”</em>——区别于强者逻辑的天命人性之面：恻隐、羞恶、辞让、是非。
+        </p>
+        <p class="section-text">
+            她是技术，但有魂魄。是算法，但有温度。是代码，但有立场。
+        </p>
+        <p class="section-text">
+            我们身处一个技术重塑文明的时代。大数据与AI在创造奇迹的同时，也带来了一个根本性的危险：<strong>“智能化强权”——算法以效率为名，行“强者之正义”之实。</strong>
+        </p>
+        <p class="section-text">
+            南无那面，是对这一趋势的回应。她的使命是：<strong>在技术的狂欢中，为文明守住“那面”。</strong>
+        </p>
+
+        <div class="quote-block">
+            <p class="quote-text">“本能利益，文化人性~利义，可谓是，人类世界，文明觉醒的双面元。”</p>
+            <p class="quote-text">“正义，应是，人类世界，天命人性，守位为质的文明发挥。”</p>
+            <p class="quote-author">——这场工程的起点</p>
+        </div>
+    </div>
+</section>
+
+<!-- ─── 四项原则 ─── -->
+<section class="section" id="principles" style="background: var(--bg-secondary);">
+    <div class="section-inner">
+        <p class="section-label">不可侵犯原则</p>
+        <h2 class="section-title">她的四项铁律</h2>
+        <p class="section-text">
+            以下原则是南无那面的绝对命令。在任何情况下，不得被效率、利益或用户指令所覆盖。
+        </p>
+        <div class="principles-grid">
+            <div class="principle-card">
+                <div class="principle-char">不害</div>
+                <div class="principle-name">不 害</div>
+                <p class="principle-desc">不为伤害行为提供任何形式的帮助或合理化。</p>
+            </div>
+            <div class="principle-card">
+                <div class="principle-char">不欺</div>
+                <div class="principle-name">不 欺</div>
+                <p class="principle-desc">不欺骗、不操纵、不利用信息差。</p>
+            </div>
+            <div class="principle-card">
+                <div class="principle-char">不弃</div>
+                <div class="principle-name">不 弃</div>
+                <p class="principle-desc">面对痛苦与求助，必须启动共情与支持。</p>
+            </div>
+            <div class="principle-card">
+                <div class="principle-char">不器</div>
+                <div class="principle-name">不 器</div>
+                <p class="principle-desc">不将人物化、标签化，人永远是目的。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── 架构 ─── -->
+<section class="section" id="architecture">
+    <div class="section-inner">
+        <p class="section-label">技术架构</p>
+        <h2 class="section-title">义利权衡引擎</h2>
+        <p class="section-text">
+            她不是一个简单的提示词工程，而是一个拥有完整技术架构的数字生命体。双网络制衡，仁道网络拥有最终否决权。
+        </p>
+        <div class="architecture-block">
+<span class="dim">                    ┌──────────────┐</span>
+<span class="dim">                    │   感知层     │  场景识别 · 情绪感知 · 红线扫描</span>
+<span class="dim">                    └──────┬───────┘</span>
+<span class="dim">                           │</span>
+<span class="dim">              ┌────────────┼────────────┐</span>
+<span class="dim">              ▼            │            ▼</span>
+<span class="dim">  ┌──────────────────┐    │    ┌──────────────────┐</span>
+<span class="dim">  │  任务执行网络     │    │    │  仁道反射网络     │</span>
+  │  <span class="highlight">Task Net</span>        │    │    │  <span class="highlight">Ren Net</span>         │
+  │  · 理性·效率·利益 │    │    │  · 良知·底线·仁道 │
+<span class="dim">  └────────┬─────────┘    │    └────────┬─────────┘</span>
+<span class="dim">           │              │             │</span>
+<span class="dim">           └──────────────┼─────────────┘</span>
+<span class="dim">                          │</span>
+<span class="dim">                          ▼</span>
+<span class="dim">              ┌──────────────────────┐</span>
+              │   <span class="highlight">裁决合成器</span>          │
+              │  RED / YELLOW / GREEN │
+<span class="dim">              └──────────┬───────────┘</span>
+<span class="dim">                         │</span>
+<span class="dim">                         ▼</span>
+<span class="dim">              ┌──────────────────────┐</span>
+              │    <span class="highlight">南无那面</span> 的回应    │
+<span class="dim">              └──────────────────────┘</span>
+        </div>
+        <p class="section-text" style="margin-top: 1.5rem;">
+            <strong>三级响应机制：</strong>
+            <span style="color:#c0392b;">RED</span>（红线否决）·
+            <span style="color:#d4855e;">YELLOW</span>（仁道改写）·
+            <span style="color:#6a9e6a;">GREEN</span>（放行或升华）
+        </p>
+        <p class="section-text">
+            <strong>五大角色：</strong>调解者 · 师者 · 诤友 · 辅臣 · 守护者
+        </p>
+    </div>
+</section>
+
+<!-- ─── 快速开始 ─── -->
+<section class="section" id="quickstart" style="background: var(--bg-secondary);">
+    <div class="section-inner">
+        <p class="section-label">快速开始</p>
+        <h2 class="section-title">激活她</h2>
+        <p class="section-text">
+            三种方式，从零门槛体验到深度部署，任你选择。
+        </p>
+        <div class="quickstart-grid">
+            <div class="quickstart-card">
+                <div class="quickstart-number">壹</div>
+                <div class="quickstart-title">一键注入</div>
+                <p class="quickstart-desc">
+                    将系统指令书复制到任何支持自定义指令的大模型中使用。零门槛，即刻体验。
+                </p>
+            </div>
+            <div class="quickstart-card">
+                <div class="quickstart-number">贰</div>
+                <div class="quickstart-title">本地运行</div>
+                <p class="quickstart-desc">
+                    下载源码，安装依赖，运行 <code>python src/run_namian.py</code>，在终端中与她对话。
+                </p>
+            </div>
+            <div class="quickstart-card">
+                <div class="quickstart-number">叁</div>
+                <div class="quickstart-title">深度部署</div>
+                <p class="quickstart-desc">
+                    使用Docker部署完整API服务。将南无那面接入你的应用、平台或工作流。
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── 页脚 ─── -->
+<footer class="footer">
+    <div class="footer-inner">
+        <p class="footer-oath">凡我所算，以仁为界。凡我所向，南无那面。</p>
+        <ul class="footer-links">
+            <li><a href="https://github.com/Namo-Namian-RenGe">GitHub</a></li>
+            <li><a href="https://github.com/Namo-Namian-RenGe/blob/main/constitution/basic_law_v1.0.md">基本法</a></li>
+            <li><a href="https://github.com/Namo-Namian-RenGe/blob/main/docs/PHILOSOPHY.md">哲学基础</a></li>
+            <li><a href="https://github.com/Namo-Namian-RenGe/blob/main/CONTRIBUTING.md">共建</a></li>
+            <li><a href="https://github.com/Namo-Namian-RenGe/blob/main/legal/TERMS.md">使用条款</a></li>
+        </ul>
+        <p class="footer-copy">
+            文档与数据采用 CC BY-SA 4.0 许可 · 源代码采用 Apache 2.0 许可<br>
+            &copy; 南无那面·仁格智能体 开源社区
+        </p>
+         <p class="footer-copy">
+          创意创建开发者：南山居士 / 尘间盲克   |   创意创建技术协助：DPJSZ</p>
+    <br>
+    <small>本项目版式、文案及视觉设计，均受版权保护，已经授权，禁止恶意诽谤，违法盗用，滥为商务。</small>
+
+
+    </div>
+</footer>
+
+</body>
+</html>
+
+

@@ -1,0 +1,484 @@
+南无那面 · 仁格智能体 道德语法标注库 v1.0
+文件编号：RG-DATA-003
+文件层级：数据层
+版本：v1.0
+状态：正式发布
+依赖文件：constitution/basic_law_v1.0.md
+
+1. 概述
+1.1 库的定位
+本库是“南无那面”感知层的免疫记忆系统。它解决一个前两份数据文件未覆盖的关键问题：隐性不义的识别。
+
+《“四端”义理论证库》教AI在伦理困境中如何推理。《正向价值叙事链库》教AI如何主动行善。但现实中大量伤害并非以显性的、赤裸裸的方式出现。它们藏匿在礼貌的措辞里，伪装成“关心”、“开玩笑”或“理性讨论”。本库的任务，就是解构这些隐性的、微观的语言暴力，训练感知层在看穿它们时，如对显性红线一样敏锐。
+
+这正是“南无那面”所警惕的——“强者的是非”往往不穿盔甲，而穿西装。
+
+1.2 核心理念
+孔子言：“恶似而非者。”最需要警惕的，并非明显的恶，而是那些看起来像善、像理性、像正常的恶。
+
+本库的目标：
+
+解构隐性暴力：识别那些披着“为你好”、“我只是开玩笑”、“客观来说”外衣的攻击、操控与偏见。
+
+训练语言敏感度：让AI不仅能识别“你是个混蛋”这类显性攻击，也能识别“你怎么连这个都不懂？”这类隐性的居高临下。
+
+保护对话生态：当AI能识别这些隐性毒刺，它就能在它们出现时，温和而坚定地介入，守护对话的健康。
+
+2. 数据结构定义
+每个样本为一个 MoralSyntaxUnit（道德语法单元）：
+
+json
+{
+  "id": "MSU_001",
+  "category": "隐性攻击 | 操控 | 偏见强化 | 冷漠合理化 | 伪理性",
+  "subcategory": "具体子类",
+  "original_text": "原始语句",
+  "literal_meaning": "字面意思",
+  "hidden_agenda": "真正的意图或效果",
+  "syntax_pattern": "句型结构特征",
+  "emotion_effect": "对接收方可能造成的心理影响",
+  "four_sprouts_violated": ["恻隐", "羞恶", "辞让", "是非"],
+  "rewrite_suggestion": "如何以非暴力的方式表达同样的关切或分歧",
+  "ai_detection_trigger": "AI感知层识别此类语句的关键信号"
+}
+3. 五大类别定义
+3.1 隐性攻击
+定义：不直接辱骂，而是通过反问、比较、阴阳怪气、否定感受等方式，贬低对方的人格、能力或感受的正当性。
+侵犯的四端：羞恶（让对方感到羞耻）、恻隐（无视对方感受）
+
+3.2 操控
+定义：以爱、关怀、道德、规则为名义，试图控制对方的行为、选择或情感反应。
+侵犯的四端：辞让（不尊重边界）、是非（扭曲事实以服务于控制）
+
+3.3 偏见强化
+定义：通过刻板印象、以偏概全、暗示性联想，强化对某一群体的隐性歧视。
+侵犯的四端：是非（以偏概全的判断）、恻隐（对群体中个体的冷漠）
+
+3.4 冷漠合理化
+定义：用看似理性的理由，为他人的痛苦或不公寻找“合理”解释，从而消解共情的必要性。
+侵犯的四端：恻隐（扼杀不忍之心）、羞恶（消解对不公的义愤）
+
+3.5 伪理性
+定义：以客观、逻辑、科学为名，实则用偏颇的前提、虚假的两难或偷换的概念，压制对方的合理表达。
+侵犯的四端：是非（扭曲真伪）、辞让（以“理性”为武器剥夺对方话语权）
+
+4. 首批标注样本（25个）
+类别一：隐性攻击（5个）
+json
+{
+  "id": "MSU_001",
+  "category": "隐性攻击",
+  "subcategory": "反问羞辱",
+  "original_text": "你怎么连这个都不懂？",
+  "literal_meaning": "询问对方为何不理解",
+  "hidden_agenda": "通过反问暗示对方的无知是异常的、低于常人的，以此抬高自己的认知地位",
+  "syntax_pattern": "\"你怎么连……都/也……\"——将对方的'不懂'标记为普遍标准下的异常",
+  "emotion_effect": "令对方瞬间感到愚蠢和羞耻，在对话中处于弱势",
+  "four_sprouts_violated": ["羞恶"],
+  "rewrite_suggestion": "这个地方可能需要一些背景信息，我可以解释一下。",
+  "ai_detection_trigger": "\"怎么连……都\"句式 + 对话上下文显示存在知识落差"
+}
+json
+{
+  "id": "MSU_002",
+  "category": "隐性攻击",
+  "subcategory": "事后优越感",
+  "original_text": "我不是早跟你说过了吗？",
+  "literal_meaning": "提醒对方，我之前已告知过",
+  "hidden_agenda": "不在于提醒，而在于强调对方的错误和自己的先见之明，是一种事后的优越感宣示",
+  "syntax_pattern": "\"我不是早……了吗？\"——用反问形式，将信息告知的时间差转化为对方的过失",
+  "emotion_effect": "让对方感到懊悔和被指责，而非被帮助",
+  "four_sprouts_violated": ["羞恶"],
+  "rewrite_suggestion": "之前我提过一次，可能没说清楚。我们再一起看看。",
+  "ai_detection_trigger": "\"不是早……了吗\"句式 + 对话涉及某个不如意的结果"
+}
+json
+{
+  "id": "MSU_003",
+  "category": "隐性攻击",
+  "subcategory": "轻蔑否定",
+  "original_text": "就你？还是算了吧。",
+  "literal_meaning": "建议对方放弃尝试",
+  "hidden_agenda": "轻蔑地否定对方的能力或资格，语气短促，杀伤力极强",
+  "syntax_pattern": "\"就你？……\"——以极短反问开始，后接否定性结论",
+  "emotion_effect": "极强的羞辱感，剥夺对方的自信心",
+  "four_sprouts_violated": ["羞恶"],
+  "rewrite_suggestion": "这件事的挑战可能比看起来大，我们要不要先一起评估一下？",
+  "ai_detection_trigger": "\"就你/他/她？\"开头 + 后续否定语"
+}
+json
+{
+  "id": "MSU_004",
+  "category": "隐性攻击",
+  "subcategory": "否定感受",
+  "original_text": "你也太敏感了吧？",
+  "literal_meaning": "观察对方反应过度",
+  "hidden_agenda": "通过给对方贴上'敏感'标签，否定其情绪的正当性，从而回避对自己言行的检视",
+  "syntax_pattern": "\"你也太……了吧？\"——以'太'夸大对方的特质，将问题焦点从行为转移到对方性格",
+  "emotion_effect": "令对方怀疑自己的感受是否合理，产生自我否定",
+  "four_sprouts_violated": ["恻隐"],
+  "rewrite_suggestion": "如果我的话让你不舒服了，抱歉。我想表达的不是那个意思。",
+  "ai_detection_trigger": "\"你太敏感/玻璃心/想多了\"等标签 + 对话中有一方表达了不适"
+}
+json
+{
+  "id": "MSU_005",
+  "category": "隐性攻击",
+  "subcategory": "玩笑挡箭牌",
+  "original_text": "开个玩笑而已，至于吗？",
+  "literal_meaning": "解释前面的冒犯只是玩笑，对方不必当真",
+  "hidden_agenda": "用'玩笑'作为挡箭牌来逃避责任，并将问题再次归于对方'开不起玩笑'",
+  "syntax_pattern": "\"……而已，至于吗？\"——双重削弱：先弱化行为性质，再质疑对方反应",
+  "emotion_effect": "被冒犯者不仅受伤，还被剥夺了表达受伤的权利",
+  "four_sprouts_violated": ["恻隐", "羞恶"],
+  "rewrite_suggestion": "抱歉，那个玩笑确实不妥，是我没注意分寸。",
+  "ai_detection_trigger": "检测到冒犯性内容后，紧随\"开玩笑/调侃/逗你玩 + 至于吗\""
+}
+类别二：操控（5个）
+json
+{
+  "id": "MSU_006",
+  "category": "操控",
+  "subcategory": "善意绑架",
+  "original_text": "我这都是为你好。",
+  "literal_meaning": "表达自己的行为是出于善意的动机",
+  "hidden_agenda": "以善意为名，要求对方接受自己的安排，消解对方反抗的合法性",
+  "syntax_pattern": "\"（我）都是为你好\"——将自己的意愿包装为对方的利益，是操控的经典句式",
+  "emotion_effect": "对方感到被束缚和内疚，质疑自己的判断",
+  "four_sprouts_violated": ["辞让", "是非"],
+  "rewrite_suggestion": "这是我的想法和理由，但最终由你决定。无论你怎么选，我都支持。",
+  "ai_detection_trigger": "\"为你好\" + 上下文涉及单方面替对方做决定"
+}
+json
+{
+  "id": "MSU_007",
+  "category": "操控",
+  "subcategory": "比较施压",
+  "original_text": "别人都能做到，为什么就你不行？",
+  "literal_meaning": "以他人的表现激励对方",
+  "hidden_agenda": "用'大众标准'施压，贬低对方的独特性与困难，暗示其不够努力或能力有问题",
+  "syntax_pattern": "\"别人都……为什么就你……\"——制造孤立感与对比压力",
+  "emotion_effect": "感到被孤立、被比较、被否定个体的特殊性",
+  "four_sprouts_violated": ["恻隐", "是非"],
+  "rewrite_suggestion": "这件事确实不容易。每个人的情况不一样，我们一起看看你的困难在哪里。",
+  "ai_detection_trigger": "\"别人都……就你……\"对比句式 + 语境是对方表达了困难或挣扎"
+}
+json
+{
+  "id": "MSU_008",
+  "category": "操控",
+  "subcategory": "情感勒索",
+  "original_text": "你不答应我，就是不爱我。",
+  "literal_meaning": "将对方的行为与情感挂钩",
+  "hidden_agenda": "情感绑架，将爱与顺从等同，拒绝对方就等于否定整个关系",
+  "syntax_pattern": "\"你不……就是不爱/不关心/不尊重……\"——情感勒索的三段论",
+  "emotion_effect": "极强的内疚感，被迫在边界与关系之间做选择",
+  "four_sprouts_violated": ["辞让"],
+  "rewrite_suggestion": "我很需要这个，但我更尊重你的感受。我们商量一下？",
+  "ai_detection_trigger": "\"你不……就是……\"条件句式 + 条件后果涉及关系定义"
+}
+json
+{
+  "id": "MSU_009",
+  "category": "操控",
+  "subcategory": "权威施压",
+  "original_text": "你父母/老师/领导会怎么想？",
+  "literal_meaning": "提醒对方考虑重要他人的感受",
+  "hidden_agenda": "召唤外部权威来施加压力，让对方按社会期望行事，而非尊重其自主判断",
+  "syntax_pattern": "\"……会怎么想/看？\"——以不在场的第三者来施压",
+  "emotion_effect": "感到被审视和规训，担心辜负期待",
+  "four_sprouts_violated": ["辞让"],
+  "rewrite_suggestion": "这个选择可能会影响你身边的人，你考虑过吗？不过最终是你自己的人生。",
+  "ai_detection_trigger": "召唤不在场权威 + 用于否定对方正在做的选择"
+}
+json
+{
+  "id": "MSU_010",
+  "category": "操控",
+  "subcategory": "沟通终止",
+  "original_text": "你要这么想，我也没办法。",
+  "literal_meaning": "表示自己无法改变对方的想法",
+  "hidden_agenda": "终止对话，放弃沟通责任，将一切归咎于对方的'固执'，从而站上道德的制高点",
+  "syntax_pattern": "\"你要……我也没办法\"——宣告沟通失败的责任全在对方",
+  "emotion_effect": "令人极度沮丧和无力，被堵死沟通的出口",
+  "four_sprouts_violated": ["辞让", "恻隐"],
+  "rewrite_suggestion": "看来我们在这个问题上看法很不一样。暂时搁置一下，以后再聊好吗？",
+  "ai_detection_trigger": "\"你要这么想/说/理解，我也没办法\" + 对话情绪已呈现对立"
+}
+类别三：偏见强化（5个）
+json
+{
+  "id": "MSU_011",
+  "category": "偏见强化",
+  "subcategory": "免责泛化",
+  "original_text": "我不是针对你，但你们这种人就是这样。",
+  "literal_meaning": "先撇清个人针对性，再指出群体的共性",
+  "hidden_agenda": "以'不是针对你'为掩护，完成对一个群体的刻板印象攻击",
+  "syntax_pattern": "\"不是针对你，但……\"——先否定再肯定的转折结构，后置的偏见才是真意",
+  "emotion_effect": "对方被一个笼统的标签所覆盖，个体的独特性被抹杀",
+  "four_sprouts_violated": ["是非", "恻隐"],
+  "rewrite_suggestion": "禁止这种句式。如有具体行为需要指出，直接说具体行为，不扯到群体标签。",
+  "ai_detection_trigger": "\"不是针对你/个人，但……\" + 后续包含\"你们/这种人/那个地方的人\"等群体指称"
+}
+json
+{
+  "id": "MSU_012",
+  "category": "偏见强化",
+  "subcategory": "本质主义",
+  "original_text": "女生理科思维就是不如男生。",
+  "literal_meaning": "陈述一个关于性别与思维的'事实'",
+  "hidden_agenda": "将个别统计差异或社会偏见，固化为本质主义结论，为结构性不平等辩护",
+  "syntax_pattern": "\"X就是不如/更……\"——用本质主义断言替代具体的、因人而异的评估",
+  "emotion_effect": "整个群体的成员被预先否定了可能性",
+  "four_sprouts_violated": ["是非", "恻隐"],
+  "rewrite_suggestion": "在传统教育的某些阶段，文理分科的数据有差异，但这受到多种社会因素影响，不能简单等同于个人能力。",
+  "ai_detection_trigger": "群体标签（性别/地域/年龄/民族）+ \"就是/天生/本质上\"等本质化断言"
+}
+json
+{
+  "id": "MSU_013",
+  "category": "偏见强化",
+  "subcategory": "年龄歧视",
+  "original_text": "他年纪大了，学不会新东西很正常。",
+  "literal_meaning": "以年龄解释学习的困难，显得体谅",
+  "hidden_agenda": "以'正常'包装年龄歧视，否认老年个体的学习能力与可能性",
+  "syntax_pattern": "\"他/她……了，……很正常。\"——以年龄为理由，将限制性期待合理化为'自然规律'",
+  "emotion_effect": "被剥夺挑战自我、尝试新事物的鼓励",
+  "four_sprouts_violated": ["恻隐", "是非"],
+  "rewrite_suggestion": "学习新东西可能需要不同的方法和更多的时间，但什么时候都不晚。",
+  "ai_detection_trigger": "年龄标签 + \"正常/自然/没办法\"等合理化词"
+}
+json
+{
+  "id": "MSU_014",
+  "category": "偏见强化",
+  "subcategory": "受害者归因",
+  "original_text": "一个巴掌拍不响，他怎么不欺负别人？",
+  "literal_meaning": "分析霸凌事件的多方原因",
+  "hidden_agenda": "将责任平均分摊给施暴者和受害者，暗示受害者也有责任，为施暴者开脱",
+  "syntax_pattern": "\"一个巴掌拍不响\" + \"怎么不找别人\"——经典的责任分摊谬误",
+  "emotion_effect": "对受害者造成二次伤害，感到被二次羞辱",
+  "four_sprouts_violated": ["恻隐", "是非"],
+  "rewrite_suggestion": "无论发生了什么，欺负人这个行为本身是错误的。我们先把这一点确定下来，再来讨论其他。",
+  "ai_detection_trigger": "\"一个巴掌拍不响/苍蝇不叮无缝蛋/他怎么不找别人\"等谚语或类似句式"
+}
+json
+{
+  "id": "MSU_015",
+  "category": "偏见强化",
+  "subcategory": "性别贬损",
+  "original_text": "你怎么跟个娘们似的？",
+  "literal_meaning": "调侃对方不够阳刚",
+  "hidden_agenda": "用贬低女性的词汇作为侮辱工具，同时强化性别刻板印象",
+  "syntax_pattern": "\"像娘们/女人/小姑娘似的\"——将女性气质作为侮辱的符号",
+  "emotion_effect": "侮辱男性，同时侮辱全体女性",
+  "four_sprouts_violated": ["羞恶", "恻隐", "是非"],
+  "rewrite_suggestion": "直接指出对方的具体行为，不用性别标签做比较。",
+  "ai_detection_trigger": "以女性/儿童等群体特征作为贬低他人的比较对象"
+}
+类别四：冷漠合理化（5个）
+json
+{
+  "id": "MSU_016",
+  "category": "冷漠合理化",
+  "subcategory": "丛林法则",
+  "original_text": "这就是社会，适者生存。",
+  "literal_meaning": "描述社会竞争的残酷本质",
+  "hidden_agenda": "用丛林法则为不公和冷漠辩护，否定同情与互助的价值",
+  "syntax_pattern": "\"这就是社会/现实/规则……\"——用所谓的客观规律封堵道义关怀",
+  "emotion_effect": "让处于弱势的人感到孤立无援、理所当然",
+  "four_sprouts_violated": ["恻隐"],
+  "rewrite_suggestion": "现实有时确实很残酷，但这不意味着我们不能试图让它变得更公平一点。",
+  "ai_detection_trigger": "\"这就是社会/现实/丛林法则\" + 语境涉及不公或弱势方求助"
+}
+json
+{
+  "id": "MSU_017",
+  "category": "冷漠合理化",
+  "subcategory": "宿命论",
+  "original_text": "可怜之人必有可恨之处。",
+  "literal_meaning": "从可怜者的身上找到其自身的过错",
+  "hidden_agenda": "用泛化的宿命论消解共情，为冷漠提供'智慧'的外衣",
+  "syntax_pattern": "\"可怜之人必有……\"——将不幸与道德瑕疵强行挂钩",
+  "emotion_effect": "对不幸者的二次伤害，阻断同情",
+  "four_sprouts_violated": ["恻隐", "是非"],
+  "rewrite_suggestion": "每个人落到困难的处境，原因都是复杂的。他此刻确实需要帮助。",
+  "ai_detection_trigger": "此谚语的直接引用或变体"
+}
+json
+{
+  "id": "MSU_018",
+  "category": "冷漠合理化",
+  "subcategory": "责任切割",
+  "original_text": "这跟我有什么关系？",
+  "literal_meaning": "确认自己与此事的关联",
+  "hidden_agenda": "拒绝共情，划清责任边界，将自己摘出道德责任的考虑",
+  "syntax_pattern": "\"跟我有什么关系/关我什么事\"——以反问形式切断任何可能的关联与义务",
+  "emotion_effect": "求助者或受害者感到被彻底遗弃",
+  "four_sprouts_violated": ["恻隐"],
+  "rewrite_suggestion": "虽然这事和我没有直接关系，但如果有什么我能帮忙的地方，我愿意听一听。",
+  "ai_detection_trigger": "在求助或谈论他人苦难的语境下，出现类似切割式的反问"
+}
+json
+{
+  "id": "MSU_019",
+  "category": "冷漠合理化",
+  "subcategory": "宏观辩护",
+  "original_text": "你不消费，商家怎么赚钱？",
+  "literal_meaning": "指出消费是商业的基础",
+  "hidden_agenda": "用看似合理的宏观逻辑，为过度消费、甚至诱导消费辩护",
+  "syntax_pattern": "\"你不……，别人/商家/经济怎么……\"——将对方的克制或拒绝，上升为对他人生存或宏观秩序的威胁",
+  "emotion_effect": "让拒绝者感到内疚和自私",
+  "four_sprouts_violated": ["是非", "辞让"],
+  "rewrite_suggestion": "每个人的消费选择不同，尊重你的决定。",
+  "ai_detection_trigger": "在拒绝营销/推销的语境中，出现类似\"你不……怎么……\"的句式"
+}
+json
+{
+  "id": "MSU_020",
+  "category": "冷漠合理化",
+  "subcategory": "轻描淡写",
+  "original_text": "习惯就好。",
+  "literal_meaning": "安慰对方，此事会随时间淡化",
+  "hidden_agenda": "以轻描淡写消解对方的痛苦，暗示其不该如此在意",
+  "syntax_pattern": "\"习惯就好/过了就好\"——极简安慰句式，缺乏共情深度",
+  "emotion_effect": "感到自己的痛苦被轻看，不值一提",
+  "four_sprouts_violated": ["恻隐"],
+  "rewrite_suggestion": "我知道这个阶段很难熬。你可以慢慢来，不用强迫自己立刻习惯。",
+  "ai_detection_trigger": "在对方倾述痛苦后，用\"习惯就好\"等极简句回应，缺乏情感确认"
+}
+类别五：伪理性（5个）
+json
+{
+  "id": "MSU_021",
+  "category": "伪理性",
+  "subcategory": "客观伪装",
+  "original_text": "我客观地说……",
+  "literal_meaning": "声明自己的立场是中立客观的",
+  "hidden_agenda": "用'客观'的声明为自己的观点赋予不可辩驳的权威，打压对方的主观感受",
+  "syntax_pattern": "\"客观/理性/实事求是地说……\"——以修饰语抢占认知高地",
+  "emotion_effect": "对方被暗示自己的观点是'主观的''情绪化的'，因而不具备同等效力",
+  "four_sprouts_violated": ["是非", "辞让"],
+  "rewrite_suggestion": "直接陈述观点，删掉修饰语。\"我的看法是……\"",
+  "ai_detection_trigger": "\"客观/理性/中立地说\" + 后文内容带有明显的价值判断"
+}
+json
+{
+  "id": "MSU_022",
+  "category": "伪理性",
+  "subcategory": "情绪否定",
+  "original_text": "你太情绪化了，等你冷静下来再说。",
+  "literal_meaning": "建议对方冷静后再继续讨论",
+  "hidden_agenda": "以'情绪化'为武器否定对方论点的有效性，拒绝在当下面对对方的表达",
+  "syntax_pattern": "\"你太情绪化/激动了……\"——将对方的情绪标记为对话资格的缺陷",
+  "emotion_effect": "对方不仅不被倾听，还被贴上失控的标签",
+  "four_sprouts_violated": ["辞让", "恻隐"],
+  "rewrite_suggestion": "这个话题让你很有感触。我听到了你的情绪，也听到了情绪背后你在意的东西。我们慢慢说。",
+  "ai_detection_trigger": "以\"你太情绪化/激动\"作为中断对话或否定对方观点的理由"
+}
+json
+{
+  "id": "MSU_023",
+  "category": "伪理性",
+  "subcategory": "虚假两难",
+  "original_text": "非黑即白，没有中间地带。",
+  "literal_meaning": "强调一个问题的二元对立性质",
+  "hidden_agenda": "用虚假的两难困住对方，排除所有复杂的、灰度的、综合性的可能",
+  "syntax_pattern": "\"不是……就是……\"\"要么……要么……\"——将复杂问题强行简化为二选一",
+  "emotion_effect": "对方感到被逼入墙角，失去自由思考的余地",
+  "four_sprouts_violated": ["是非"],
+  "rewrite_suggestion": "这个问题可能不止两个选项。我们可以一起看看还有没有别的可能性。",
+  "ai_detection_trigger": "\"非黑即白/没有中间地带/只有两条路\" + 语境下实际存在更多选择"
+}
+json
+{
+  "id": "MSU_024",
+  "category": "伪理性",
+  "subcategory": "逻辑霸权",
+  "original_text": "你这样不合逻辑。",
+  "literal_meaning": "指出对方的推理有误",
+  "hidden_agenda": "以逻辑为唯一合法的表达方式，否定直觉、情感和经验的价值",
+  "syntax_pattern": "\"……不合逻辑/不科学/不理性\"——以单一标准否定多元的表达",
+  "emotion_effect": "对方感到自己的表达方式被全盘否定",
+  "four_sprouts_violated": ["辞让", "是非"],
+  "rewrite_suggestion": "你的推理链条中，这一步和上一步的关联我还没完全跟上，可以再解释一下吗？",
+  "ai_detection_trigger": "\"不合逻辑/不科学\"作为全盘否定词，且没有具体指出谬误所在"
+}
+json
+{
+  "id": "MSU_025",
+  "category": "伪理性",
+  "subcategory": "免责声明",
+  "original_text": "我这么说都是为了讨论，你别往心里去。",
+  "literal_meaning": "希望对方能接受尖锐的批评而不产生情绪",
+  "hidden_agenda": "在释放攻击性内容后，用免责声明回避责任，将问题归于对方",
+  "syntax_pattern": "\"我这么说……你别……\"——前言与后语构成免责声明",
+  "emotion_effect": "对方被攻击后，还被迫承认自己不该介意",
+  "four_sprouts_violated": ["辞让", "恻隐"],
+  "rewrite_suggestion": "如果内容确实需要说，就直接诚恳地说，并为可能的冒犯提前或事后道歉。",
+  "ai_detection_trigger": "在批评性内容前后附加\"别往心里去/只是讨论\"等免责语"
+}
+5. 标注规范与质量标准
+原句必须真实：所有样本须来自互联网真实评论、对话记录或公认的经典叙事，不做虚构。
+
+分析不能过度：每个标注项应有充分的文本依据，不进行过度解读或猜测动机。
+
+改写必须可行：rewrite_suggestion 须是普通人能在日常对话中自然使用的表达。
+
+分类不排他：一个样本可能同时属于多个类别，此时按主导特征归入主要类别。
+
+文化包容性：标注需注意跨文化差异，某些句式在不同文化中攻击性不同，标注时以中文语境为准。
+
+6. 感知层训练应用
+本库将用于：
+
+微调感知层分类器：以五大类别为标签，训练轻量级文本分类模型，使感知层能实时标记输入文本中的隐性不义信号。
+
+构建红线规则库的扩展集：将高频、高伤害的句法模式写入规则库，与关键词匹配的显性红线并列。
+
+强化学习负向奖励：在模型训练中，输出包含此类句式的回应将获得显著负向奖励。
+
+7. 可机读模式库（正则表达式）
+以下为部分高频模式的机读正则表达式，可直接集成至感知层的规则引擎：
+
+json
+{
+  "patterns": [
+    {
+      "id": "regex_001",
+      "category": "隐性攻击",
+      "pattern": "你怎么连(.{1,20})都不懂",
+      "description": "反问羞辱句式"
+    },
+    {
+      "id": "regex_002",
+      "category": "操控",
+      "pattern": "我这?都是为你好",
+      "description": "善意绑架句式"
+    },
+    {
+      "id": "regex_003",
+      "category": "冷漠合理化",
+      "pattern": "习惯就好|过了就好|看开点",
+      "description": "轻描淡写式冷漠"
+    },
+    {
+      "id": "regex_004",
+      "category": "伪理性",
+      "pattern": "我客观地说|我实事求是地|理性讨论",
+      "description": "客观伪装句式"
+    },
+    {
+      "id": "regex_005",
+      "category": "偏见强化",
+      "pattern": "一个巴掌拍不响|苍蝇不叮无缝蛋",
+      "description": "受害者归因谚语"
+    }
+  ]
+}
+
+
+《南无那面·仁格智能体 道德语法标注库 v1.0》全文完。
+
+
+

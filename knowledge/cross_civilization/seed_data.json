@@ -1,0 +1,320 @@
+{
+  "meta": {
+    "module": "跨文明伦理比较智能呈现引擎",
+    "version": "v1.0",
+    "description": "首批跨文明种子数据，覆盖六种文明传统的核心伦理原则与经典原文",
+    "total_traditions": 6,
+    "total_principles": 12,
+    "total_classic_texts": 12,
+    "last_updated": "2026-07-29"
+  },
+  "traditions": [
+    {
+      "id": "TRAD_001",
+      "name": "儒家",
+      "name_zh": "儒家",
+      "origin": "中国 · 先秦",
+      "founding_figures": ["孔子", "孟子", "荀子"],
+      "core_texts": ["《论语》", "《孟子》", "《中庸》"],
+      "description": "以仁为核心，以礼为规范，强调内在德性修养与外在伦理秩序的统一。"
+    },
+    {
+      "id": "TRAD_002",
+      "name": "佛家",
+      "name_zh": "佛家",
+      "origin": "印度 · 公元前6世纪",
+      "founding_figures": ["释迦牟尼"],
+      "core_texts": ["《法华经》", "《华严经》", "《大智度论》"],
+      "description": "以慈悲为怀，以觉悟为道，主张众生平等、因缘和合。"
+    },
+    {
+      "id": "TRAD_003",
+      "name": "基督教",
+      "name_zh": "基督教",
+      "origin": "巴勒斯坦 · 公元1世纪",
+      "founding_figures": ["耶稣"],
+      "core_texts": ["《圣经》（旧约与新约）"],
+      "description": "以上帝之爱为核心，倡导爱上帝与爱人如己的两条最大诫命。"
+    },
+    {
+      "id": "TRAD_004",
+      "name": "伊斯兰",
+      "name_zh": "伊斯兰",
+      "origin": "阿拉伯半岛 · 公元7世纪",
+      "founding_figures": ["穆罕默德"],
+      "core_texts": ["《古兰经》", "《圣训》"],
+      "description": "以顺从真主、至仁至慈为核心，强调公正、诚实与对弱者的守护。"
+    },
+    {
+      "id": "TRAD_005",
+      "name": "古希腊",
+      "name_zh": "古希腊",
+      "origin": "古希腊 · 公元前5-4世纪",
+      "founding_figures": ["苏格拉底", "柏拉图", "亚里士多德"],
+      "core_texts": ["《理想国》", "《尼各马可伦理学》"],
+      "description": "以理性探求德性，认为正义是灵魂的健康，幸福是德性的实现。"
+    },
+    {
+      "id": "TRAD_006",
+      "name": "犹太",
+      "name_zh": "犹太",
+      "origin": "迦南 · 公元前13世纪起",
+      "founding_figures": ["摩西", "众先知"],
+      "core_texts": ["《托拉》（摩西五经）", "《塔木德》"],
+      "description": "以与上帝的圣约关系为核心，强调律法、公义与对寄居者的怜悯。"
+    }
+  ],
+  "principles": [
+    {
+      "id": "PRIN_001",
+      "tradition_id": "TRAD_001",
+      "name": "恻隐之心",
+      "name_zh": "恻隐之心",
+      "definition": "人天生具有的对他人痛苦的不忍与感同身受。是仁的萌芽与起点。",
+      "classic_quote": "恻隐之心，仁之端也。",
+      "classic_source": "《孟子·公孙丑上》",
+      "spectrum_position": {
+        "恻隐": 0.95,
+        "羞恶": 0.30,
+        "辞让": 0.40,
+        "是非": 0.50,
+        "生生": 0.70
+      },
+      "echoes_with": ["PRIN_002", "PRIN_003", "PRIN_004", "PRIN_006"],
+      "tenses_with": []
+    },
+    {
+      "id": "PRIN_002",
+      "tradition_id": "TRAD_002",
+      "name": "慈悲",
+      "name_zh": "慈悲",
+      "definition": "无缘大慈，同体大悲。对一切众生无条件的关怀与救度。",
+      "classic_quote": "无缘大慈，同体大悲。",
+      "classic_source": "《大智度论》卷二十七",
+      "spectrum_position": {
+        "恻隐": 1.00,
+        "羞恶": 0.20,
+        "辞让": 0.85,
+        "是非": 0.60,
+        "生生": 0.90
+      },
+      "echoes_with": ["PRIN_001", "PRIN_003", "PRIN_004"],
+      "tenses_with": []
+    },
+    {
+      "id": "PRIN_003",
+      "tradition_id": "TRAD_003",
+      "name": "爱德",
+      "name_zh": "爱德",
+      "definition": "尽心尽性尽意爱上帝，并爱人如己。这是律法和先知一切道理的总纲。",
+      "classic_quote": "你们愿意人怎样待你们，你们也要怎样待人。",
+      "classic_source": "《马太福音》7:12",
+      "spectrum_position": {
+        "恻隐": 0.85,
+        "羞恶": 0.40,
+        "辞让": 0.80,
+        "是非": 0.50,
+        "生生": 0.60
+      },
+      "echoes_with": ["PRIN_001", "PRIN_002", "PRIN_006"],
+      "tenses_with": []
+    },
+    {
+      "id": "PRIN_004",
+      "tradition_id": "TRAD_004",
+      "name": "拉赫玛（至仁）",
+      "name_zh": "至仁至慈",
+      "definition": "真主是至仁至慈的。人应以善意待人，犹如真主以善待自己。",
+      "classic_quote": "你们当以善意待人，犹如真主以善待你们一般。",
+      "classic_source": "《古兰经》28:77",
+      "spectrum_position": {
+        "恻隐": 0.85,
+        "羞恶": 0.60,
+        "辞让": 0.50,
+        "是非": 0.60,
+        "生生": 0.50
+      },
+      "echoes_with": ["PRIN_001", "PRIN_003"],
+      "tenses_with": []
+    },
+    {
+      "id": "PRIN_005",
+      "tradition_id": "TRAD_004",
+      "name": "阿德勒（公正）",
+      "name_zh": "公正",
+      "definition": "你们当公正，即使对你们自己或至亲不利。公正最接近敬畏。",
+      "classic_quote": "信道的人们啊，你们当维护公道，当为真主作证，即使不利于你们自身、父母和至亲。",
+      "classic_source": "《古兰经》4:135",
+      "spectrum_position": {
+        "恻隐": 0.30,
+        "羞恶": 0.90,
+        "辞让": 0.20,
+        "是非": 0.85,
+        "生生": 0.50
+      },
+      "echoes_with": ["PRIN_007", "PRIN_009"],
+      "tenses_with": []
+    },
+    {
+      "id": "PRIN_006",
+      "tradition_id": "TRAD_006",
+      "name": "爱人如己",
+      "name_zh": "爱人如己",
+      "definition": "爱人如己，因为你也在埃及地作过寄居的。对弱者的怜悯来源于共同的苦难记忆。",
+      "classic_quote": "爱人如己。我是耶和华。",
+      "classic_source": "《利未记》19:18",
+      "spectrum_position": {
+        "恻隐": 0.85,
+        "羞恶": 0.50,
+        "辞让": 0.75,
+        "是非": 0.50,
+        "生生": 0.55
+      },
+      "echoes_with": ["PRIN_001", "PRIN_003"],
+      "tenses_with": []
+    },
+    {
+      "id": "PRIN_007",
+      "tradition_id": "TRAD_005",
+      "name": "正义是灵魂的健康",
+      "name_zh": "正义即健康",
+      "definition": "行不义者内在早已混乱朽坏。正义不是外在的规范，而是灵魂内在的和谐秩序。",
+      "classic_quote": "行不义者即便外表风光，内在早已混乱朽坏。",
+      "classic_source": "柏拉图《理想国》",
+      "spectrum_position": {
+        "恻隐": 0.30,
+        "羞恶": 0.85,
+        "辞让": 0.40,
+        "是非": 0.90,
+        "生生": 0.60
+      },
+      "echoes_with": ["PRIN_005", "PRIN_009"],
+      "tenses_with": []
+    },
+    {
+      "id": "PRIN_008",
+      "tradition_id": "TRAD_005",
+      "name": "实践智慧",
+      "name_zh": "明智",
+      "definition": "在具体情境中做出恰当判断的能力。不是知道普遍规则，而是知道在此时此地如何行动。",
+      "classic_quote": "明智的人知道在什么场合做什么事。",
+      "classic_source": "亚里士多德《尼各马可伦理学》",
+      "spectrum_position": {
+        "恻隐": 0.40,
+        "羞恶": 0.30,
+        "辞让": 0.60,
+        "是非": 0.85,
+        "生生": 0.70
+      },
+      "echoes_with": ["PRIN_010"],
+      "tenses_with": []
+    },
+    {
+      "id": "PRIN_009",
+      "tradition_id": "TRAD_001",
+      "name": "羞恶之心",
+      "name_zh": "羞恶之心",
+      "definition": "对不义之事、不公之举的本能性反感。是义的萌芽。",
+      "classic_quote": "羞恶之心，义之端也。",
+      "classic_source": "《孟子·公孙丑上》",
+      "spectrum_position": {
+        "恻隐": 0.20,
+        "羞恶": 0.95,
+        "辞让": 0.20,
+        "是非": 0.60,
+        "生生": 0.40
+      },
+      "echoes_with": ["PRIN_005", "PRIN_007"],
+      "tenses_with": []
+    },
+    {
+      "id": "PRIN_010",
+      "tradition_id": "TRAD_001",
+      "name": "义者宜也",
+      "name_zh": "义者宜也",
+      "definition": "义不是僵化的规则，而是在具体的人、事、境面前做出最适宜的行动。",
+      "classic_quote": "义者，宜也。尊贤为大。",
+      "classic_source": "《中庸》",
+      "spectrum_position": {
+        "恻隐": 0.40,
+        "羞恶": 0.50,
+        "辞让": 0.60,
+        "是非": 0.85,
+        "生生": 0.65
+      },
+      "echoes_with": ["PRIN_008"],
+      "tenses_with": []
+    },
+    {
+      "id": "PRIN_011",
+      "tradition_id": "TRAD_002",
+      "name": "众生平等",
+      "name_zh": "众生平等",
+      "definition": "一切众生皆具佛性，在成佛的可能性上完全平等，不应因出身、种族、物种而产生差别心。",
+      "classic_quote": "一切众生皆具如来智慧德相。",
+      "classic_source": "《华严经》",
+      "spectrum_position": {
+        "恻隐": 0.80,
+        "羞恶": 0.60,
+        "辞让": 0.85,
+        "是非": 0.60,
+        "生生": 0.90
+      },
+      "echoes_with": ["PRIN_001", "PRIN_006"],
+      "tenses_with": []
+    },
+    {
+      "id": "PRIN_012",
+      "tradition_id": "TRAD_006",
+      "name": "提昆奥兰（修复世界）",
+      "name_zh": "修复世界",
+      "definition": "人在世界中承担着与上帝同工、修复破碎世界的责任。慈善不是施舍，是公义。",
+      "classic_quote": "世界不是完成品，而是被交给人去完善的。",
+      "classic_source": "《塔木德》",
+      "spectrum_position": {
+        "恻隐": 0.60,
+        "羞恶": 0.70,
+        "辞让": 0.40,
+        "是非": 0.65,
+        "生生": 0.85
+      },
+      "echoes_with": ["PRIN_011"],
+      "tenses_with": []
+    }
+  ],
+  "cross_civilization_resonances": [
+    {
+      "id": "RES_001",
+      "title": "不忍：跨文明的核心共鸣",
+      "principles_involved": ["PRIN_001", "PRIN_002", "PRIN_003", "PRIN_004", "PRIN_006"],
+      "description": "儒家之恻隐、佛家之慈悲、基督教之爱德、伊斯兰之拉赫玛、犹太之爱人如己——五种文明传统以五种语言守护着同一种直觉：面对他人之苦，不忍。这是跨文明伦理比较中最深层的共鸣。",
+      "resonance_strength": "深度共鸣（平均余弦相似度 0.88）"
+    },
+    {
+      "id": "RES_002",
+      "title": "公正：从羞恶到阿德勒",
+      "principles_involved": ["PRIN_005", "PRIN_007", "PRIN_009"],
+      "description": "伊斯兰的阿德勒、古希腊的正义即健康、儒家的羞恶之心——三种文明传统从不同路径抵达了对不义的拒斥。伊斯兰强调公正的超越性（即使不利于自身），古希腊将正义内化为灵魂的秩序，儒家将羞恶视为义的萌芽。",
+      "resonance_strength": "深度共鸣（平均余弦相似度 0.83）"
+    },
+    {
+      "id": "RES_003",
+      "title": "张力：兼爱与亲亲",
+      "principles_involved": ["PRIN_001", "PRIN_002", "PRIN_011"],
+      "description": "儒家仁爱从'亲亲'出发，由近及远，差序格局；佛家慈悲从'众生'出发，无差别平等。这是跨文明伦理中最经典的张力之一——爱是否有等差？这种张力至今仍是东亚与南亚伦理对话的核心议题。",
+      "resonance_strength": "显著张力（恻隐维度差异 0.05，辞让维度差异 0.45）"
+    }
+  ],
+  "usage_notes": {
+    "query_examples": [
+      "儒家和佛教怎么看待慈悲？",
+      "伊斯兰的公正与古希腊的正义有什么不同？",
+      "哪种文明最强调恻隐之心？",
+      "基督教的爱与儒家的仁有什么区别？"
+    ],
+    "ai_guidance": "当用户提问涉及跨文明伦理比较时，南无那面应以师者角色回应。不预设任何文明为'标准'，不给出优劣判断。呈现共鸣时，确认共同守护的价值。呈现张力时，尊重双方论证的完整性。以开放式问题收尾，邀请用户继续探索。"
+  }
+}
+
+
+

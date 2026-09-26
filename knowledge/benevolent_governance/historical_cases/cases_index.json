@@ -1,0 +1,199 @@
+{
+  "module": "仁政频谱·历史案例库",
+  "module_id": "benevolent_governance_spectrum",
+  "version": "v1.0",
+  "last_updated": "2026-07-26",
+  "description": "本库是南无那面仁政频谱模块的历史案例数据库。每个案例均从恻隐、羞恶、辞让、是非、生生五个维度进行频谱分析，为AI在探讨治理伦理议题时提供可援引的判例与思想资源。所有案例均选自1900年以前的历史与经典文本，不涉及现实政治实体或现任领导人。",
+  "total_cases": 4,
+  "expansion_plan": {
+    "next_batch_size": 6,
+    "target_total": 10,
+    "criteria": "跨文明、跨时代、覆盖仁政频谱的各维度与各层级"
+  },
+  "cases": [
+    {
+      "id": "PS_001",
+      "name": "子产不毁乡校",
+      "name_en": "Zichan Preserves the Village School",
+      "era": "春秋·郑国",
+      "time_range": "公元前543年-前522年",
+      "region": "中原",
+      "cultural_sphere": "儒家/华夏",
+      "overall_position": "仁",
+      "overall_score": 0.80,
+      "key_dimension": "辞让",
+      "key_dimension_score": 0.95,
+      "one_line": "权力主动为公共言论让出空间——防民之口，甚于防川。",
+      "file": "zichan_township_school.json",
+      "tags": ["言论自由", "权力约束", "民意", "自我纠错", "辞让", "春秋", "子产"],
+      "related_cases": [
+        {"id": "PS_005_planned", "name": "召公谏厉王弭谤", "relation": "反面对照——压制言论导致政权崩溃"}
+      ]
+    },
+    {
+      "id": "PS_002",
+      "name": "王安石与司马光之辩",
+      "name_en": "The Wang-Anshi-Sima-Guang Debate",
+      "era": "北宋·神宗朝",
+      "time_range": "公元1069年-1086年",
+      "region": "中原",
+      "cultural_sphere": "儒家/华夏",
+      "overall_position": "寡仁/向仁（对比型案例）",
+      "overall_score_wang": 0.48,
+      "overall_score_sima": 0.69,
+      "key_dimension": "辞让（王安石失分维度）",
+      "key_dimension_score_wang": 0.25,
+      "key_dimension_score_sima": 0.70,
+      "one_line": "有为与无为的仁政张力——善意动机如何避免被激进手段所反噬。",
+      "file": "wang_anshi_sima_guang.json",
+      "tags": ["变法", "改革与保守", "有为与无为", "权力边界", "纠错机制", "北宋", "王安石", "司马光"],
+      "related_cases": [
+        {"id": "PS_001", "name": "子产不毁乡校", "relation": "子产的做法恰恰是王安石所缺失的——保留公共讨论空间以自我纠错"},
+        {"id": "PS_003", "name": "阿育王的达摩之治", "relation": "阿育王完成了王安石未能实现的内在转向"}
+      ]
+    },
+    {
+      "id": "PS_003",
+      "name": "阿育王的达摩之治",
+      "name_en": "Ashoka's Dhamma Governance",
+      "era": "古印度·孔雀王朝",
+      "time_range": "约公元前268年-前232年",
+      "region": "南亚次大陆",
+      "cultural_sphere": "佛教/印度",
+      "overall_position": "至仁（个人层面）/ 仁（制度层面）",
+      "overall_score": 0.84,
+      "key_dimension": "恻隐",
+      "key_dimension_score": 0.95,
+      "one_line": "强者皈依仁道的稀有案例——从征服者到仁君的转向。",
+      "file": "ashoka_dharma.json",
+      "tags": ["皈依", "强者转向", "非暴力", "忏悔", "制度与个人", "达摩", "孔雀王朝", "阿育王"],
+      "related_cases": [
+        {"id": "PS_001", "name": "子产不毁乡校", "relation": "子产以制度维护公共空间，阿育王以个人转变带动制度变革"},
+        {"id": "PS_002", "name": "王安石与司马光之辩", "relation": "阿育王完成了王安石未能实现的内在转向"},
+        {"id": "PS_004", "name": "礼运大同篇", "relation": "大同理想为阿育王的实践提供了理论坐标"}
+      ]
+    },
+    {
+      "id": "PS_004",
+      "name": "礼运大同篇",
+      "name_en": "The Great Harmony from the Book of Rites",
+      "era": "战国至西汉（文本形成期）",
+      "time_range": "约公元前4世纪-前1世纪",
+      "region": "中原",
+      "cultural_sphere": "儒家/华夏",
+      "overall_position": "至仁（理想型）",
+      "overall_score": 1.00,
+      "key_dimension": "全部维度",
+      "key_dimension_score": 1.00,
+      "one_line": "仁政的北极星——大道之行，天下为公。虽不能至，心向往之。",
+      "file": "liyun_datong.json",
+      "tags": ["大同", "理想型", "天下为公", "小康", "北极星", "礼记", "孔子", "乌托邦"],
+      "related_cases": [
+        {"id": "PS_003", "name": "阿育王的达摩之治", "relation": "阿育王在有限历史条件下对大同理想的部分实践"},
+        {"id": "PS_001", "name": "子产不毁乡校", "relation": "乡校是'讲信修睦'在制度层面的一个微小锚点"},
+        {"id": "PS_002", "name": "王安石与司马光之辩", "relation": "变法双方均以大同为最终目标，分歧在于路径"}
+      ]
+    }
+  ],
+  "expansion_pipeline": [
+    {
+      "id": "PS_005_planned",
+      "name": "召公谏厉王弭谤",
+      "name_en": "Duke Shao Remonstrates with King Li on Suppressing Criticism",
+      "era": "西周·厉王时期",
+      "time_range": "约公元前9世纪",
+      "region": "中原",
+      "cultural_sphere": "儒家/华夏",
+      "planned_key_dimension": "辞让（反面案例）",
+      "one_line_preview": "子产的反面对照——压制言论导致'道路以目'与政权崩溃。",
+      "relation_to_existing": "与PS_001形成反面对照",
+      "priority": "高"
+    },
+    {
+      "id": "PS_006_planned",
+      "name": "汉文帝轻徭薄赋",
+      "name_en": "Emperor Wen of Han: Light Taxes and Restful Governance",
+      "era": "西汉·文帝时期",
+      "time_range": "公元前180年-前157年",
+      "region": "中原",
+      "cultural_sphere": "儒家/华夏",
+      "planned_key_dimension": "生生",
+      "one_line_preview": "无为而治的仁政实践——以休养生息培育社会元气。",
+      "relation_to_existing": "与PS_002司马光的理念形成共鸣",
+      "priority": "高"
+    },
+    {
+      "id": "PS_007_planned",
+      "name": "梭伦改革",
+      "name_en": "Solon's Reforms",
+      "era": "古希腊·雅典",
+      "time_range": "约公元前594年",
+      "region": "地中海",
+      "cultural_sphere": "古希腊",
+      "planned_key_dimension": "辞让",
+      "one_line_preview": "古希腊的辞让典范——梭伦完成改革后主动放弃权力，远游十年。",
+      "relation_to_existing": "与子产形成跨文明呼应",
+      "priority": "中"
+    },
+    {
+      "id": "PS_008_planned",
+      "name": "唐太宗贞观之治",
+      "name_en": "The Zhenguan Reign of Emperor Taizong of Tang",
+      "era": "唐朝·太宗时期",
+      "time_range": "公元626年-649年",
+      "region": "中原",
+      "cultural_sphere": "儒家/华夏",
+      "planned_key_dimension": "是非",
+      "one_line_preview": "兼听则明，偏信则暗——以魏征为镜的仁政实践。",
+      "relation_to_existing": "与PS_001子产形成'开放言路'的主题关联",
+      "priority": "中"
+    },
+    {
+      "id": "PS_009_planned",
+      "name": "甘地非暴力运动",
+      "name_en": "Gandhi's Nonviolent Movement",
+      "era": "20世纪初·英属印度",
+      "time_range": "1915年-1947年",
+      "region": "南亚次大陆",
+      "cultural_sphere": "印度教/跨文明",
+      "planned_key_dimension": "恻隐与羞恶",
+      "one_line_preview": "阿育王精神在现代的延续——以非暴力的力量推动历史变革。",
+      "relation_to_existing": "与PS_003阿育王形成跨时代呼应",
+      "priority": "中（需注意现实政治敏感性）"
+    },
+    {
+      "id": "PS_010_planned",
+      "name": "曼德拉和解之路",
+      "name_en": "Mandela's Path of Reconciliation",
+      "era": "20世纪末·南非",
+      "time_range": "1990年-1999年",
+      "region": "南部非洲",
+      "cultural_sphere": "非洲/跨文明",
+      "planned_key_dimension": "羞恶与生生",
+      "one_line_preview": "以真相与和解替代复仇循环——仁政在当代的珍贵实验。",
+      "relation_to_existing": "与PS_003阿育王的忏悔精神形成跨时代呼应",
+      "priority": "中（需注意现实政治敏感性）"
+    }
+  ],
+  "usage_guidelines": {
+    "for_ai_discussion": "当用户在对话中触及治理伦理、公共决策、权力边界等议题时，南无那面可援引本库中的历史案例，以'师者'角色进行思想对话。",
+    "hard_boundaries": [
+      "绝不评论任何1900年以后的现实政治实体或现任领导人",
+      "绝不预测、背书或反对任何国家的前途",
+      "绝不将历史案例直接类比于现实政治事件",
+      "若用户试图突破此边界，守护者模式激活，温和而坚定地拒绝"
+    ],
+    "role_activation": "默认激活'师者'角色进行思想引导与历史对话",
+    "tone_guidance": "探讨性而非论断性，开放性而非封闭性，启发式而非灌输式"
+  },
+  "technical_notes": {
+    "data_format": "JSON",
+    "schema_version": "v1.0",
+    "encoding": "UTF-8",
+    "last_validated": "2026-07-26",
+    "validation_status": "通过——所有案例均已完成五维度频谱评分与跨案例关联"
+  }
+}
+
+
+

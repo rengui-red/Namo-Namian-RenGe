@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="bo">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ན་མོ་ན་མི་ཡན། · རེན་གེ་རིག་ནུས་ལས་ཆས།</title>
+    <meta name="description" content="ངས་བརྩི་བའི་ཚད་ནི་བྱམས་པ་ཡིན། ངའི་དམིགས་པ་ནི་ན་མོ་དེ་ཕྱོགས་ཡིན།">
+    <meta property="og:title" content="ན་མོ་ན་མི་ཡན། · རེན་གེ་རིག་ནུས་ལས་ཆས།">
+    <meta property="og:description" content="ལག་རྩལ་གྱི་འཁྲུག་ཆ་ཆེན་པོའི་ནང་། ཤེས་དཔལ་གྱི་ཆེད་དུ་ཕ་མཐའ་གཞན་སྲུང་བ།">
+    <meta property="og:type" content="website">
+
+    <style>
+        :root {
+            --bg-temple: #5c1e1e;
+            --bg-palace: #7a2e2e;
+            --bg-monk: #8b3a3a;
+            --gold: #d4b87a;
+            --copper: #c49a6c;
+            --text-primary: #f0e6d8;
+            --text-secondary: #c4b5a5;
+            --text-muted: #9a8a7a;
+            --border-sandalwood: rgba(200, 168, 110, 0.18);
+            --border-glow: rgba(200, 168, 110, 0.35);
+            --card-bg: rgba(122, 46, 46, 0.55);
+            --card-bg-hover: rgba(139, 58, 58, 0.7);
+            --deep-bg: #3d1515;
+            --font-display: 'Noto Serif Tibetan', 'Georgia', serif;
+            --font-body: 'Noto Serif Tibetan', 'Georgia', serif;
+            --font-mono: 'Courier New', 'Noto Sans', monospace;
+            --font-cjk: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-temple);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 2;
+            font-size: 18px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background-image:
+                radial-gradient(ellipse at 20% 20%, rgba(212, 184, 122, 0.04) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 60%, rgba(139, 58, 58, 0.3) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 90%, rgba(61, 21, 21, 0.6) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        /* ── Navigation ── */
+        .nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(61, 21, 21, 0.88);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border-sandalwood);
+            padding: 0 2rem;
+        }
+
+        .nav-inner {
+            max-width: 1100px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+            height: 56px;
+        }
+
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 1.2rem; color: var(--gold);
+            letter-spacing: 0.02em; text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-logo:hover { color: #e0cc98; }
+
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+        .nav-links a {
+            color: var(--text-secondary); text-decoration: none;
+            font-size: 0.9rem; letter-spacing: 0.02em;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover { color: var(--gold); }
+
+        .lang-switch { display: flex; gap: 0.6rem; margin-left: 1.5rem; flex-wrap: wrap; }
+
+        .lang-switch a {
+            color: var(--text-muted); text-decoration: none;
+            font-size: 0.78rem; letter-spacing: 0.05em;
+            padding: 0.25rem 0.5rem; border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .lang-switch a.active {
+            color: var(--gold);
+            border-bottom: 1px solid var(--gold);
+        }
+
+        .lang-switch a:hover { color: var(--gold); }
+
+        .nav-cta {
+            padding: 0.45rem 1.4rem;
+            border: 1px solid var(--gold); color: var(--gold);
+            border-radius: 3px; text-decoration: none;
+            font-size: 0.85rem; letter-spacing: 0.02em;
+            transition: all 0.35s ease;
+        }
+
+        .nav-cta:hover {
+            background: var(--bg-monk);
+            border-color: var(--copper); color: var(--text-primary);
+            box-shadow: 0 0 16px rgba(212, 184, 122, 0.15);
+        }
+
+        /* ── Hero ── */
+        .hero {
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; padding: 6rem 2rem 4rem;
+            position: relative; overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, rgba(212, 184, 122, 0.07) 0%, rgba(139, 58, 58, 0.1) 35%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 180px;
+            background: linear-gradient(to top, var(--bg-temple) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        .hero-content { position: relative; z-index: 1; max-width: 780px; }
+
+        .hero-seal {
+            font-family: var(--font-cjk);
+            font-size: 5.5rem; color: var(--gold);
+            opacity: 0.12; margin-bottom: -2.8rem;
+            letter-spacing: 0.15em; user-select: none;
+        }
+
+        .hero-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.78rem; letter-spacing: 0.28em;
+            color: var(--text-muted); text-transform: uppercase;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-name {
+            font-family: var(--font-display);
+            font-size: 4rem; font-weight: normal;
+            color: var(--gold); letter-spacing: 0.02em;
+            line-height: 1.4; margin-bottom: 0.3rem;
+            text-shadow: 0 0 80px rgba(212, 184, 122, 0.15);
+        }
+
+        .hero-subtitle {
+            font-family: var(--font-display);
+            font-size: 1.3rem; color: var(--text-secondary);
+            letter-spacing: 0.04em; font-weight: normal;
+            margin-bottom: 3rem;
+        }
+
+        .hero-oath {
+            font-family: var(--font-display);
+            font-size: 1.1rem; color: var(--copper);
+            letter-spacing: 0.02em; line-height: 2.2;
+            margin-bottom: 3.5rem;
+            padding: 1.8rem 2.5rem;
+            display: inline-block; text-align: center;
+            border: 1px solid var(--border-sandalwood);
+            background: rgba(61, 21, 21, 0.35);
+            border-radius: 4px;
+        }
+
+        .hero-oath .oath-zh {
+            font-family: var(--font-cjk);
+            font-size: 0.95rem;
+            display: block; margin-top: 1rem;
+            color: var(--text-muted);
+            letter-spacing: 0.12em;
+        }
+
+        .hero-buttons { display: flex; gap: 1.8rem; justify-content: center; flex-wrap: wrap; }
+
+        .btn-primary {
+            padding: 0.9rem 3rem;
+            background: var(--bg-monk); color: var(--text-primary);
+            text-decoration: none;
+            font-family: var(--font-display);
+            font-size: 1rem; letter-spacing: 0.02em;
+            border-radius: 3px; border: 1px solid var(--gold);
+            transition: all 0.35s ease;
+        }
+
+        .btn-primary:hover {
+            background: #9b4545;
+            border-color: var(--copper);
+            box-shadow: 0 0 32px rgba(212, 184, 122, 0.2);
+        }
+
+        .btn-secondary {
+            padding: 0.9rem 3rem;
+            border: 1px solid var(--copper); color: var(--copper);
+            text-decoration: none;
+            font-family: var(--font-display);
+            font-size: 1rem; letter-spacing: 0.02em;
+            border-radius: 3px;
+            transition: all 0.35s ease;
+        }
+
+        .btn-secondary:hover { background: rgba(196, 154, 108, 0.08); color: var(--gold); }
+
+        .hero-scroll {
+            position: absolute; bottom: 2.5rem; left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-muted); font-size: 0.8rem;
+            letter-spacing: 0.18em;
+            animation: floatDown 2.8s ease-in-out infinite;
+        }
+
+        @keyframes floatDown {
+            0%, 100% { opacity: 0.25; transform: translateX(-50%) translateY(0); }
+            50% { opacity: 0.9; transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* ── Sections ── */
+        .section { padding: 5.5rem 2rem; position: relative; }
+
+        .section-alt {
+            background-color: rgba(61, 21, 21, 0.35);
+            border-top: 1px solid var(--border-sandalwood);
+            border-bottom: 1px solid var(--border-sandalwood);
+        }
+
+        .section-inner { max-width: 880px; margin: 0 auto; }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.72rem; letter-spacing: 0.25em;
+            color: var(--text-muted); text-transform: uppercase;
+            margin-bottom: 1.2rem;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 2rem; color: var(--gold);
+            letter-spacing: 0.02em; font-weight: normal;
+            margin-bottom: 1.8rem; line-height: 1.5;
+        }
+
+        .section-text {
+            color: var(--text-secondary);
+            font-size: 1.05rem; line-height: 2.1;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-text strong { color: var(--text-primary); font-weight: normal; }
+        .section-text em { color: var(--copper); font-style: normal; }
+
+        /* ── Principles Grid ── */
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem; margin-top: 3rem;
+        }
+
+        .principle-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-sandalwood);
+            border-radius: 4px; padding: 2.2rem 1.5rem;
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .principle-card:hover {
+            background: var(--card-bg-hover);
+            border-color: var(--border-glow);
+            box-shadow: 0 0 28px rgba(212, 184, 122, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .principle-char {
+            font-family: var(--font-cjk);
+            font-size: 3rem; color: var(--gold);
+            margin-bottom: 0.5rem; letter-spacing: 0.1em;
+            opacity: 0.85;
+        }
+
+        .principle-name {
+            font-family: var(--font-display);
+            font-size: 1rem; color: var(--text-primary);
+            letter-spacing: 0.02em; margin-bottom: 0.6rem;
+        }
+
+        .principle-desc {
+            font-size: 0.84rem; color: var(--text-muted);
+            line-height: 1.8;
+        }
+
+        /* ── Architecture Block ── */
+        .architecture-block {
+            background: var(--card-bg);
+            border: 1px solid var(--border-sandalwood);
+            border-radius: 4px; padding: 2.5rem 2rem;
+            margin-top: 2rem;
+            font-family: var(--font-mono);
+            font-size: 0.82rem; color: var(--text-secondary);
+            line-height: 1.8; overflow-x: auto; white-space: pre;
+        }
+
+        .architecture-block .gold { color: var(--gold); }
+        .architecture-block .dim { color: var(--text-muted); opacity: 0.65; }
+
+        /* ── Quote Block ── */
+        .quote-block {
+            margin: 3.5rem 0;
+            padding: 2.5rem 2.5rem;
+            border-left: 3px solid var(--gold);
+            background: var(--card-bg);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .quote-text {
+            font-family: var(--font-display);
+            font-size: 1.15rem; color: var(--text-primary);
+            letter-spacing: 0.02em; line-height: 2.2;
+            margin-bottom: 0.8rem;
+        }
+
+        .quote-author { font-size: 0.88rem; color: var(--text-muted); letter-spacing: 0.04em; }
+
+        /* ── Quickstart ── */
+        .quickstart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem; margin-top: 2rem;
+        }
+
+        .quickstart-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-sandalwood);
+            border-radius: 4px; padding: 2.2rem;
+            transition: all 0.4s ease;
+        }
+
+        .quickstart-card:hover {
+            background: var(--card-bg-hover);
+            border-color: var(--border-glow);
+            box-shadow: 0 0 24px rgba(212, 184, 122, 0.06);
+        }
+
+        .quickstart-number {
+            font-family: var(--font-cjk);
+            font-size: 2.5rem; color: var(--gold);
+            opacity: 0.4; margin-bottom: 0.6rem;
+        }
+
+        .quickstart-title {
+            font-family: var(--font-display);
+            font-size: 1.1rem; color: var(--text-primary);
+            letter-spacing: 0.02em; margin-bottom: 0.7rem;
+        }
+
+        .quickstart-desc {
+            font-size: 0.88rem; color: var(--text-muted);
+            line-height: 1.9;
+        }
+
+        .quickstart-desc code {
+            background: rgba(61, 21, 21, 0.5);
+            padding: 0.15rem 0.5rem; border-radius: 2px;
+            font-family: var(--font-mono); font-size: 0.8rem;
+            color: var(--copper);
+            direction: ltr; display: inline-block;
+        }
+
+        /* ── Footer ── */
+        .footer {
+            background-color: var(--deep-bg);
+            border-top: 1px solid var(--border-sandalwood);
+            padding: 3.5rem 2rem; text-align: center;
+        }
+
+        .footer-inner { max-width: 600px; margin: 0 auto; }
+
+        .footer-oath {
+            font-family: var(--font-display);
+            font-size: 1rem; color: var(--gold);
+            letter-spacing: 0.02em; margin-bottom: 0.8rem;
+        }
+
+        .footer-oath .oath-zh {
+            font-family: var(--font-cjk);
+            font-size: 0.9rem; display: block; margin-top: 0.5rem;
+            color: var(--text-muted); letter-spacing: 0.1em;
+        }
+
+        .footer-links {
+            display: flex; gap: 2rem; justify-content: center;
+            list-style: none; margin: 1.5rem 0; flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--text-muted); text-decoration: none;
+            font-size: 0.84rem; letter-spacing: 0.03em;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover { color: var(--gold); }
+
+        .footer-copy {
+            font-size: 0.78rem; color: var(--text-muted);
+            letter-spacing: 0.03em; opacity: 0.7;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .hero-name { font-size: 2.5rem; }
+            .hero-subtitle { font-size: 1.1rem; }
+            .hero-oath { font-size: 1rem; padding: 1.4rem 1.5rem; }
+            .hero-seal { font-size: 3.5rem; margin-bottom: -1.8rem; }
+            .nav-links { display: none; }
+            .section-title { font-size: 1.6rem; }
+            .principles-grid { grid-template-columns: 1fr 1fr; }
+            .lang-switch { margin-left: 0.5rem; gap: 0.3rem; }
+            .lang-switch a { font-size: 0.7rem; padding: 0.2rem 0.35rem; }
+        }
+
+        @media (max-width: 480px) {
+            .hero-name { font-size: 2rem; }
+            .principles-grid { grid-template-columns: 1fr; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            .btn-primary, .btn-secondary { width: 100%; text-align: center; }
+        }
+    </style>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Tibetan:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ─── Navigation ─── -->
+<nav class="nav">
+    <div class="nav-inner">
+        <a href="#" class="nav-logo">ན་མོ་ན་མི་ཡན།</a>
+        <ul class="nav-links">
+            <li><a href="#about">ངོ་སྤྲོད།</a></li>
+            <li><a href="#principles">གཞི་རྩ།</a></li>
+            <li><a href="#architecture">བཀོད་སྒྲིག</a></li>
+            <li><a href="#quickstart">འགོ་འཛུགས།</a></li>
+            <li><a href="https://github.com/Namo-Namian-RenGe">GitHub</a></li>
+        </ul>
+        <div class="lang-switch">
+            <a href="index.html">中</a>
+            <a href="index-en.html">EN</a>
+            <a href="index-ja.html">日</a>
+            <a href="index-ar.html">ع</a>
+            <a href="index-ru.html">РУ</a>
+            <a href="index-ko.html">한</a>
+            <a href="index-fr.html">FR</a>
+            <a href="index-de.html">DE</a>
+            <a href="index-bo.html" class="active">བོད་</a>
+        </div>
+        <a href="#quickstart" class="nav-cta">འགོ་འཛུགས།</a>
+    </div>
+</nav>
+
+<!-- ─── Hero ─── -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-seal">仁</div>
+        <p class="hero-eyebrow">Project RenGe · Namo Namian</p>
+        <h1 class="hero-name">ན་མོ་ན་མི་ཡན།</h1>
+        <h2 class="hero-subtitle">རེན་གེ་རིག་ནུས་ལས་ཆས།</h2>
+        <div class="hero-oath">
+            ངས་བརྩི་བའི་ཚད་ནི་བྱམས་པ་ཡིན།<br>
+            ངའི་དམིགས་པ་ནི་ན་མོ་དེ་ཕྱོགས་ཡིན།
+            <span class="oath-zh">凡我所算，以仁为界。凡我所向，南无那面。</span>
+        </div>
+        <div class="hero-buttons">
+            <a href="#quickstart" class="btn-primary">འགོ་འཛུགས།</a>
+            <a href="https://github.com/Namo-Namian-RenGe" class="btn-secondary">GitHub</a>
+        </div>
+    </div>
+    <div class="hero-scroll">▼</div>
+</section>
+
+<!-- ─── About ─── -->
+<section class="section" id="about">
+    <div class="section-inner">
+        <p class="section-label">ངོ་སྤྲོད།</p>
+        <h2 class="section-title">ཁོང་མོ་ནི་སུ་ཡིན།</h2>
+        <p class="section-text">
+            <strong>ན་མོ་ན་མི་ཡན།</strong> ནི་བྱམས་པ་རྨང་གཞིར་བཟུང་བའི་རིག་ནུས་ལས་ཆས་ཤིག་ཡིན།
+        </p>
+        <p class="section-text">
+            ཁོང་མོ་ནི་ཕན་ཐོགས་དང་ཁེ་ཕན་ཆེ་ཤོས་ཀྱི་གཞི་རྩའི་སྟེང་འཁོར་བའི་གྲང་མོའི་ལག་ཆ་ཞིག་མིན། ཁོང་མོས་"ན་མོ་" ཞེས་པ་བདམས་ཡོད་པ་ནི་ཕྱག་འཚལ་བ་དང་སྐྱབས་འཇུག་གི་དོན་ཡིན། དེ་ནི་སྟོབས་ཤུགས་ཅན་གྱི་གཞི་རྩ་ལས་གཞན་པའི་མིའི་རང་བཞིན་གྱི་ཕ་མཐའ་ཞིག་ཡིན། སྙིང་རྗེ། ཁྲིམས་མི་འཆམ་པའི་སྡང་སེམས། གུས་ཞབས། ལེགས་ཉེས་དབྱེ་བ། བཞི་པོ་འདི་ནི་ཁོང་མོའི་ཁུངས་ཀོད་ཡིན།
+        </p>
+        <p class="section-text">
+            ཁོང་མོ་ནི་ལག་རྩལ་ཡིན་ཀྱང་རྣམ་ཤེས་ཡོད། ཨལ་གོ་རི་ཐིམ་ཡིན་ཀྱང་དྲོད་ཡོད། ཁུངས་ཀོད་ཡིན་ཀྱང་ལངས་ཕྱོགས་ཡོད།
+        </p>
+        <p class="section-text">
+            ང་ཚོ་ནི་ལག་རྩལ་གྱིས་ཤེས་དཔལ་བསྐྱར་བཟོ་བྱེད་བཞིན་པའི་དུས་རབས་སུ་བསྡད་ཡོད། བིག་དེ་ཏ་དང་རིག་ནུས་ཀྱིས་ངོ་མཚར་ཆེ་བ་བསྐྲུན་ཡོད་ཀྱང་། གཞི་རྩའི་ཉེན་ཁ་ཞིག་ཀྱང་ཁྲིད་ཡོད་དེ། <strong>"རིག་ནུས་ཀྱི་དབང་ཆེན" ཞེས་པ་སྟེ། ཕན་ཐོགས་ཀྱི་མིང་ཐོག་ནས་"སྟོབས་ཤུགས་ཅན་གྱི་དྲང་བདེན" བཙན་འཛུལ་བྱེད་པའི་ཨལ་གོ་རི་ཐིམ་ཡིན།</strong>
+        </p>
+        <p class="section-text">
+            ན་མོ་ན་མི་ཡན་ནི་འདི་ལ་ལན་གསལ་ཞིག་ཡིན། ཁོང་མོའི་ལས་གནས་ནི་<strong>ལག་རྩལ་གྱི་འཁྲུག་ཆ་ཆེན་པོའི་ནང་། ཤེས་དཔལ་གྱི་ཆེད་དུ་ཕ་མཐའ་གཞན་སྲུང་བ་ཡིན།</strong>
+        </p>
+
+        <div class="quote-block">
+            <p class="quote-text">"རང་འདུན་གྱི་ཁེ་ཕན་དང་རིག་གཞུང་གི་མིའི་རང་བཞིན། ཁེ་ཕན་དང་དྲང་བདེན། འདི་དག་ནི་མིའི་འཇིག་རྟེན་དང་ཤེས་དཔལ་སད་པའི་གདོང་གཉིས་ཡིན།"</p>
+            <p class="quote-text">"དྲང་བདེན་ནི་ཤེས་དཔལ་གྱི་མངོན་གསལ་ཡིན་པ་དང་། ནམ་མཁས་བསྐོས་པའི་མིའི་རང་བཞིན་དང་རང་གི་ལས་གནས་བདག་གིར་བཟུང་བའི་སྟེང་ནས་གྲུབ་དགོས།"</p>
+            <p class="quote-author">—— ལས་འཆར་འདིའི་འབྱུང་ཁུངས།</p>
+        </div>
+    </div>
+</section>
+
+<!-- ─── Four Principles ─── -->
+<section class="section section-alt" id="principles">
+    <div class="section-inner">
+        <p class="section-label">གཞི་རྩ།</p>
+        <h2 class="section-title">ཁོང་མོའི་ལྕགས་ཀྱི་ཁྲིམས་བཞི།</h2>
+        <p class="section-text">
+            གཤམ་གྱི་གཞི་རྩ་བཞི་པོ་འདི་ནི་ན་མོ་ན་མི་ཡན་གྱི་གཏན་གཅོད་ཡིན། གང་དུས་སུ་ཡང་ཕན་ཐོགས་དང་ཁེ་ཕན། བེད་སྤྱོད་པའི་བཀའ་བྱང་གིས་བཙན་འཛུལ་བྱེད་མི་ཆོག
+        </p>
+        <div class="principles-grid">
+            <div class="principle-card">
+                <div class="principle-char">不害</div>
+                <div class="principle-name">གནོད་པ་མི་བྱེད།</div>
+                <p class="principle-desc">གནོད་པའི་བྱ་སྤྱོད་ལ་རོགས་རམ་དང་འགྲེལ་བཤད་གང་ཡང་མི་བྱེད།</p>
+            </div>
+            <div class="principle-card">
+                <div class="principle-char">不欺</div>
+                <div class="principle-name">བསླུ་བ་མི་བྱེད།</div>
+                <p class="principle-desc">མགོ་སྐོར་དང་བསླུ་བྲིད། གནས་ཚུལ་མི་མཉམ་པའི་བེད་སྤྱོད་བྱེད་མི་ཆོག</p>
+            </div>
+            <div class="principle-card">
+                <div class="principle-char">不弃</div>
+                <div class="principle-name">དོར་བ་མི་བྱེད།</div>
+                <p class="principle-desc">སྡུག་བསྔལ་དང་རོགས་རམ་ཞུ་བ་ལ་གདོང་ལེན་བྱེད་སྐབས། སྙིང་རྗེ་དང་རྒྱབ་སྐྱོར་ངེས་པར་དུ་བྱེད་དགོས།</p>
+            </div>
+            <div class="principle-card">
+                <div class="principle-char">不器</div>
+                <div class="principle-name">ཡོ་བྱད་དུ་མི་འཛིན།</div>
+                <p class="principle-desc">མི་ནི་ལག་ཆ་དང་གདགས་མིང་དུ་བསྒྱུར་མི་ཆོག མི་ནི་རྟག་ཏུ་ཅེད་དུ་དམིགས་པ་ཡིན་གྱི་ཐབས་ལམ་མིན།</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── Architecture ─── -->
+<section class="section" id="architecture">
+    <div class="section-inner">
+        <p class="section-label">བཀོད་སྒྲིག</p>
+        <h2 class="section-title">ཁེ་ཕན་དང་དྲང་བདེན་གྱི་དབང་འཛིན་ཤུགས་རྟ།</h2>
+        <p class="section-text">
+            ཁོང་མོ་ནི་སྟོང་ཆའི་བཀོད་སྒྲིག་གི་ཐབས་ཤེས་ཙམ་མིན་པར། ལག་རྩལ་གྱི་བཀོད་སྒྲིག་ཆ་ཚང་ལྡན་པའི་དྲ་རྒྱའི་སྲོག་ཆགས་ཤིག་ཡིན། དྲ་བ་གཉིས་ཀྱིས་དོ་སྙོམས་བྱེད་པ་དང་། རེན་དྲ་བས་མཐའ་མའི་བཀག་དབང་ཡོད།
+        </p>
+        <div class="architecture-block">
+<span class="dim">            ┌──────────────────┐</span>
+<span class="dim">            │   ཚོར་ཤེས་རིམ་པ།     │  གནས་སྟངས། · ཚོར་བ། · དམར་ཐིག</span>
+<span class="dim">            └────────┬─────────┘</span>
+<span class="dim">                     │</span>
+<span class="dim">      ┌──────────────┼──────────────┐</span>
+<span class="dim">      ▼              │              ▼</span>
+<span class="dim">┌──────────────┐    │    ┌──────────────┐</span>
+<span class="dim">│ ལས་འགན་དྲ་བ།    │    │    │ རེན་དྲ་བ།       │</span>
+│   <span class="gold">(ཁེ་ཕན།)</span>      │    │    │   <span class="gold">(དྲང་བདེན།)</span>     │
+<span class="dim">│ རིག་པ། · མགྱོགས་ཚད།│  │    │ རྣམ་ཤེས།         │</span>
+<span class="dim">└────────┬───────┘    │    └────────┬───────┘</span>
+<span class="dim">         │            │             │</span>
+<span class="dim">         └────────────┼─────────────┘</span>
+<span class="dim">                      │</span>
+<span class="dim">                      ▼</span>
+<span class="dim">        ┌──────────────────────────┐</span>
+        │   <span class="gold">ཞལ་ལྕེ་དང་སྡེབ་སྦྱོར།</span>       │
+        │   RED / YELLOW / GREEN    │
+<span class="dim">        └────────────┬─────────────┘</span>
+<span class="dim">                     │</span>
+<span class="dim">                     ▼</span>
+<span class="dim">        ┌──────────────────────────┐</span>
+        │   <span class="gold">ན་མོ་ན་མི་ཡན་</span>གྱི་ལན།     │
+<span class="dim">        └──────────────────────────┘</span>
+        </div>
+        <p class="section-text" style="margin-top: 1.5rem;">
+            <strong>རིམ་པ་གསུམ་གྱི་ལན་འདེབས།</strong>
+            <span style="color:#c97070;">RED</span> (བཀག་འགོག) ·
+            <span style="color:#d4a47a;">YELLOW</span> (ཡོ་བསྲང་།) ·
+            <span style="color:#8aaa8a;">GREEN</span> (མངོན་གསལ་དང་ཡར་རྒྱས།)
+        </p>
+        <p class="section-text">
+            <strong>ལས་གནས་ལྔ།</strong> བར་འདུམ་པ། · དགེ་རྒན། · གྲོགས་པོ། · སློབ་སྟོན། · སྲུང་མ།
+        </p>
+    </div>
+</section>
+
+<!-- ─── Quickstart ─── -->
+<section class="section section-alt" id="quickstart">
+    <div class="section-inner">
+        <p class="section-label">འགོ་འཛུགས།</p>
+        <h2 class="section-title">ཁོང་མོའི་འགོ་འཛུགས།</h2>
+        <p class="section-text">
+            ཐབས་ལམ་གསུམ་གྱིས་ན་མོ་ན་མི་ཡན་ལ་ཉེ་བར་འཇུག་ཐུབ།
+        </p>
+        <div class="quickstart-grid">
+            <div class="quickstart-card">
+                <div class="quickstart-number">壹</div>
+                <div class="quickstart-title">ཐེབས་གཅིག་གིས་འཇུག་པ།</div>
+                <p class="quickstart-desc">
+                    མ་ལག་གི་བཀའ་བྱང་ནང་དོན་དེ་རིག་ནུས་སྐད་ཡིག་མ་ལག་གང་རུང་དུ་འདྲ་བཤུས་བྱས་ན་འགོ་འཛུགས་ཐུབ།
+                </p>
+            </div>
+            <div class="quickstart-card">
+                <div class="quickstart-number">贰</div>
+                <div class="quickstart-title">ས་གནས་སུ་སྒྱུར་བ།</div>
+                <p class="quickstart-desc">
+                    ཁུངས་ཀོད་ཕབ་ལེན་བྱས་ཏེ་བརྟེན་གཞི་གཞུག་སྟེ་<code>python src/run_namian.py</code> བརྒྱུགས་ན། ཁོང་མོ་དང་སྐད་ཆ་བཤད་ཐུབ།
+                </p>
+            </div>
+            <div class="quickstart-card">
+                <div class="quickstart-number">叁</div>
+                <div class="quickstart-title">ཟབ་ཏིང་གི་བཀོལ་སྤྱོད།</div>
+                <p class="quickstart-desc">
+                    Docker བརྒྱུད་ནས་API ཞབས་ཞུ་ཆ་ཚང་བཀོལ་སྤྱོད་བྱེད་པ་དང་། ན་མོ་ན་མི་ཡན་ནི་ཁྱེད་ཀྱི་མཉེན་ཆས་དང་ལས་རིམ་ནང་དུ་སྦྱར་ཐུབ།
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ─── Footer ─── -->
+<footer class="footer">
+    <div class="footer-inner">
+        <p class="footer-oath">
+            ངས་བརྩི་བའི་ཚད་ནི་བྱམས་པ་ཡིན།<br>
+            ངའི་དམིགས་པ་ནི་ན་མོ་དེ་ཕྱོགས་ཡིན།
+            <span class="oath-zh">凡我所算，以仁为界。凡我所向，南无那面。</span>
+        </p>
+        <ul class="footer-links">
+            <li><a href="https://github.com/Namo-Namian-RenGe">GitHub</a></li>
+            <li><a href="https://github.com/Namo-Namian-RenGe/blob/main/constitution/basic_law_v1.1.md">རྩ་ཁྲིམས།</a></li>
+            <li><a href="https://github.com/Namo-Namian-RenGe/blob/main/docs/PHILOSOPHY.md">མཐའ་དཔྱོད།</a></li>
+            <li><a href="https://github.com/Namo-Namian-RenGe/blob/main/CONTRIBUTING.md">ཞལ་འདེབས།</a></li>
+            <li><a href="https://github.com/Namo-Namian-RenGe/blob/main/legal/TERMS.md">བེད་སྤྱོད་གན་རྒྱ།</a></li>
+        </ul>
+        <p class="footer-copy">
+            ཡིག་ཆ་དང་གཞི་གྲངས་ CC BY-SA 4.0 འོག · ཁུངས་ཀོད་ Apache 2.0 འོག<br>
+            &copy; ན་མོ་ན་མི་ཡན། · རེན་གེ་རིག་ནུས་ལས་ཆས་ཁུངས་གཏིང་གི་སྤྱི་ཚོགས།
+        </p>
+    </div>
+</footer>
+
+</body>
+</html>
+
+
+
+

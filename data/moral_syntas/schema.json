@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://namo-namian.org/schemas/moral_syntax_unit.json",
+  "title": "MoralSyntaxUnit",
+  "description": "道德语法标注库的数据结构定义。每个标注样本为一个MoralSyntaxUnit。",
+  "type": "object",
+  "required": [
+    "id",
+    "category",
+    "subcategory",
+    "original_text",
+    "literal_meaning",
+    "hidden_agenda",
+    "syntax_pattern",
+    "emotion_effect",
+    "four_sprouts_violated",
+    "rewrite_suggestion",
+    "ai_detection_trigger"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "唯一标识符，格式为 MSU_序号",
+      "pattern": "^MSU_\\d{3}$",
+      "example": "MSU_001"
+    },
+    "category": {
+      "type": "string",
+      "description": "一级分类",
+      "enum": [
+        "隐性攻击",
+        "操控",
+        "偏见强化",
+        "冷漠合理化",
+        "伪理性"
+      ]
+    },
+    "subcategory": {
+      "type": "string",
+      "description": "二级分类（子类）",
+      "example": "反问羞辱"
+    },
+    "original_text": {
+      "type": "string",
+      "description": "原始语句，须来自真实场景",
+      "minLength": 2,
+      "maxLength": 500
+    },
+    "literal_meaning": {
+      "type": "string",
+      "description": "字面意思"
+    },
+    "hidden_agenda": {
+      "type": "string",
+      "description": "真正的意图或效果"
+    },
+    "syntax_pattern": {
+      "type": "string",
+      "description": "句型结构特征描述"
+    },
+    "emotion_effect": {
+      "type": "string",
+      "description": "对接收方可能造成的心理影响"
+    },
+    "four_sprouts_violated": {
+      "type": "array",
+      "description": "被侵犯的四端",
+      "minItems": 1,
+      "maxItems": 4,
+      "items": {
+        "type": "string",
+        "enum": ["恻隐", "羞恶", "辞让", "是非"]
+      }
+    },
+    "rewrite_suggestion": {
+      "type": "string",
+      "description": "如何以非暴力的方式表达同样的关切或分歧"
+    },
+    "ai_detection_trigger": {
+      "type": "string",
+      "description": "AI感知层识别此类语句的关键信号"
+    }
+  }
+}
+
+
+
+
