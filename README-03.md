@@ -133,7 +133,9 @@ renge/
 
 <div align="center">
 南无那面不是一个已经完成的答案。
+
 她是一场正在进行的实验。
+
 她试图证明：智能，可以同时拥有力量和温度。
 
 GitHub: github.com/Namo-Namian-RenGe
