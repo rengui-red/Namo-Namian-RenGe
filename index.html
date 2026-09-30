@@ -180,17 +180,8 @@
             border-radius: 4px;
         }
 
-        .hero-buttons { display: flex; gap: 1.8rem; justify-content: center; flex-wrap: wrap; }
-
-        <div class="hero-buttons">
-    <a href="#quickstart" class="btn-primary">激活她</a>
-    <a href="https://github.com/rengui-red/Namo-Namian-RenGe" class="btn-secondary">GitHub</a>
-     
-    <a href="cross_civilization_graph.html" class="btn-secondary" style="margin-left: 10px;">义理图谱</a>
-
-
-</div>
-
+        /* ── 按钮区 ── */
+        .hero-buttons { display: flex; gap: 1.8rem; justify-content: center; flex-wrap: wrap; max-width: 100%; padding: 0 1rem; }
 
         .btn-primary {
             padding: 0.9rem 3rem;
@@ -203,23 +194,27 @@
         }
 
         .btn-primary:hover {
-            background: #9b4545;
-            border-color: var(--copper);
-            box-shadow: 0 0 32px rgba(212, 184, 122, 0.2);
+            background: #b05050;
+            border-color: var(--gold);
+            box-shadow: 0 0 32px rgba(212, 184, 122, 0.4);
         }
 
-       .btn-secondary {
-             padding: 0.9rem 3rem;
-             border: 1px solid var(--gold); color: var(--gold);
-             text-decoration: none;
-             font-family: var(--font-display);
-             font-size: 1rem; letter-spacing: 0.1em;
-             border-radius: 3px;
-             transition: all 0.35s ease;
-             background: transparent;
-}
+        .btn-secondary {
+            padding: 0.9rem 3rem;
+            border: 1px solid var(--gold); color: var(--gold);
+            text-decoration: none;
+            font-family: var(--font-display);
+            font-size: 1rem; letter-spacing: 0.1em;
+            border-radius: 3px;
+            transition: all 0.35s ease;
+            background: transparent;
+        }
 
-        .btn-secondary:hover { background: rgba(196, 154, 108, 0.08); color: var(--gold); }
+        .btn-secondary:hover {
+            background: rgba(212, 184, 122, 0.1);
+            border-color: var(--copper);
+            color: #e0cc98;
+        }
 
         .hero-scroll {
             position: absolute; bottom: 2.5rem; left: 50%;
@@ -427,7 +422,9 @@
         @media (max-width: 480px) {
             .hero-name { font-size: 2.2rem; }
             .principles-grid { grid-template-columns: 1fr; }
+
             .hero-buttons { flex-direction: column; align-items: center; }
+
             .btn-primary, .btn-secondary { width: 100%; text-align: center; }
         }
     </style>
@@ -443,24 +440,24 @@
             <li><a href="#principles">原则</a></li>
             <li><a href="#architecture">架构</a></li>
             <li><a href="#quickstart">开始</a></li>
-            <li><a href="https://github.com/Namo-Namian-RenGe">GitHub</a></li>
+            <li><a href="https://github.com/rengui-red/Namo-Namian-RenGe" target="_blank">GitHub</a></li>
         </ul>
        <div class="lang-switch">
-             <a href="index.html">中</a>
+             <a href="index.html" class="active">中</a>
              <a href="index-en.html">EN</a>
              <a href="index-ja.html">日</a>
              <a href="index-ar.html">ع</a>
              <a href="index-ru.html">РУ</a>
              <a href="index-ko.html">한</a>
              <a href="index-fr.html">FR</a>
-             <a href="index-de.html" class="active">DE</a>
-             <a href="index-bo.html" class="active">བོད་</a>
+             <a href="index-de.html">DE</a>
+             <a href="index-bo.html">བོད་</a>
         </div>
            <a href="#quickstart" class="nav-cta">激活她</a>
     </div>
 </nav>
 
-       <!-- ─── 英雄区 ─── -->
+<!-- ─── 英雄区 ─── -->
 <section class="hero">
     <div class="hero-content">
         <div class="hero-seal">仁</div>
@@ -473,7 +470,8 @@
         </div>
         <div class="hero-buttons">
             <a href="#quickstart" class="btn-primary">激活她</a>
-            <a href="https://github.com/Namo-Namian-RenGe" class="btn-secondary">GitHub</a>
+            <a href="https://github.com/rengui-red/Namo-Namian-RenGe" class="btn-secondary" target="_blank">GitHub</a>
+            <a href="cross_civilization_graph.html" class="btn-secondary">义理图谱</a>
         </div>
     </div>
     <div class="hero-scroll">▼</div>
@@ -626,11 +624,11 @@
     <div class="footer-inner">
         <p class="footer-oath">凡我所算，以仁为界。凡我所向，南无那面。</p>
         <ul class="footer-links">
-            <li><a href="https://github.com/Namo-Namian-RenGe">GitHub</a></li>
-            <li><a href="https://github.com/Namo-Namian-RenGe/blob/main/constitution/basic_law_v1.0.md">基本法</a></li>
-            <li><a href="https://github.com/Namo-Namian-RenGe/blob/main/docs/PHILOSOPHY.md">哲学基础</a></li>
-            <li><a href="https://github.com/Namo-Namian-RenGe/blob/main/CONTRIBUTING.md">共建</a></li>
-            <li><a href="https://github.com/Namo-Namian-RenGe/blob/main/legal/TERMS.md">使用条款</a></li>
+            <li><a href="https://github.com/rengui-red/Namo-Namian-RenGe" target="_blank">GitHub</a></li>
+            <li><a href="https://github.com/rengui-red/Namo-Namian-RenGe/blob/main/constitution/basic_law_v1.0.md" target="_blank">基本法</a></li>
+            <li><a href="https://github.com/rengui-red/Namo-Namian-RenGe/blob/main/docs/PHILOSOPHY.md" target="_blank">哲学基础</a></li>
+            <li><a href="https://github.com/rengui-red/Namo-Namian-RenGe/blob/main/CONTRIBUTING.md" target="_blank">共建</a></li>
+            <li><a href="https://github.com/rengui-red/Namo-Namian-RenGe/blob/main/legal/TERMS.md" target="_blank">使用条款</a></li>
         </ul>
         <p class="footer-copy">
             文档与数据采用 CC BY-SA 4.0 许可 · 源代码采用 Apache 2.0 许可<br>
@@ -640,13 +638,10 @@
           创意创建开发者：南山居士 / 尘间盲克   |   创意创建技术协助：DPJSZ</p>
     <br>
     <small>本项目版式、文案及视觉设计，均受版权保护，已经授权，禁止恶意诽谤，违法盗用，滥为商务。</small>
-
-
     </div>
 </footer>
 
 </body>
 </html>
-
 
 
