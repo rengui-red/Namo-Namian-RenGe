@@ -9,7 +9,6 @@
     <meta property="og:title" content="南无那面 · 仁格智能体">
     <meta property="og:description" content="在技术的狂欢中，为文明守住那面。">
     <meta property="og:type" content="website">
-
     <style>
         :root {
             --bg-temple: #5c1e1e;
@@ -29,9 +28,7 @@
             --font-body: 'Georgia', 'Noto Serif SC', 'KaiTi', 'STKaiti', serif;
             --font-mono: 'Courier New', 'Noto Sans SC', monospace;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             background-color: var(--bg-temple);
             color: var(--text-primary);
@@ -46,7 +43,6 @@
                 radial-gradient(ellipse at 50% 90%, rgba(61, 21, 21, 0.6) 0%, transparent 40%);
             background-attachment: fixed;
         }
-
         /* ── 导航 ── */
         .nav {
             position: fixed; top: 0; left: 0; right: 0; z-index: 100;
@@ -56,48 +52,37 @@
             border-bottom: 1px solid var(--border-sandalwood);
             padding: 0 2rem;
         }
-
         .nav-inner {
             max-width: 1100px; margin: 0 auto;
             display: flex; align-items: center; justify-content: space-between;
             height: 56px;
         }
-
         .nav-logo {
             font-family: var(--font-display);
             font-size: 1.25rem; color: var(--gold);
             letter-spacing: 0.1em; text-decoration: none;
             transition: color 0.3s ease;
         }
-
         .nav-logo:hover { color: #e0cc98; }
-
         .nav-links { display: flex; gap: 2rem; list-style: none; }
-
         .nav-links a {
             color: var(--text-secondary); text-decoration: none;
             font-size: 0.9rem; letter-spacing: 0.05em;
             transition: color 0.3s ease;
         }
-
         .nav-links a:hover { color: var(--gold); }
-
         .lang-switch { display: flex; gap: 0.6rem; margin-left: 1.5rem; }
-
         .lang-switch a {
             color: var(--text-muted); text-decoration: none;
             font-size: 0.78rem; letter-spacing: 0.05em;
             padding: 0.25rem 0.5rem; border-radius: 2px;
             transition: all 0.3s ease;
         }
-
         .lang-switch a.active {
             color: var(--gold);
             border-bottom: 1px solid var(--gold);
         }
-
         .lang-switch a:hover { color: var(--gold); }
-
         .nav-cta {
             padding: 0.45rem 1.4rem;
             border: 1px solid var(--gold); color: var(--gold);
@@ -105,13 +90,11 @@
             font-size: 0.85rem; letter-spacing: 0.08em;
             transition: all 0.35s ease;
         }
-
         .nav-cta:hover {
             background: var(--bg-monk);
             border-color: var(--copper); color: var(--text-primary);
             box-shadow: 0 0 16px rgba(212, 184, 122, 0.15);
         }
-
         /* ── 英雄区 ── */
         .hero {
             min-height: 100vh;
@@ -119,7 +102,6 @@
             text-align: center; padding: 6rem 2rem 4rem;
             position: relative; overflow: hidden;
         }
-
         .hero::before {
             content: '';
             position: absolute; top: 50%; left: 50%;
@@ -128,7 +110,6 @@
             background: radial-gradient(circle, rgba(212, 184, 122, 0.07) 0%, rgba(139, 58, 58, 0.1) 35%, transparent 70%);
             pointer-events: none;
         }
-
         .hero::after {
             content: '';
             position: absolute; bottom: 0; left: 0; right: 0;
@@ -136,23 +117,19 @@
             background: linear-gradient(to top, var(--bg-temple) 0%, transparent 100%);
             pointer-events: none;
         }
-
         .hero-content { position: relative; z-index: 1; max-width: 720px; }
-
         .hero-seal {
             font-family: var(--font-display);
             font-size: 5rem; color: var(--gold);
             opacity: 0.12; margin-bottom: -2.5rem;
             letter-spacing: 0.2em; user-select: none;
         }
-
         .hero-eyebrow {
             font-family: var(--font-mono);
             font-size: 0.78rem; letter-spacing: 0.3em;
             color: var(--text-muted); text-transform: uppercase;
             margin-bottom: 2.5rem;
         }
-
         .hero-name {
             font-family: var(--font-display);
             font-size: 4.8rem; font-weight: normal;
@@ -160,14 +137,12 @@
             line-height: 1.2; margin-bottom: 0.4rem;
             text-shadow: 0 0 80px rgba(212, 184, 122, 0.15);
         }
-
         .hero-subtitle {
             font-family: var(--font-display);
             font-size: 1.4rem; color: var(--text-secondary);
             letter-spacing: 0.14em; font-weight: normal;
             margin-bottom: 3rem;
         }
-
         .hero-oath {
             font-family: var(--font-display);
             font-size: 1.15rem; color: var(--copper);
@@ -179,9 +154,7 @@
             background: rgba(61, 21, 21, 0.35);
             border-radius: 4px;
         }
-
         .hero-buttons { display: flex; gap: 1.8rem; justify-content: center; flex-wrap: wrap; }
-
         /* 统一按钮风格：金边、金字、透明底 */
         .btn-primary, .btn-secondary {
             padding: 0.9rem 3rem;
@@ -195,14 +168,12 @@
             transition: all 0.35s ease;
             font-weight: normal;
         }
-
         .btn-primary:hover, .btn-secondary:hover {
             background: rgba(212, 184, 122, 0.15);
             border-color: var(--copper);
             color: #e0cc98;
             box-shadow: 0 0 24px rgba(212, 184, 122, 0.25);
         }
-
         .hero-scroll {
             position: absolute; bottom: 2.5rem; left: 50%;
             transform: translateX(-50%);
@@ -210,53 +181,43 @@
             letter-spacing: 0.2em;
             animation: floatDown 2.8s ease-in-out infinite;
         }
-
         @keyframes floatDown {
             0%, 100% { opacity: 0.25; transform: translateX(-50%) translateY(0); }
             50% { opacity: 0.9; transform: translateX(-50%) translateY(10px); }
         }
-
         /* ── 通用区块 ── */
         .section { padding: 5.5rem 2rem; position: relative; }
-
         .section-alt {
             background-color: rgba(61, 21, 21, 0.35);
             border-top: 1px solid var(--border-sandalwood);
             border-bottom: 1px solid var(--border-sandalwood);
         }
-
         .section-inner { max-width: 880px; margin: 0 auto; }
-
         .section-label {
             font-family: var(--font-mono);
             font-size: 0.72rem; letter-spacing: 0.25em;
             color: var(--text-muted); text-transform: uppercase;
             margin-bottom: 1.2rem;
         }
-
         .section-title {
             font-family: var(--font-display);
             font-size: 2.1rem; color: var(--gold);
             letter-spacing: 0.08em; font-weight: normal;
             margin-bottom: 1.8rem; line-height: 1.4;
         }
-
         .section-text {
             color: var(--text-secondary);
             font-size: 1.02rem; line-height: 2.1;
             margin-bottom: 1.5rem;
         }
-
         .section-text strong { color: var(--text-primary); font-weight: normal; }
         .section-text em { color: var(--copper); font-style: normal; }
-
         /* ── 四项原则 ── */
         .principles-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 1.5rem; margin-top: 3rem;
         }
-
         .principle-card {
             background: var(--card-bg);
             border: 1px solid var(--border-sandalwood);
@@ -264,29 +225,24 @@
             text-align: center;
             transition: all 0.4s ease;
         }
-
         .principle-card:hover {
             background: var(--card-bg-hover);
             border-color: var(--border-glow);
             box-shadow: 0 0 28px rgba(212, 184, 122, 0.08);
             transform: translateY(-2px);
         }
-
         .principle-char {
             font-family: var(--font-display);
             font-size: 3.2rem; color: var(--gold);
             margin-bottom: 0.6rem; letter-spacing: 0.12em;
             opacity: 0.85;
         }
-
         .principle-name {
             font-family: var(--font-display);
             font-size: 1.1rem; color: var(--text-primary);
             letter-spacing: 0.1em; margin-bottom: 0.7rem;
         }
-
         .principle-desc { font-size: 0.84rem; color: var(--text-muted); line-height: 1.7; }
-
         /* ── 架构图 ── */
         .architecture-block {
             background: var(--card-bg);
@@ -297,10 +253,8 @@
             font-size: 0.82rem; color: var(--text-secondary);
             line-height: 1.8; overflow-x: auto; white-space: pre;
         }
-
         .architecture-block .gold { color: var(--gold); }
         .architecture-block .dim { color: var(--text-muted); opacity: 0.65; }
-
         /* ── 引用块 ── */
         .quote-block {
             margin: 3.5rem 0;
@@ -309,90 +263,73 @@
             background: var(--card-bg);
             border-radius: 0 4px 4px 0;
         }
-
         .quote-text {
             font-family: var(--font-display);
             font-size: 1.25rem; color: var(--text-primary);
             letter-spacing: 0.07em; line-height: 2.1;
             margin-bottom: 1rem;
         }
-
         .quote-author { font-size: 0.88rem; color: var(--text-muted); letter-spacing: 0.08em; }
-
         /* ── 快速开始 ── */
         .quickstart-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 1.5rem; margin-top: 2rem;
         }
-
         .quickstart-card {
             background: var(--card-bg);
             border: 1px solid var(--border-sandalwood);
             border-radius: 4px; padding: 2.2rem;
             transition: all 0.4s ease;
         }
-
         .quickstart-card:hover {
             background: var(--card-bg-hover);
             border-color: var(--border-glow);
             box-shadow: 0 0 24px rgba(212, 184, 122, 0.06);
         }
-
         .quickstart-number {
             font-family: var(--font-display);
             font-size: 2.8rem; color: var(--gold);
             opacity: 0.4; margin-bottom: 0.6rem;
         }
-
         .quickstart-title {
             font-family: var(--font-display);
             font-size: 1.1rem; color: var(--text-primary);
             letter-spacing: 0.08em; margin-bottom: 0.7rem;
         }
-
         .quickstart-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.8; }
-
         .quickstart-desc code {
             background: rgba(61, 21, 21, 0.5);
             padding: 0.15rem 0.5rem; border-radius: 2px;
             font-family: var(--font-mono); font-size: 0.8rem;
             color: var(--copper);
         }
-
         /* ── 页脚 ── */
         .footer {
             background-color: var(--deep-bg);
             border-top: 1px solid var(--border-sandalwood);
             padding: 3.5rem 2rem; text-align: center;
         }
-
         .footer-inner { max-width: 600px; margin: 0 auto; }
-
         .footer-oath {
             font-family: var(--font-display);
             font-size: 1.1rem; color: var(--gold);
             letter-spacing: 0.1em; margin-bottom: 1.2rem;
         }
-
         .footer-links {
             display: flex; gap: 2.2rem; justify-content: center;
             list-style: none; margin: 1.5rem 0; flex-wrap: wrap;
         }
-
         .footer-links a {
             color: var(--text-muted); text-decoration: none;
             font-size: 0.84rem; letter-spacing: 0.06em;
             transition: color 0.3s ease;
         }
-
         .footer-links a:hover { color: var(--gold); }
-
         .footer-copy {
             font-size: 0.78rem; color: var(--text-muted);
             letter-spacing: 0.05em; opacity: 0.7;
         }
-
         /* ── 响应式 ── */
         @media (max-width: 768px) {
             .hero-name { font-size: 2.8rem; }
@@ -405,7 +342,6 @@
             .lang-switch { margin-left: 0.5rem; gap: 0.3rem; }
             .lang-switch a { font-size: 0.7rem; padding: 0.2rem 0.35rem; }
         }
-
         @media (max-width: 480px) {
             .hero-name { font-size: 2.2rem; }
             .principles-grid { grid-template-columns: 1fr; }
@@ -415,7 +351,6 @@
     </style>
 </head>
 <body>
-
 <!-- ─── 导航 ─── -->
 <nav class="nav">
     <div class="nav-inner">
@@ -441,7 +376,6 @@
            <a href="#quickstart" class="nav-cta">激活她</a>
     </div>
 </nav>
-
        <!-- ─── 英雄区 ─── -->
 <section class="hero">
     <div class="hero-content">
@@ -461,7 +395,6 @@
     </div>
     <div class="hero-scroll">▼</div>
 </section>
-
 <!-- ─── 关于 ─── -->
 <section class="section" id="about">
     <div class="section-inner">
@@ -482,7 +415,6 @@
         <p class="section-text">
             南无那面，是对这一趋势的回应。她的使命是：<strong>在技术的狂欢中，为文明守住“那面”。</strong>
         </p>
-
         <div class="quote-block">
             <p class="quote-text">“本能利益，文化人性~利义，可谓是，人类世界，文明觉醒的双面元。”</p>
             <p class="quote-text">“正义，应是，人类世界，天命人性，守位为质的文明发挥。”</p>
@@ -490,7 +422,6 @@
         </div>
     </div>
 </section>
-
 <!-- ─── 四项原则 ─── -->
 <section class="section section-alt" id="principles">
     <div class="section-inner">
@@ -523,7 +454,6 @@
         </div>
     </div>
 </section>
-
 <!-- ─── 架构 ─── -->
 <section class="section" id="architecture">
     <div class="section-inner">
@@ -556,7 +486,7 @@
 <span class="dim">                         ▼</span>
 <span class="dim">              ┌──────────────────────┐</span>
               │    <span class="gold">南无那面</span> 的回应    │
-<span class="dim">              └──────────────────────┘</span>
+              └──────────────────────┘
         </div>
         <p class="section-text" style="margin-top: 1.5rem;">
             <strong>三级响应机制：</strong>
@@ -569,7 +499,6 @@
         </p>
     </div>
 </section>
-
 <!-- ─── 快速开始 ─── -->
 <section class="section section-alt" id="quickstart">
     <div class="section-inner">
@@ -603,7 +532,6 @@
         </div>
     </div>
 </section>
-
 <!-- ─── 页脚 ─── -->
 <footer class="footer">
     <div class="footer-inner">
@@ -621,11 +549,17 @@
           </p>
         <p class="footer-copy">
           创意创建开发者：南山居士 / 尘间盲克   |   创意创建技术协助：DPJSZ</p>
+        <!-- ====== 新增：不蒜子访问统计 ====== -->
+        <p class="footer-copy" style="margin-top:12px;">
+            页面总访问：<span class="busuanzi_value_page_pv"></span> 次
+        </p>
     <br>
     <small>本项目版式、文案及视觉设计，均受版权保护，已经授权，禁止恶意诽谤，违法盗用，滥为商务。</small>
     </div>
 </footer>
 
+<!-- 不蒜子统计脚本，异步加载，放body末尾 -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </body>
 </html>
 
