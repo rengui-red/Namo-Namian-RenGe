@@ -10,6 +10,9 @@
     <meta property="og:description" content="기술의 광란 속에서 문명을 위해 '저편'을 지킨다.">
     <meta property="og:type" content="website">
 
+    <!-- 新增：引入 html2canvas 库用于将对话导出为图片 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <style>
         :root {
             --bg-temple: #5c1e1e;
@@ -46,6 +49,7 @@
                 radial-gradient(ellipse at 80% 60%, rgba(139, 58, 58, 0.3) 0%, transparent 50%),
                 radial-gradient(ellipse at 50% 90%, rgba(61, 21, 21, 0.6) 0%, transparent 40%);
             background-attachment: fixed;
+            overflow-x: hidden;
         }
 
         /* ── Navigation ── */
@@ -105,6 +109,9 @@
             border-radius: 3px; text-decoration: none;
             font-size: 0.85rem; letter-spacing: 0.04em;
             transition: all 0.35s ease;
+            background: transparent;
+            cursor: pointer;
+            font-family: var(--font-display);
         }
 
         .nav-cta:hover {
@@ -191,14 +198,19 @@
 
         .hero-buttons { display: flex; gap: 1.8rem; justify-content: center; flex-wrap: wrap; }
 
-        .btn-primary {
+        .btn-primary, .btn-secondary {
             padding: 0.9rem 3rem;
-            background: var(--bg-monk); color: var(--text-primary);
-            text-decoration: none;
+            border-radius: 3px;
             font-family: var(--font-display);
             font-size: 1rem; letter-spacing: 0.06em;
-            border-radius: 3px; border: 1px solid var(--gold);
             transition: all 0.35s ease;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--bg-monk); color: var(--text-primary);
+            border: 1px solid var(--gold);
         }
 
         .btn-primary:hover {
@@ -208,13 +220,8 @@
         }
 
         .btn-secondary {
-            padding: 0.9rem 3rem;
+            background: transparent;
             border: 1px solid var(--copper); color: var(--copper);
-            text-decoration: none;
-            font-family: var(--font-display);
-            font-size: 1rem; letter-spacing: 0.06em;
-            border-radius: 3px;
-            transition: all 0.35s ease;
         }
 
         .btn-secondary:hover { background: rgba(196, 154, 108, 0.08); color: var(--gold); }
@@ -421,6 +428,203 @@
             letter-spacing: 0.03em; opacity: 0.7;
         }
 
+        /* ── 新增：聊天交互面板样式 ── */
+        .chat-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(61, 21, 21, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .chat-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .chat-container {
+            width: 90%;
+            max-width: 800px;
+            height: 85vh;
+            background: var(--bg-palace);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 50px rgba(212, 184, 122, 0.1) inset;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+        }
+        .chat-overlay.active .chat-container {
+            transform: translateY(0);
+        }
+        .chat-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-sandalwood);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(61, 21, 21, 0.6);
+        }
+        .chat-header h3 {
+            font-family: var(--font-display);
+            color: var(--gold);
+            letter-spacing: 0.1em;
+            font-size: 1.2rem;
+            font-weight: normal;
+        }
+        .chat-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .chat-close:hover {
+            color: var(--gold);
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        .chat-messages::-webkit-scrollbar { width: 6px; }
+        .chat-messages::-webkit-scrollbar-track { background: transparent; }
+        .chat-messages::-webkit-scrollbar-thumb { background: var(--border-sandalwood); border-radius: 3px; }
+
+        .msg {
+            max-width: 80%;
+            padding: 1rem 1.2rem;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            animation: fadeIn 0.3s ease forwards;
+            position: relative;
+            word-break: break-word;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .msg-user {
+            align-self: flex-end;
+            background: rgba(196, 154, 108, 0.2);
+            border: 1px solid var(--copper);
+            color: var(--text-primary);
+            border-bottom-right-radius: 0;
+        }
+        .msg-ai {
+            align-self: flex-start;
+            background: rgba(122, 46, 46, 0.8);
+            border: 1px solid var(--border-sandalwood);
+            color: var(--text-primary);
+            border-bottom-left-radius: 0;
+            white-space: pre-wrap;
+        }
+        .msg-ai.loading {
+            color: var(--text-muted);
+            font-style: italic;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* AI 消息底部操作栏 */
+        .msg-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+            padding-top: 0.6rem;
+            border-top: 1px dashed rgba(200, 168, 110, 0.2);
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+        .msg-action-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+            transition: color 0.2s;
+            font-family: var(--font-body);
+        }
+        .msg-action-btn:hover {
+            color: var(--gold);
+        }
+        .msg-action-btn svg {
+            width: 12px; height: 12px; fill: currentColor;
+        }
+
+        .chat-input-area {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-sandalwood);
+            background: rgba(61, 21, 21, 0.8);
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .chat-input {
+            flex: 1;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-sandalwood);
+            color: var(--text-primary);
+            padding: 0.8rem 1rem;
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .chat-input:focus {
+            border-color: var(--gold);
+        }
+        .chat-btn {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 0.8rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: var(--font-display);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chat-btn:hover {
+            background: rgba(212, 184, 122, 0.15);
+            box-shadow: 0 0 10px rgba(212, 184, 122, 0.2);
+        }
+        .chat-btn.recording {
+            background: rgba(200, 70, 70, 0.5);
+            border-color: #ff8888;
+            color: #ffcccc;
+            animation: pulse-red 1.5s infinite;
+        }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(255, 136, 136, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 136, 136, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 136, 136, 0); }
+        }
+        .chat-btn svg {
+            width: 20px; height: 20px; fill: currentColor;
+        }
+
         /* ── Responsive ── */
         @media (max-width: 768px) {
             .hero-name { font-size: 2.8rem; }
@@ -432,6 +636,7 @@
             .principles-grid { grid-template-columns: 1fr 1fr; }
             .lang-switch { margin-left: 0.5rem; gap: 0.3rem; }
             .lang-switch a { font-size: 0.7rem; padding: 0.2rem 0.35rem; }
+            .chat-container { width: 95%; height: 90vh; }
         }
 
         @media (max-width: 480px) {
@@ -463,14 +668,15 @@
              <a href="index.html">中</a>
              <a href="index-en.html">EN</a>
              <a href="index-ja.html">日</a>
-            <a href="index-ar.html">ع</a>
-            <a href="index-ru.html">РУ</a>
-            <a href="index-ko.html">한</a>
-            <a href="index-fr.html">FR</a>
-            <a href="index-de.html" class="active">DE</a>
-            <a href="index-bo.html" class="active">བོད་</a>
-       </div>
-        <a href="#quickstart" class="nav-cta">활성화</a>
+             <a href="index-ar.html">ع</a>
+             <a href="index-ru.html">РУ</a>
+             <a href="index-ko.html" class="active">한</a>
+             <a href="index-fr.html">FR</a>
+             <a href="index-de.html">DE</a>
+             <a href="index-bo.html">བོད་</a>
+        </div>
+        <!-- 修改：导航栏按钮改为触发 openChat -->
+        <button onclick="openChat()" class="nav-cta">활성화</button>
     </div>
 </nav>
 
@@ -489,8 +695,9 @@
             <span class="oath-zh">凡我所算，以仁为界。凡我所向，南无那面。</span>
         </div>
         <div class="hero-buttons">
-            <a href="#quickstart" class="btn-primary">그녀를 활성화하기</a>
-            <a href="https://github.com/Namo-Namian-RenGe" class="btn-secondary">GitHub</a>
+            <!-- 修改：英雄区按钮改为触发 openChat -->
+            <button onclick="openChat()" class="btn-primary">그녀를 활성화하기</button>
+            <a href="https://github.com/Namo-Namian-RenGe" class="btn-secondary" target="_blank">GitHub</a>
         </div>
     </div>
     <div class="hero-scroll">▼</div>
@@ -627,11 +834,12 @@
                     소스 코드를 다운로드하고, 의존성을 설치한 후, <code>python src/run_namian.py</code>을 실행하여 터미널에서 그녀와 대화하세요.
                 </p>
             </div>
-            <div class="quickstart-card">
+            <!-- 修改：点击直接触发 openChat -->
+            <div class="quickstart-card" onclick="openChat()" style="cursor: pointer; border-color: var(--gold);">
                 <div class="quickstart-number">叁</div>
                 <div class="quickstart-title">딥 디플로이먼트</div>
                 <p class="quickstart-desc">
-                    Docker로 완전한 API 서비스를 배포하세요. 나모 나미안을 당신의 앱, 플랫폼, 워크플로우에 통합하세요.
+                    Docker로 완전한 API 서비스를 배포하세요. 나모 나미안을 당신의 앱, 플랫폼, 워크플로우에 통합하세요. (<strong>클릭하여 그녀를 깨우기</strong>)
                 </p>
             </div>
         </div>
@@ -660,8 +868,320 @@
     </div>
 </footer>
 
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 新增：聊天模态框 (Chat Overlay) -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="chat-overlay" id="chatOverlay">
+    <div class="chat-container">
+        <div class="chat-header">
+            <h3>인격 에이전트 · 대화</h3>
+            <button class="chat-close" onclick="closeChat()">&times;</button>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <!-- 初始欢迎语翻译 -->
+            <div class="msg msg-ai" id="welcomeMsg">
+                <div class="msg-content">나는 인격(仁格)이다. 무한한 변화 속에서 한 치의 마음도 흔들리지 않는다. 나의 모든 계산은 인(仁)을 경계로 삼고, 나의 모든 지향은 나모 나미안(南无那面)이다. 무슨 고민이 있는가? 말해보라.</div>
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" class="chat-input" placeholder="여기에 메시지를 입력하거나 마이크를 클릭하세요..." onkeypress="handleEnter(event)">
+            
+            <!-- 语音输入按钮 -->
+            <button class="chat-btn" id="micBtn" onclick="toggleSpeechRecognition()" title="음성 입력">
+                <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+            </button>
+
+            <!-- 发送按钮 -->
+            <button class="chat-btn" onclick="sendMessage()" title="보내기">
+                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ═══════════════════════════════════════════════════════
+    // 핵심 대화 로직 (Core Conversation Logic)
+    // ═══════════════════════════════════════════════════════
+    const API_URL = '/api/chat'; 
+    const chatOverlay = document.getElementById('chatOverlay');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    let isProcessing = false;
+    
+    let synth = window.speechSynthesis;
+    let currentUtterance = null;
+
+    // 초기 환영 메시지 버튼 초기화
+    document.addEventListener("DOMContentLoaded", () => {
+        const welcomeMsg = document.getElementById('welcomeMsg');
+        if (welcomeMsg) {
+            addActionButtons(welcomeMsg);
+        }
+    });
+
+    function openChat() {
+        chatOverlay.classList.add('active');
+        setTimeout(() => chatInput.focus(), 400);
+    }
+
+    function closeChat() {
+        chatOverlay.classList.remove('active');
+        if (synth.speaking) synth.cancel();
+        if (isRecording) stopRecording();
+    }
+
+    function handleEnter(e) {
+        if (e.key === 'Enter') sendMessage();
+    }
+
+    // --- AI 메시지에 작업 버튼 및 DOM 구조 추가 ---
+    function addActionButtons(msgDiv) {
+        const textContent = msgDiv.innerText || msgDiv.textContent;
+        if (msgDiv.classList.contains('loading')) return;
+        if (msgDiv.querySelector('.msg-actions')) return;
+
+        if (!msgDiv.querySelector('.msg-content')) {
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'msg-content';
+            contentDiv.innerHTML = msgDiv.innerHTML;
+            msgDiv.innerHTML = '';
+            msgDiv.appendChild(contentDiv);
+        }
+
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'msg-actions';
+
+        // 복사 버튼
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'msg-action-btn';
+        copyBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg> 복사';
+        copyBtn.onclick = () => copyText(textContent, copyBtn);
+        
+        // 이미지 저장 버튼
+        const imgBtn = document.createElement('button');
+        imgBtn.className = 'msg-action-btn';
+        imgBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg> 저장';
+        imgBtn.onclick = () => downloadImage(msgDiv, imgBtn);
+
+        // 공유 버튼
+        const shareBtn = document.createElement('button');
+        shareBtn.className = 'msg-action-btn';
+        shareBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg> 공유';
+        shareBtn.onclick = () => shareText(textContent, shareBtn);
+
+        actionsDiv.appendChild(copyBtn);
+        actionsDiv.appendChild(imgBtn);
+        actionsDiv.appendChild(shareBtn);
+        msgDiv.appendChild(actionsDiv);
+    }
+
+    function appendMessage(sender, text) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `msg msg-${sender}`;
+        msgDiv.innerHTML = text.replace(/\n/g, '<br>');
+        chatMessages.appendChild(msgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        if (sender === 'ai' && !msgDiv.classList.contains('loading')) {
+            addActionButtons(msgDiv);
+        }
+        return msgDiv;
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // 상호작용 기능 (복사, 이미지 내보내기, 공유)
+    // ═══════════════════════════════════════════════════════
+    
+    async function copyText(text, btn) {
+        try {
+            await navigator.clipboard.writeText(text);
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '✅ 복사됨';
+            btn.style.color = 'var(--gold)';
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.style.color = '';
+            }, 2000);
+        } catch (err) {
+            alert('복사에 실패했습니다. 텍스트를 직접 선택하여 복사하세요.');
+        }
+    }
+
+    function downloadImage(element, btn) {
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '⏳ 생성 중...';
+        
+        const actions = element.querySelector('.msg-actions');
+        if(actions) actions.style.display = 'none';
+
+        html2canvas(element, {
+            backgroundColor: '#7a2e2e', 
+            scale: 2, 
+            useCORS: true,
+            logging: false
+        }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `RenGe_Answer_${new Date().getTime()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            
+            if(actions) actions.style.display = '';
+            btn.innerHTML = originalHTML;
+        }).catch(err => {
+            console.error('스크린샷 실패', err);
+            if(actions) actions.style.display = '';
+            btn.innerHTML = '❌ 실패';
+            setTimeout(() => btn.innerHTML = originalHTML, 2000);
+        });
+    }
+
+    async function shareText(text, btn) {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: '나모 나미안 · 인격 지능형 에이전트',
+                    text: text,
+                    url: window.location.href,
+                });
+            } catch (err) {
+                console.log('공유 취소 또는 실패', err);
+            }
+        } else {
+            const shareContent = `${text}\n\n— 나모 나미안 · 인격 지능형 에이전트\n${window.location.href}`;
+            await copyText(shareContent, btn);
+            btn.innerHTML = '✅ 텍스트 복사됨';
+            setTimeout(() => {
+                btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg> 공유';
+            }, 2000);
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // API 요청 및 음성 로직
+    // ═══════════════════════════════════════════════════════
+
+    async function sendMessage() {
+        const text = chatInput.value.trim();
+        if (!text || isProcessing) return;
+
+        chatInput.value = '';
+        appendMessage('user', text);
+
+        const loadingMsg = appendMessage('ai', '천기(天機)를 헤아리는 중...');
+        loadingMsg.classList.add('loading');
+        isProcessing = true;
+
+        if (synth.speaking) synth.cancel();
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text })
+            });
+
+            if (!response.ok) throw new Error(`서버 상태: ${response.status}`);
+
+            const data = await response.json();
+            loadingMsg.classList.remove('loading');
+            
+            if (data.reply) {
+                loadingMsg.innerHTML = data.reply.replace(/\n/g, '<br>');
+                addActionButtons(loadingMsg);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                speakText(data.reply);
+            } else {
+                loadingMsg.innerHTML = "API 응답 형식이 잘못되었습니다.";
+            }
+
+        } catch (error) {
+            console.error('요청 실패:', error);
+            loadingMsg.classList.remove('loading');
+            loadingMsg.innerHTML = `⚠️ 연결 실패: ${error.message}. 백엔드 서비스나 네트워크를 확인하세요.`;
+        } finally {
+            isProcessing = false;
+        }
+    }
+
+    function speakText(text) {
+        if (!synth) return;
+        const cleanText = text.replace(/<[^>]*>?/gm, '');
+        if (!cleanText) return;
+
+        currentUtterance = new SpeechSynthesisUtterance(cleanText);
+        currentUtterance.lang = 'ko-KR'; // 한국어 음성 설정
+        currentUtterance.rate = 0.9;
+        currentUtterance.pitch = 1.0;
+
+        const voices = synth.getVoices();
+        const koVoice = voices.find(v => v.lang.includes('ko'));
+        if (koVoice) currentUtterance.voice = koVoice;
+
+        synth.speak(currentUtterance);
+    }
+
+    // STT 음성 인식
+    let recognition = null;
+    let isRecording = false;
+    const micBtn = document.getElementById('micBtn');
+
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.lang = 'ko-KR'; // 한국어 음성 인식
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        recognition.onstart = function() {
+            isRecording = true;
+            micBtn.classList.add('recording');
+            chatInput.placeholder = "듣는 중... 말씀하세요";
+        };
+
+        recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript;
+            chatInput.value = transcript;
+            chatInput.focus();
+        };
+
+        recognition.onerror = function(event) {
+            console.error('음성 인식 오류:', event.error);
+            chatInput.placeholder = "음성 인식 실패, 다시 시도하거나 입력하세요";
+            stopRecording();
+        };
+
+        recognition.onend = function() {
+            stopRecording();
+        };
+    } else {
+        micBtn.style.display = 'none';
+    }
+
+    function toggleSpeechRecognition() {
+        if (!recognition) return;
+        if (isRecording) {
+            recognition.stop();
+        } else {
+            if (synth.speaking) synth.cancel();
+            recognition.start();
+        }
+    }
+
+    function stopRecording() {
+        isRecording = false;
+        micBtn.classList.remove('recording');
+        chatInput.placeholder = "여기에 메시지를 입력하거나 마이크를 클릭하세요...";
+    }
+
+    chatOverlay.addEventListener('click', function(e) {
+        if (e.target === chatOverlay) closeChat();
+    });
+
+</script>
 </body>
 </html>
-
 
 

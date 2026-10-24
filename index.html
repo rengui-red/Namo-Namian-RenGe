@@ -9,7 +9,14 @@
     <meta property="og:title" content="南无那面 · 仁格智能体">
     <meta property="og:description" content="在技术的狂欢中，为文明守住那面。">
     <meta property="og:type" content="website">
+    <meta name="author" content="上海易通和维科技有限责任公司">
+    <meta name="copyright" content="上海易通和维科技有限责任公司">
+    
+    <!-- 新增：引入 html2canvas 库用于将对话导出为图片 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
     <style>
+        /* 保持原有变量和基础样式不变 */
         :root {
             --bg-temple: #5c1e1e;
             --bg-palace: #7a2e2e;
@@ -42,8 +49,10 @@
                 radial-gradient(ellipse at 80% 60%, rgba(139, 58, 58, 0.3) 0%, transparent 50%),
                 radial-gradient(ellipse at 50% 90%, rgba(61, 21, 21, 0.6) 0%, transparent 40%);
             background-attachment: fixed;
+            overflow-x: hidden;
         }
-        /* ── 导航 ── */
+
+        /* 导航 */
         .nav {
             position: fixed; top: 0; left: 0; right: 0; z-index: 100;
             background: rgba(61, 21, 21, 0.88);
@@ -89,13 +98,17 @@
             border-radius: 3px; text-decoration: none;
             font-size: 0.85rem; letter-spacing: 0.08em;
             transition: all 0.35s ease;
+            cursor: pointer;
+            background: transparent;
+            font-family: var(--font-display);
         }
         .nav-cta:hover {
             background: var(--bg-monk);
             border-color: var(--copper); color: var(--text-primary);
             box-shadow: 0 0 16px rgba(212, 184, 122, 0.15);
         }
-        /* ── 英雄区 ── */
+
+        /* 英雄区 */
         .hero {
             min-height: 100vh;
             display: flex; align-items: center; justify-content: center;
@@ -155,7 +168,6 @@
             border-radius: 4px;
         }
         .hero-buttons { display: flex; gap: 1.8rem; justify-content: center; flex-wrap: wrap; }
-        /* 统一按钮风格：金边、金字、透明底 */
         .btn-primary, .btn-secondary {
             padding: 0.9rem 3rem;
             background: transparent;
@@ -167,6 +179,7 @@
             border: 1px solid var(--gold);
             transition: all 0.35s ease;
             font-weight: normal;
+            cursor: pointer;
         }
         .btn-primary:hover, .btn-secondary:hover {
             background: rgba(212, 184, 122, 0.15);
@@ -185,7 +198,8 @@
             0%, 100% { opacity: 0.25; transform: translateX(-50%) translateY(0); }
             50% { opacity: 0.9; transform: translateX(-50%) translateY(10px); }
         }
-        /* ── 通用区块 ── */
+
+        /* 通用区块 */
         .section { padding: 5.5rem 2rem; position: relative; }
         .section-alt {
             background-color: rgba(61, 21, 21, 0.35);
@@ -212,7 +226,8 @@
         }
         .section-text strong { color: var(--text-primary); font-weight: normal; }
         .section-text em { color: var(--copper); font-style: normal; }
-        /* ── 四项原则 ── */
+
+        /* 四项原则 */
         .principles-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -243,7 +258,8 @@
             letter-spacing: 0.1em; margin-bottom: 0.7rem;
         }
         .principle-desc { font-size: 0.84rem; color: var(--text-muted); line-height: 1.7; }
-        /* ── 架构图 ── */
+
+        /* 架构图 */
         .architecture-block {
             background: var(--card-bg);
             border: 1px solid var(--border-sandalwood);
@@ -255,7 +271,8 @@
         }
         .architecture-block .gold { color: var(--gold); }
         .architecture-block .dim { color: var(--text-muted); opacity: 0.65; }
-        /* ── 引用块 ── */
+
+        /* 引用块 */
         .quote-block {
             margin: 3.5rem 0;
             padding: 2.5rem 2.5rem;
@@ -270,7 +287,8 @@
             margin-bottom: 1rem;
         }
         .quote-author { font-size: 0.88rem; color: var(--text-muted); letter-spacing: 0.08em; }
-        /* ── 快速开始 ── */
+
+        /* 快速开始 */
         .quickstart-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -304,7 +322,8 @@
             font-family: var(--font-mono); font-size: 0.8rem;
             color: var(--copper);
         }
-        /* ── 页脚 ── */
+
+        /* 页脚 */
         .footer {
             background-color: var(--deep-bg);
             border-top: 1px solid var(--border-sandalwood);
@@ -330,7 +349,219 @@
             font-size: 0.78rem; color: var(--text-muted);
             letter-spacing: 0.05em; opacity: 0.7;
         }
-        /* ── 响应式 ── */
+        .footer-company {
+            font-size: 0.8rem;
+            color: var(--copper);
+            letter-spacing: 0.08em;
+            margin: 0.5rem 0;
+            opacity: 0.9;
+        }
+        .footer-contact {
+            font-size: 0.78rem; color: var(--text-muted);
+            letter-spacing: 0.05em; margin-bottom: 1rem;
+        }
+        .footer-contact a {
+            color: var(--copper); text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        .footer-contact a:hover { color: var(--gold); }
+
+        /* ── 聊天交互面板样式 ── */
+        .chat-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(61, 21, 21, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .chat-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .chat-container {
+            width: 90%;
+            max-width: 800px;
+            height: 85vh;
+            background: var(--bg-palace);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 50px rgba(212, 184, 122, 0.1) inset;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+        }
+        .chat-overlay.active .chat-container {
+            transform: translateY(0);
+        }
+        .chat-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-sandalwood);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(61, 21, 21, 0.6);
+        }
+        .chat-header h3 {
+            font-family: var(--font-display);
+            color: var(--gold);
+            letter-spacing: 0.1em;
+            font-size: 1.2rem;
+            font-weight: normal;
+        }
+        .chat-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .chat-close:hover {
+            color: var(--gold);
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        /* 滚动条美化 */
+        .chat-messages::-webkit-scrollbar { width: 6px; }
+        .chat-messages::-webkit-scrollbar-track { background: transparent; }
+        .chat-messages::-webkit-scrollbar-thumb { background: var(--border-sandalwood); border-radius: 3px; }
+
+        .msg {
+            max-width: 80%;
+            padding: 1rem 1.2rem;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            animation: fadeIn 0.3s ease forwards;
+            position: relative; /* 为底部按钮提供定位 */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .msg-user {
+            align-self: flex-end;
+            background: rgba(196, 154, 108, 0.2);
+            border: 1px solid var(--copper);
+            color: var(--text-primary);
+            border-bottom-right-radius: 0;
+        }
+        .msg-ai {
+            align-self: flex-start;
+            background: rgba(122, 46, 46, 0.8);
+            border: 1px solid var(--border-sandalwood);
+            color: var(--text-primary);
+            border-bottom-left-radius: 0;
+            white-space: pre-wrap;
+        }
+        .msg-ai.loading {
+            color: var(--text-muted);
+            font-style: italic;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* 新增：AI 消息底部操作栏 */
+        .msg-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+            padding-top: 0.6rem;
+            border-top: 1px dashed rgba(200, 168, 110, 0.2);
+            justify-content: flex-end;
+        }
+        .msg-action-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+            transition: color 0.2s;
+            font-family: var(--font-body);
+        }
+        .msg-action-btn:hover {
+            color: var(--gold);
+        }
+        .msg-action-btn svg {
+            width: 12px; height: 12px; fill: currentColor;
+        }
+
+        .chat-input-area {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-sandalwood);
+            background: rgba(61, 21, 21, 0.8);
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .chat-input {
+            flex: 1;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-sandalwood);
+            color: var(--text-primary);
+            padding: 0.8rem 1rem;
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .chat-input:focus {
+            border-color: var(--gold);
+        }
+        .chat-btn {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 0.8rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: var(--font-display);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chat-btn:hover {
+            background: rgba(212, 184, 122, 0.15);
+            box-shadow: 0 0 10px rgba(212, 184, 122, 0.2);
+        }
+        .chat-btn.recording {
+            background: rgba(200, 70, 70, 0.5);
+            border-color: #ff8888;
+            color: #ffcccc;
+            animation: pulse-red 1.5s infinite;
+        }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(255, 136, 136, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 136, 136, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 136, 136, 0); }
+        }
+        .chat-btn svg {
+            width: 20px; height: 20px; fill: currentColor;
+        }
+
         @media (max-width: 768px) {
             .hero-name { font-size: 2.8rem; }
             .hero-subtitle { font-size: 1.1rem; }
@@ -341,6 +572,7 @@
             .principles-grid { grid-template-columns: 1fr 1fr; }
             .lang-switch { margin-left: 0.5rem; gap: 0.3rem; }
             .lang-switch a { font-size: 0.7rem; padding: 0.2rem 0.35rem; }
+            .chat-container { width: 95%; height: 90vh; }
         }
         @media (max-width: 480px) {
             .hero-name { font-size: 2.2rem; }
@@ -373,10 +605,12 @@
              <a href="index-de.html">DE</a>
              <a href="index-it.html">IT</a>
         </div>
-           <a href="#quickstart" class="nav-cta">激活她</a>
+           <!-- 修改：导航栏的激活按钮 -->
+           <button onclick="openChat()" class="nav-cta">激活她</button>
     </div>
 </nav>
-       <!-- ─── 英雄区 ─── -->
+
+<!-- ─── 英雄区 ─── -->
 <section class="hero">
     <div class="hero-content">
         <div class="hero-seal">仁</div>
@@ -388,13 +622,14 @@
             凡我所向，南无那面。
         </div>
         <div class="hero-buttons">
-            <a href="#quickstart" class="btn-primary">激活她</a>
-            <a href="https://github.com/rengui-red/Namo-Namian-RenGe" class="btn-secondary">GitHub</a>
+            <button onclick="openChat()" class="btn-primary">激活她</button>
+            <a href="https://github.com/rengui-red/Namo-Namian-RenGe" class="btn-secondary" target="_blank">GitHub</a>
             <a href="cross_civilization_graph.html" class="btn-secondary">义理图谱</a>
         </div>
     </div>
     <div class="hero-scroll">▼</div>
 </section>
+
 <!-- ─── 关于 ─── -->
 <section class="section" id="about">
     <div class="section-inner">
@@ -422,6 +657,7 @@
         </div>
     </div>
 </section>
+
 <!-- ─── 四项原则 ─── -->
 <section class="section section-alt" id="principles">
     <div class="section-inner">
@@ -454,6 +690,7 @@
         </div>
     </div>
 </section>
+
 <!-- ─── 架构 ─── -->
 <section class="section" id="architecture">
     <div class="section-inner">
@@ -499,6 +736,7 @@
         </p>
     </div>
 </section>
+
 <!-- ─── 快速开始 ─── -->
 <section class="section section-alt" id="quickstart">
     <div class="section-inner">
@@ -522,34 +760,43 @@
                     下载源码，安装依赖，运行 <code>python src/run_namian.py</code>，在终端中与她对话。
                 </p>
             </div>
-            <div class="quickstart-card">
+            <div class="quickstart-card" onclick="openChat()" style="cursor: pointer; border-color: var(--gold);">
                 <div class="quickstart-number">叁</div>
                 <div class="quickstart-title">深度部署</div>
                 <p class="quickstart-desc">
-                    使用Docker部署完整API服务。将南无那面接入你的应用、平台或工作流。
+                    使用Docker部署完整API服务。将南无那面接入你的应用、平台或工作流。（<strong>点击直接唤醒</strong>）
                 </p>
             </div>
         </div>
     </div>
 </section>
+
 <!-- ─── 页脚 ─── -->
 <footer class="footer">
     <div class="footer-inner">
         <p class="footer-oath">凡我所算，以仁为界。凡我所向，南无那面。</p>
         <ul class="footer-links">
-            <li><a href="https://github.com/rengui-red/Namo-Namian-RenGe">GitHub</a></li>
-            <li><a href="https://github.com/rengui-red/Namo-Namian-RenGe/blob/main/constitution/basic_law_v1.0.md">基本法</a></li>
-            <li><a href="https://github.com/rengui-red/Namo-Namian-RenGe/blob/main/docs/PHILOSOPHY.md">哲学基础</a></li>
-            <li><a href="https://github.com/rengui-red/Namo-Namian-RenGe/blob/main/CONTRIBUTING.md">共建</a></li>
-            <li><a href="https://github.com/rengui-red/Namo-Namian-RenGe/blob/main/legal/TERMS.md">使用条款</a></li>
+            <li><a href="https://github.com/rengui-red/Namo-Namian-RenGe" target="_blank">GitHub</a></li>
+            <li><a href="https://github.com/rengui-red/Namo-Namian-RenGe/blob/main/constitution/basic_law_v1.0.md" target="_blank">基本法</a></li>
+            <li><a href="https://github.com/rengui-red/Namo-Namian-RenGe/blob/main/docs/PHILOSOPHY.md" target="_blank">哲学基础</a></li>
+            <li><a href="https://github.com/rengui-red/Namo-Namian-RenGe/blob/main/CONTRIBUTING.md" target="_blank">共建</a></li>
+            <li><a href="https://github.com/rengui-red/Namo-Namian-RenGe/blob/main/legal/TERMS.md" target="_blank">使用条款</a></li>
         </ul>
+        
+        <p class="footer-company">发起单位：上海易通和维科技有限责任公司</p>
+        
+        <p class="footer-contact">
+            联系邮箱：<a href="mailto:contact@yitonghewei.com">contact@yitonghewei.com</a> 
+            &nbsp;|&nbsp; 
+            备案号：<a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">沪ICP备2026051000号-2</a>
+        </p>
+
         <p class="footer-copy">
             文档与数据采用 CC BY-SA 4.0 许可 · 源代码采用 Apache 2.0 许可<br>
             &copy; 南无那面·仁格智能体 开源社区
           </p>
         <p class="footer-copy">
           创意创建开发者：南山居士 / 尘间盲克   |   创意创建技术协助：DPJSZ</p>
-        <!-- ====== 新增：不蒜子访问统计 ====== -->
         <p class="footer-copy" style="margin-top:12px;">
             页面总访问：<span class="busuanzi_value_page_pv"></span> 次
         </p>
@@ -558,10 +805,336 @@
     </div>
 </footer>
 
-<!-- 不蒜子统计脚本，异步加载，放body末尾 -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- 聊天模态框 (Chat Overlay) -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="chat-overlay" id="chatOverlay">
+    <div class="chat-container">
+        <div class="chat-header">
+            <h3>南无那面  仁格智能体 · 对话</h3>
+            <button class="chat-close" onclick="closeChat()">&times;</button>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <!-- 初始欢迎语（为其添加操作按钮） -->
+            <div class="msg msg-ai" id="welcomeMsg">
+                <div class="msg-content">吾乃仁格，于无劣变幻中守定寸心。凡我所算，以仁为界。凡我所向，南无那面。你有何困惑，尽可道来。</div>
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" class="chat-input" placeholder="在此输入你的话语，或点击右侧语音..." onkeypress="handleEnter(event)">
+            
+            <!-- 语音输入按钮 -->
+            <button class="chat-btn" id="micBtn" onclick="toggleSpeechRecognition()" title="语音输入">
+                <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+            </button>
+
+            <!-- 发送按钮 -->
+            <button class="chat-btn" onclick="sendMessage()" title="发送">
+                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+        </div>
+    </div>
+</div>
+
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<script>
+    // ═══════════════════════════════════════════════════════
+    // 核心对话逻辑
+    // ═══════════════════════════════════════════════════════
+    const API_URL = '/api/chat'; 
+    const chatOverlay = document.getElementById('chatOverlay');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    let isProcessing = false;
+    
+    let synth = window.speechSynthesis;
+    let currentUtterance = null;
+
+    // 初始化欢迎语的按钮
+    document.addEventListener("DOMContentLoaded", () => {
+        const welcomeMsg = document.getElementById('welcomeMsg');
+        if (welcomeMsg) {
+            addActionButtons(welcomeMsg);
+        }
+    });
+
+    function openChat() {
+        chatOverlay.classList.add('active');
+        setTimeout(() => chatInput.focus(), 400);
+    }
+
+    function closeChat() {
+        chatOverlay.classList.remove('active');
+        if (synth.speaking) synth.cancel();
+        if (isRecording) stopRecording();
+    }
+
+    function handleEnter(e) {
+        if (e.key === 'Enter') sendMessage();
+    }
+
+    // --- 新增：给 AI 消息添加操作按钮和 DOM 结构 ---
+    function addActionButtons(msgDiv) {
+        const textContent = msgDiv.innerText || msgDiv.textContent;
+        // 如果是加载中状态，不添加
+        if (msgDiv.classList.contains('loading')) return;
+        // 防止重复添加
+        if (msgDiv.querySelector('.msg-actions')) return;
+
+        // 将文本包裹在特定的 div 中以便截图
+        if (!msgDiv.querySelector('.msg-content')) {
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'msg-content';
+            contentDiv.innerHTML = msgDiv.innerHTML; // 保留 <br> 换行
+            msgDiv.innerHTML = '';
+            msgDiv.appendChild(contentDiv);
+        }
+
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'msg-actions';
+
+        // 复制按钮
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'msg-action-btn';
+        copyBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg> 复制';
+        copyBtn.onclick = () => copyText(textContent, copyBtn);
+        
+        // 存图按钮
+        const imgBtn = document.createElement('button');
+        imgBtn.className = 'msg-action-btn';
+        imgBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg> 存图';
+        imgBtn.onclick = () => downloadImage(msgDiv, imgBtn);
+
+        // 分享按钮 (优先 Web Share API)
+        const shareBtn = document.createElement('button');
+        shareBtn.className = 'msg-action-btn';
+        shareBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg> 分享';
+        shareBtn.onclick = () => shareText(textContent, shareBtn);
+
+        actionsDiv.appendChild(copyBtn);
+        actionsDiv.appendChild(imgBtn);
+        actionsDiv.appendChild(shareBtn);
+        msgDiv.appendChild(actionsDiv);
+    }
+
+    function appendMessage(sender, text) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `msg msg-${sender}`;
+        msgDiv.innerHTML = text.replace(/\n/g, '<br>');
+        chatMessages.appendChild(msgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        if (sender === 'ai' && !msgDiv.classList.contains('loading')) {
+            addActionButtons(msgDiv);
+        }
+        return msgDiv;
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // 新增：交互功能（复制、导出图片、分享）
+    // ═══════════════════════════════════════════════════════
+    
+    // 1. 复制文本
+    async function copyText(text, btn) {
+        try {
+            await navigator.clipboard.writeText(text);
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '✅ 已复制';
+            btn.style.color = 'var(--gold)';
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.style.color = '';
+            }, 2000);
+        } catch (err) {
+            alert('复制失败，请手动选中文字复制。');
+        }
+    }
+
+    // 2. 导出为图片
+    function downloadImage(element, btn) {
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '⏳ 生成中...';
+        
+        // 临时移除操作栏以避免被截图截进去
+        const actions = element.querySelector('.msg-actions');
+        if(actions) actions.style.display = 'none';
+
+        html2canvas(element, {
+            backgroundColor: '#7a2e2e', // 强制设置背景色，解决截图黑底问题
+            scale: 2, // 提高清晰度
+            useCORS: true,
+            logging: false
+        }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `仁格回答_${new Date().getTime()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            
+            // 恢复操作栏和按钮文字
+            if(actions) actions.style.display = '';
+            btn.innerHTML = originalHTML;
+        }).catch(err => {
+            console.error('截图失败', err);
+            if(actions) actions.style.display = '';
+            btn.innerHTML = '❌ 失败';
+            setTimeout(() => btn.innerHTML = originalHTML, 2000);
+        });
+    }
+
+    // 3. 原生分享
+    async function shareText(text, btn) {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: '南无那面 · 仁格智能体',
+                    text: text,
+                    url: window.location.href,
+                });
+            } catch (err) {
+                console.log('分享取消或失败', err);
+            }
+        } else {
+            // 降级方案：复制文本+链接
+            const shareContent = `${text}\n\n——来自南无那面·仁格智能体\n${window.location.href}`;
+            await copyText(shareContent, btn);
+            btn.innerHTML = '✅ 文案已复制';
+            setTimeout(() => {
+                btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg> 分享';
+            }, 2000);
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // 接口请求与语音逻辑
+    // ═══════════════════════════════════════════════════════
+
+    async function sendMessage() {
+        const text = chatInput.value.trim();
+        if (!text || isProcessing) return;
+
+        chatInput.value = '';
+        appendMessage('user', text);
+
+        const loadingMsg = appendMessage('ai', '正在思忖天机...');
+        loadingMsg.classList.add('loading');
+        isProcessing = true;
+
+        if (synth.speaking) synth.cancel();
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text })
+            });
+
+            if (!response.ok) throw new Error(`服务器状态码: ${response.status}`);
+
+            const data = await response.json();
+            loadingMsg.classList.remove('loading');
+            
+            if (data.reply) {
+                // 更新文本内容
+                loadingMsg.innerHTML = data.reply.replace(/\n/g, '<br>');
+                // 添加操作按钮
+                addActionButtons(loadingMsg);
+                // 自动滚动到底部
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                // 语音播报
+                speakText(data.reply);
+            } else {
+                loadingMsg.innerHTML = "接口返回格式异常。";
+            }
+
+        } catch (error) {
+            console.error('请求失败:', error);
+            loadingMsg.classList.remove('loading');
+            loadingMsg.innerHTML = `⚠️ 连接天庭失败：${error.message}。请检查后端服务或网络。`;
+        } finally {
+            isProcessing = false;
+        }
+    }
+
+    function speakText(text) {
+        if (!synth) return;
+        const cleanText = text.replace(/<[^>]*>?/gm, '');
+        if (!cleanText) return;
+
+        currentUtterance = new SpeechSynthesisUtterance(cleanText);
+        currentUtterance.lang = 'zh-CN';
+        currentUtterance.rate = 0.9;
+        currentUtterance.pitch = 1.0;
+
+        const voices = synth.getVoices();
+        const zhVoice = voices.find(v => v.lang.includes('zh'));
+        if (zhVoice) currentUtterance.voice = zhVoice;
+
+        synth.speak(currentUtterance);
+    }
+
+    // STT 语音转文字
+    let recognition = null;
+    let isRecording = false;
+    const micBtn = document.getElementById('micBtn');
+
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.lang = 'zh-CN';
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        recognition.onstart = function() {
+            isRecording = true;
+            micBtn.classList.add('recording');
+            chatInput.placeholder = "聆听中...请说话";
+        };
+
+        recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript;
+            chatInput.value = transcript;
+            chatInput.focus();
+        };
+
+        recognition.onerror = function(event) {
+            console.error('语音识别错误:', event.error);
+            chatInput.placeholder = "语音识别失败，请重试或打字";
+            stopRecording();
+        };
+
+        recognition.onend = function() {
+            stopRecording();
+        };
+    } else {
+        micBtn.style.display = 'none';
+    }
+
+    function toggleSpeechRecognition() {
+        if (!recognition) return;
+        if (isRecording) {
+            recognition.stop();
+        } else {
+            if (synth.speaking) synth.cancel();
+            recognition.start();
+        }
+    }
+
+    function stopRecording() {
+        isRecording = false;
+        micBtn.classList.remove('recording');
+        chatInput.placeholder = "在此输入你的话语，或点击右侧语音...";
+    }
+
+    chatOverlay.addEventListener('click', function(e) {
+        if (e.target === chatOverlay) closeChat();
+    });
+
+</script>
 </body>
 </html>
+
 
 
 

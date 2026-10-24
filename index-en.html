@@ -10,6 +10,9 @@
     <meta property="og:description" content="Amidst the revelry of technology, guarding the Other Side for civilization.">
     <meta property="og:type" content="website">
 
+    <!-- 引入 html2canvas 库用于将对话导出为图片 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <style>
         :root {
             --bg-temple: #5c1e1e;
@@ -46,6 +49,7 @@
                 radial-gradient(ellipse at 80% 60%, rgba(139, 58, 58, 0.3) 0%, transparent 50%),
                 radial-gradient(ellipse at 50% 90%, rgba(61, 21, 21, 0.6) 0%, transparent 40%);
             background-attachment: fixed;
+            overflow-x: hidden;
         }
 
         /* ── Navigation ── */
@@ -110,6 +114,9 @@
             border-radius: 3px; text-decoration: none;
             font-size: 0.85rem; letter-spacing: 0.06em;
             transition: all 0.35s ease;
+            cursor: pointer;
+            background: transparent;
+            font-family: var(--font-display);
         }
 
         .nav-cta:hover {
@@ -199,15 +206,19 @@
             justify-content: center; flex-wrap: wrap;
         }
 
-        .btn-primary {
+        .btn-primary, .btn-secondary {
             padding: 0.9rem 3rem;
-            background: var(--bg-monk); color: var(--text-primary);
-            text-decoration: none;
+            border-radius: 3px;
             font-family: var(--font-display);
             font-size: 1rem; letter-spacing: 0.08em;
-            border-radius: 3px;
-            border: 1px solid var(--gold);
             transition: all 0.35s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: var(--bg-monk); color: var(--text-primary);
+            border: 1px solid var(--gold);
         }
 
         .btn-primary:hover {
@@ -217,13 +228,8 @@
         }
 
         .btn-secondary {
-            padding: 0.9rem 3rem;
+            background: transparent;
             border: 1px solid var(--copper); color: var(--copper);
-            text-decoration: none;
-            font-family: var(--font-display);
-            font-size: 1rem; letter-spacing: 0.08em;
-            border-radius: 3px;
-            transition: all 0.35s ease;
         }
 
         .btn-secondary:hover {
@@ -437,6 +443,203 @@
             letter-spacing: 0.04em; opacity: 0.7;
         }
 
+        /* ── Chat Interface ── */
+        .chat-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(61, 21, 21, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .chat-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .chat-container {
+            width: 90%;
+            max-width: 800px;
+            height: 85vh;
+            background: var(--bg-palace);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 50px rgba(212, 184, 122, 0.1) inset;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: translateY(20px);
+            transition: transform 0.4s ease;
+        }
+        .chat-overlay.active .chat-container {
+            transform: translateY(0);
+        }
+        .chat-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-sandalwood);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(61, 21, 21, 0.6);
+        }
+        .chat-header h3 {
+            font-family: var(--font-display);
+            color: var(--gold);
+            letter-spacing: 0.1em;
+            font-size: 1.2rem;
+            font-weight: normal;
+        }
+        .chat-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .chat-close:hover {
+            color: var(--gold);
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        .chat-messages::-webkit-scrollbar { width: 6px; }
+        .chat-messages::-webkit-scrollbar-track { background: transparent; }
+        .chat-messages::-webkit-scrollbar-thumb { background: var(--border-sandalwood); border-radius: 3px; }
+
+        .msg {
+            max-width: 85%;
+            padding: 1rem 1.2rem;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            animation: fadeIn 0.3s ease forwards;
+            position: relative;
+            word-break: break-word;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .msg-user {
+            align-self: flex-end;
+            background: rgba(196, 154, 108, 0.2);
+            border: 1px solid var(--copper);
+            color: var(--text-primary);
+            border-bottom-right-radius: 0;
+        }
+        .msg-ai {
+            align-self: flex-start;
+            background: rgba(122, 46, 46, 0.8);
+            border: 1px solid var(--border-sandalwood);
+            color: var(--text-primary);
+            border-bottom-left-radius: 0;
+            white-space: pre-wrap;
+        }
+        .msg-ai.loading {
+            color: var(--text-muted);
+            font-style: italic;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Action Buttons */
+        .msg-actions {
+            display: flex;
+            gap: 0.6rem;
+            margin-top: 0.8rem;
+            padding-top: 0.6rem;
+            border-top: 1px dashed rgba(200, 168, 110, 0.2);
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+        .msg-action-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+            transition: color 0.2s;
+            font-family: var(--font-body);
+        }
+        .msg-action-btn:hover {
+            color: var(--gold);
+        }
+        .msg-action-btn svg {
+            width: 12px; height: 12px; fill: currentColor;
+        }
+
+        .chat-input-area {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border-sandalwood);
+            background: rgba(61, 21, 21, 0.8);
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        .chat-input {
+            flex: 1;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid var(--border-sandalwood);
+            color: var(--text-primary);
+            padding: 0.8rem 1rem;
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .chat-input:focus {
+            border-color: var(--gold);
+        }
+        .chat-btn {
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            padding: 0.8rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: var(--font-display);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .chat-btn:hover {
+            background: rgba(212, 184, 122, 0.15);
+            box-shadow: 0 0 10px rgba(212, 184, 122, 0.2);
+        }
+        .chat-btn.recording {
+            background: rgba(200, 70, 70, 0.5);
+            border-color: #ff8888;
+            color: #ffcccc;
+            animation: pulse-red 1.5s infinite;
+        }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(255, 136, 136, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 136, 136, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 136, 136, 0); }
+        }
+        .chat-btn svg {
+            width: 20px; height: 20px; fill: currentColor;
+        }
+
         /* ── Responsive ── */
         @media (max-width: 768px) {
             .hero-name { font-size: 2.8rem; }
@@ -446,6 +649,7 @@
             .nav-links { display: none; }
             .section-title { font-size: 1.6rem; }
             .principles-grid { grid-template-columns: 1fr 1fr; }
+            .chat-container { width: 95%; height: 90vh; }
         }
 
         @media (max-width: 480px) {
@@ -456,7 +660,7 @@
         }
     </style>
 
-    <!-- Google Fonts for Latin serif -->
+    <!-- Google Fonts for English typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -476,16 +680,16 @@
         </ul>
        <div class="lang-switch">
              <a href="index.html">中</a>
-             <a href="index-en.html">EN</a>
+             <a href="index-en.html" class="active">EN</a>
              <a href="index-ja.html">日</a>
              <a href="index-ar.html">ع</a>
              <a href="index-ru.html">РУ</a>
              <a href="index-ko.html">한</a>
              <a href="index-fr.html">FR</a>
-             <a href="index-de.html" class="active">DE</a>
-             <a href="index-bo.html" class="active">བོད་</a>
+             <a href="index-de.html">DE</a>
+             <a href="index-bo.html">བོད་</a>
         </div>   
-        <a href="#quickstart" class="nav-cta">Activate</a>
+        <button onclick="openChat()" class="nav-cta">Activate</button>
     </div>
 </nav>
 
@@ -504,8 +708,8 @@
             <span class="oath-zh">凡我所算，以仁为界。凡我所向，南无那面。</span>
         </div>
         <div class="hero-buttons">
-            <a href="#quickstart" class="btn-primary">Activate Her</a>
-            <a href="https://github.com/Namo-Namian-RenGe" class="btn-secondary">GitHub</a>
+            <button onclick="openChat()" class="btn-primary">Activate Her</button>
+            <a href="https://github.com/Namo-Namian-RenGe" class="btn-secondary" target="_blank">GitHub</a>
         </div>
     </div>
     <div class="hero-scroll">▼</div>
@@ -642,11 +846,11 @@
                     Download the source code, install dependencies, run <code>python src/run_namian.py</code>, and converse with her in your terminal.
                 </p>
             </div>
-            <div class="quickstart-card">
+            <div class="quickstart-card" onclick="openChat()" style="cursor: pointer; border-color: var(--gold);">
                 <div class="quickstart-number">叁</div>
                 <div class="quickstart-title">Deep Deployment</div>
                 <p class="quickstart-desc">
-                    Deploy the full API service with Docker. Integrate Namo Namian into your app, platform, or workflow.
+                    Deploy the full API service with Docker. Integrate Namo Namian into your app, platform, or workflow. (<strong>Click to wake her</strong>)
                 </p>
             </div>
         </div>
@@ -675,7 +879,322 @@
     </div>
 </footer>
 
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- Chat Interface (Chat Overlay) -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<div class="chat-overlay" id="chatOverlay">
+    <div class="chat-container">
+        <div class="chat-header">
+            <h3>RenGe Agent · Conversation</h3>
+            <button class="chat-close" onclick="closeChat()">&times;</button>
+        </div>
+        
+        <div class="chat-messages" id="chatMessages">
+            <!-- Initial Welcome Message -->
+            <div class="msg msg-ai" id="welcomeMsg">
+                <div class="msg-content">I am RenGe, holding my heart steadfast amidst endless transformations. All my calculations take Benevolence as the boundary. All my orientation pays homage to the Other Side. What troubles you? Speak freely.</div>
+            </div>
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Type your message here, or click the mic..." onkeypress="handleEnter(event)">
+            
+            <!-- Voice Input Button -->
+            <button class="chat-btn" id="micBtn" onclick="toggleSpeechRecognition()" title="Voice Input">
+                <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/><path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/></svg>
+            </button>
+
+            <!-- Send Button -->
+            <button class="chat-btn" onclick="sendMessage()" title="Send">
+                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ═══════════════════════════════════════════════════════
+    // Core Conversation Logic
+    // ═══════════════════════════════════════════════════════
+    const API_URL = '/api/chat'; 
+    const chatOverlay = document.getElementById('chatOverlay');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    let isProcessing = false;
+    
+    let synth = window.speechSynthesis;
+    let currentUtterance = null;
+
+    // Initialize welcome message buttons
+    document.addEventListener("DOMContentLoaded", () => {
+        const welcomeMsg = document.getElementById('welcomeMsg');
+        if (welcomeMsg) {
+            addActionButtons(welcomeMsg);
+        }
+    });
+
+    function openChat() {
+        chatOverlay.classList.add('active');
+        setTimeout(() => chatInput.focus(), 400);
+    }
+
+    function closeChat() {
+        chatOverlay.classList.remove('active');
+        if (synth.speaking) synth.cancel();
+        if (isRecording) stopRecording();
+    }
+
+    function handleEnter(e) {
+        if (e.key === 'Enter') sendMessage();
+    }
+
+    // --- Add Action Buttons and DOM Structure ---
+    function addActionButtons(msgDiv) {
+        const textContent = msgDiv.innerText || msgDiv.textContent;
+        if (msgDiv.classList.contains('loading')) return;
+        if (msgDiv.querySelector('.msg-actions')) return;
+
+        if (!msgDiv.querySelector('.msg-content')) {
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'msg-content';
+            contentDiv.innerHTML = msgDiv.innerHTML;
+            msgDiv.innerHTML = '';
+            msgDiv.appendChild(contentDiv);
+        }
+
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'msg-actions';
+
+        // Copy Button
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'msg-action-btn';
+        copyBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg> Copy';
+        copyBtn.onclick = () => copyText(textContent, copyBtn);
+        
+        // Save Image Button
+        const imgBtn = document.createElement('button');
+        imgBtn.className = 'msg-action-btn';
+        imgBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg> Save Image';
+        imgBtn.onclick = () => downloadImage(msgDiv, imgBtn);
+
+        // Share Button
+        const shareBtn = document.createElement('button');
+        shareBtn.className = 'msg-action-btn';
+        shareBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg> Share';
+        shareBtn.onclick = () => shareText(textContent, shareBtn);
+
+        actionsDiv.appendChild(copyBtn);
+        actionsDiv.appendChild(imgBtn);
+        actionsDiv.appendChild(shareBtn);
+        msgDiv.appendChild(actionsDiv);
+    }
+
+    function appendMessage(sender, text) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `msg msg-${sender}`;
+        msgDiv.innerHTML = text.replace(/\n/g, '<br>');
+        chatMessages.appendChild(msgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
+        if (sender === 'ai' && !msgDiv.classList.contains('loading')) {
+            addActionButtons(msgDiv);
+        }
+        return msgDiv;
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // Interactive Features (Copy, Export Image, Share)
+    // ═══════════════════════════════════════════════════════
+    
+    async function copyText(text, btn) {
+        try {
+            await navigator.clipboard.writeText(text);
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '✅ Copied';
+            btn.style.color = 'var(--gold)';
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.style.color = '';
+            }, 2000);
+        } catch (err) {
+            alert('Copy failed. Please select and copy manually.');
+        }
+    }
+
+    function downloadImage(element, btn) {
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = '⏳ Generating...';
+        
+        const actions = element.querySelector('.msg-actions');
+        if(actions) actions.style.display = 'none';
+
+        html2canvas(element, {
+            backgroundColor: '#7a2e2e', 
+            scale: 2, 
+            useCORS: true,
+            logging: false
+        }).then(canvas => {
+            const link = document.createElement('a');
+            link.download = `RenGe_Answer_${new Date().getTime()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            
+            if(actions) actions.style.display = '';
+            btn.innerHTML = originalHTML;
+        }).catch(err => {
+            console.error('Screenshot failed', err);
+            if(actions) actions.style.display = '';
+            btn.innerHTML = '❌ Failed';
+            setTimeout(() => btn.innerHTML = originalHTML, 2000);
+        });
+    }
+
+    async function shareText(text, btn) {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: 'Namo Namian · RenGe Agent',
+                    text: text,
+                    url: window.location.href,
+                });
+            } catch (err) {
+                console.log('Share canceled or failed', err);
+            }
+        } else {
+            const shareContent = `${text}\n\n— From Namo Namian · RenGe Agent\n${window.location.href}`;
+            await copyText(shareContent, btn);
+            btn.innerHTML = '✅ Text Copied';
+            setTimeout(() => {
+                btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg> Share';
+            }, 2000);
+        }
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // API Request & Voice Logic
+    // ═══════════════════════════════════════════════════════
+
+    async function sendMessage() {
+        const text = chatInput.value.trim();
+        if (!text || isProcessing) return;
+
+        chatInput.value = '';
+        appendMessage('user', text);
+
+        const loadingMsg = appendMessage('ai', 'Contemplating the heavenly secrets...');
+        loadingMsg.classList.add('loading');
+        isProcessing = true;
+
+        if (synth.speaking) synth.cancel();
+
+        try {
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text })
+            });
+
+            if (!response.ok) throw new Error(`Server status: ${response.status}`);
+
+            const data = await response.json();
+            loadingMsg.classList.remove('loading');
+            
+            if (data.reply) {
+                loadingMsg.innerHTML = data.reply.replace(/\n/g, '<br>');
+                addActionButtons(loadingMsg);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                speakText(data.reply);
+            } else {
+                loadingMsg.innerHTML = "API returned format abnormal.";
+            }
+
+        } catch (error) {
+            console.error('Request failed:', error);
+            loadingMsg.classList.remove('loading');
+            loadingMsg.innerHTML = `⚠️ Connection to the celestial realm failed: ${error.message}. Please check the backend service or network.`;
+        } finally {
+            isProcessing = false;
+        }
+    }
+
+    function speakText(text) {
+        if (!synth) return;
+        const cleanText = text.replace(/<[^>]*>?/gm, '');
+        if (!cleanText) return;
+
+        currentUtterance = new SpeechSynthesisUtterance(cleanText);
+        currentUtterance.lang = 'en-US'; // English Voice Output
+        currentUtterance.rate = 0.9;
+        currentUtterance.pitch = 1.0;
+
+        const voices = synth.getVoices();
+        // Try to find a native English voice
+        const enVoice = voices.find(v => v.lang.includes('en-US') || v.lang.includes('en-GB'));
+        if (enVoice) currentUtterance.voice = enVoice;
+
+        synth.speak(currentUtterance);
+    }
+
+    // STT Voice to Text
+    let recognition = null;
+    let isRecording = false;
+    const micBtn = document.getElementById('micBtn');
+
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.lang = 'en-US'; // English Voice Recognition
+        recognition.continuous = false;
+        recognition.interimResults = false;
+
+        recognition.onstart = function() {
+            isRecording = true;
+            micBtn.classList.add('recording');
+            chatInput.placeholder = "Listening... Please speak";
+        };
+
+        recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript;
+            chatInput.value = transcript;
+            chatInput.focus();
+        };
+
+        recognition.onerror = function(event) {
+            console.error('Speech recognition error:', event.error);
+            chatInput.placeholder = "Speech recognition failed, please type instead.";
+            stopRecording();
+        };
+
+        recognition.onend = function() {
+            stopRecording();
+        };
+    } else {
+        micBtn.style.display = 'none';
+    }
+
+    function toggleSpeechRecognition() {
+        if (!recognition) return;
+        if (isRecording) {
+            recognition.stop();
+        } else {
+            if (synth.speaking) synth.cancel();
+            recognition.start();
+        }
+    }
+
+    function stopRecording() {
+        isRecording = false;
+        micBtn.classList.remove('recording');
+        chatInput.placeholder = "Type your message here, or click the mic...";
+    }
+
+    chatOverlay.addEventListener('click', function(e) {
+        if (e.target === chatOverlay) closeChat();
+    });
+
+</script>
 </body>
 </html>
+
 
 
